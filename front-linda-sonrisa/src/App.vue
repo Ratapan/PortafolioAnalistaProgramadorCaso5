@@ -4,14 +4,25 @@
       <router-link to="/about">About</router-link>-->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Linda sonrisa</a>
+        <a class="navbar-brand" href="/">Linda sonrisa</a>
+        
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link" href="#">Pedir cita</a>
+              <router-link
+                  class="nav-link dropdown-item dropdown-item-pyme"
+                  style="border-radius: 500px"
+                  :to="{ name: 'appointmentRequest' }"
+                  type="button"
+                  data-toggle="collapse"
+                  data-target="#navbarNav"
+                  aria-expanded="false"
+                >
+                  Pedir cita
+                </router-link>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Citas activas</a>
@@ -20,12 +31,32 @@
               <a class="nav-link" href="#">Citas anteriores</a>
             </li>
           </ul>
-          <ul class="navbar-nav d-flex justify-content-end">
+          <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link" href="#">Entrar</a>
+              <router-link
+                  class="nav-link dropdown-item dropdown-item-pyme"
+                  style="border-radius: 500px"
+                  :to="{ name: 'login' }"
+                  type="button"
+                  data-toggle="collapse"
+                  data-target="#navbarNav"
+                  aria-expanded="false"
+                >
+                  Entrar
+              </router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Crear cuenta</a>
+              <router-link
+                  class="nav-link dropdown-item dropdown-item-pyme"
+                  style="border-radius: 500px"
+                  :to="{ name: 'createUser' }"
+                  type="button"
+                  data-toggle="collapse"
+                  data-target="#navbarNav"
+                  aria-expanded="false"
+                >
+                  Crear cuenta
+              </router-link>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Salir</a>
@@ -34,9 +65,13 @@
         </div>
       </div>
     </nav>
-    <br><br>
+    <br>
     <section class="pres">
-      <presentation-component></presentation-component>
+
+    <transition name="fade" mode="out-in">
+      <router-view></router-view>
+    </transition>
+    
     </section>
     <br><br>
     <footer-component></footer-component>

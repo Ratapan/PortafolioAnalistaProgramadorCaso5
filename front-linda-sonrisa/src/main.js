@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import App from './App.vue'
-import router from './router'
+import VueRouter from "vue-router";
 import store from './store'
 
-
+Vue.use(VueRouter);
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -23,17 +23,52 @@ Vue.component("presentation-component", PresentationComponent );
 import FooterComponent from "./views/Footer.vue";
 Vue.component("footer-component", FooterComponent );
 
-//const routes = [
-//  {
-//    name: "init",
-//    path: "/",
-//    component: LandingComponent,
-//    meta: {
-//      title: "Linda sonrisa",
-//    auth: false
-//    }
-//  }
-//]
+import LoginComponent      from "./components/home/loginComponent.vue";
+import CreateUserComponent from "./components/home/createUserComponent.vue";
+
+import AppointmentRequestComponent from "./components/client/appointmentRequestComponent.vue";
+
+const routes = [
+  {
+    name: "init",
+    path: "/",
+    component: PresentationComponent,
+    meta: {
+      title: "Linda sonrisa",
+      auth: false
+    }
+  },
+  {
+    name: "login",
+    path: "/acceder",
+    component: LoginComponent,
+    meta: {
+      title: "Acceder - VaalaPyme",
+      auth: false
+    }
+  },
+  {
+    name: "appointmentRequest",
+    path: "/citas",
+    component: AppointmentRequestComponent,
+    meta: {
+      auth: true
+    }
+  },
+  {
+    name: "createUser",
+    path: "/crearusuario",
+    component: CreateUserComponent,
+    meta: {
+      auth: true
+    }
+  },
+];
+const router = new VueRouter({
+  mode: "history",
+  routes: routes,
+  base: ""
+});
 
 new Vue({
   router,

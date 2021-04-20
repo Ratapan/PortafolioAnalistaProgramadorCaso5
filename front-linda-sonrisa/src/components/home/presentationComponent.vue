@@ -2,9 +2,15 @@
   <section class="container">
     <div class="row">
       <div class="col-12 d-flex justify-content-center">
-        <div class="card d-flex text-center">
+        <div class="d-flex text-center">
           <h2 class="title graph"> Clinica odontologica Linda Sonrisa</h2>
         </div>
+      </div>
+    </div>
+    <br>
+    <div class="row d-flex justify-content-center">
+      <div class="col-xl-8 col-md-10 col-sm-12">
+        <img class="img-presentation" src="../../assets/stock_dentista.jpg" alt="">
       </div>
     </div>
   </section>
@@ -30,3 +36,10 @@
     },
   }
 </script>
+<style scoped>
+.img-presentation{
+  border: 3px solid rgba(0, 0, 0, 0.5);
+  border-radius: 35px;
+  height: 500px;
+}
+</style>
