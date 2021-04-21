@@ -1,5 +1,6 @@
 package app.view
 
+import androidx.compose.desktop.AppManager.exit
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -56,7 +57,7 @@ fun login(onItemClick: () -> Unit) {
                     Button(onClick = { onItemClick() }) {
                         Text(text = "Login")
                     }
-                    Button(onClick = {}) {
+                    Button(onClick = { exit() }) {
                         Text(text = "Exit")
                     }
                 }

@@ -7,6 +7,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.mouse.mouseScrollFilter
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -15,8 +16,12 @@ fun menu(onBack: () -> Unit) {
         Column(modifier = Modifier
             .weight(1f)
             .padding(5.dp)
+            .fillMaxHeight(),
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Text ("Hi")
+            Column {
+                Text ("Hi")
+            }
             Button(onClick = { onBack() }){
                 Text("Log out")
             }
