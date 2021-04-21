@@ -17,7 +17,7 @@
               <label>Nombre:</label>
             </div>
             <div class="col-5">
-              <input v-model="user.name" type="text"><br> 
+              <input v-model="user.name" class="form-control form-control-sm" type="text"><br> 
             </div>
           </div>
           <br>
@@ -29,7 +29,7 @@
               <label>Apellido paterno:</label>
             </div>
             <div class="col-5">
-              <input v-model="user.lastName" type="text"><br> 
+              <input v-model="user.lastName" class="form-control form-control-sm" type="text"><br> 
             </div>
           </div>
           <br>
@@ -41,7 +41,7 @@
               <label>Apellido materno:</label>
             </div>
             <div class="col-5">
-              <input v-model="user.veryLastName" type="text"><br> 
+              <input v-model="user.veryLastName" class="form-control form-control-sm" type="text"><br> 
             </div>
           </div>
           <br>
@@ -53,7 +53,7 @@
               <label>Nombre de usuario:</label>
             </div>
             <div class="col-5">
-              <input v-model="user.username" type="text"><br> 
+              <input v-model="user.username" class="form-control form-control-sm" type="text"><br> 
             </div>
           </div>
           <br>
@@ -65,7 +65,7 @@
               <label>Mail:</label>
             </div>
             <div class="col-5">
-              <input v-model="user.mail" type="mail"><br> 
+              <input v-model="user.mail" class="form-control form-control-sm" type="mail"><br> 
             </div>
           </div>
           <br>
@@ -77,7 +77,11 @@
               <label>Sexo:</label>
             </div>
             <div class="col-5">
-              <input v-model="user.sex" type="text"><br> 
+              <select v-model="user.sex"  class="form-control form-control-sm">
+                <option>Femenino</option>
+                <option>Masculino</option>
+                <option>Otro</option>
+              </select>
             </div>
           </div>
           <br>
@@ -89,7 +93,7 @@
               <label>Contraseña:</label>
             </div>
             <div class="col-5">
-              <input v-model="user.password" type="password"><br>
+              <input v-model="user.password" class="form-control form-control-sm" @input="passwordConfirm()" type="password"><br>
           </div>
           </div>
           <br>
@@ -100,7 +104,8 @@
               <label>Confirmar contraseña:</label>
             </div>
             <div class="col-5">
-              <input v-model="user.passwordConfirm" type="password"><br>
+              <input v-model="user.passwordConfirm" class="form-control form-control-sm" @input="passwordConfirm()" type="password"><br>
+              <label v-if="errPass != ''" class="text-danger text-sm">{{errPass}}</label>
           </div>
           </div>
           <br>
@@ -129,7 +134,8 @@ data() {
       sex:'',
       password: '',
       passwordConfirm: '',
-    }
+    },
+    errPass:'',
     
   }
 },
@@ -139,6 +145,20 @@ mounted() {
 methods:{
   Login(){
     
+  },
+  passwordConfirm(){
+    this.errPass = '';
+    if(this.user.password != this.user.passwordConfirm){
+      if(this.user.password  == '' || this.user.passwordConfirm  == ''){
+        this.errPass = '';
+      }
+      else{
+        this.errPass = 'Su contraseña no es correcta';
+      }
+    }
+    else{
+      this.errPass = '';
+    }
   }
 }
 
@@ -151,5 +171,8 @@ methods:{
 .btn-sm{
   margin: 0px 12px;
   padding:10px 0px;
+}
+.text-sm{
+  font-size: 14px;
 }
 </style>
