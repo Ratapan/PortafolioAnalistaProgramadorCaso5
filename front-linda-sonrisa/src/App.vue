@@ -77,6 +77,9 @@
     <footer-component></footer-component>
   </div>
 </template>
+<script>
+
+</script>
 
 <style>
 html, body{

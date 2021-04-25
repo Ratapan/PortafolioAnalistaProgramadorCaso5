@@ -21,7 +21,7 @@
             </div>
           </div>
           <br>
-
+<!--
           <div class="row">
             <div class="col-1">
             </div>
@@ -45,7 +45,7 @@
             </div>
           </div>
           <br>
-
+-->
           <div class="row">
             <div class="col-1">
             </div>
@@ -136,6 +136,7 @@ data() {
       passwordConfirm: '',
     },
     errPass:'',
+    errors:'',
     
   }
 },
@@ -159,7 +160,29 @@ methods:{
     else{
       this.errPass = '';
     }
-  }
+  },
+  storeUser() {
+      this.$axios.get("/api/usuarios", {
+        names: this.user.name,
+      })
+      .then(response => {
+        this.$swal({
+          title:
+            "El usuario " +
+            this.user.names +
+            " ha sido guardado correctamente.",
+          icon: "success",
+          timer: 3000,
+          showConfirmButton: false
+          
+        });
+        console.log(response)
+      })
+      .catch(err => {
+        this.errors = [];
+        this.errors.push(err);
+      });
+    },
 }
 
 }
