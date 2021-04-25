@@ -11,16 +11,12 @@ class pacienteController extends Controller
 {
     public function register(Request $request){
         $newUser = new User;
-        $newUser->email = $request->email;
-        $newUser->password = $request->password;
+        $newUser->email = 'qwe';
+        $newUser->password = $request->name;
         $newUser->eliminado = 1;
         $newUser->rol_id = 2;
         $newUser->save();
+        return response()->json([$newUser],200);
 
-        $newPaciente = new paciente;
-        $newPaciente->rut_pa = $request->rut;
-        $newPaciente->nombre_pa = $request->nombre;
-        $newPaciente->correo_pa = $request->email;
-        $newPaciente->save();
     }
 }

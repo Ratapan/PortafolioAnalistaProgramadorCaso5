@@ -113,7 +113,7 @@
 
         </div>
         <div class="card-footer text-right">
-          <button class="btn btn-sm btn-secondary col-4" @click="Login()">Guardar usuario</button>
+          <button class="btn btn-sm btn-secondary col-4" @click="storeUser()">Guardar usuario</button>
         </div>
       </div>
     </div>
@@ -162,25 +162,16 @@ methods:{
     }
   },
   storeUser() {
-      this.$axios.get("/api/usuarios", {
+      this.$axios.get("http://127.0.0.1:8000/api/usuarios", {
         names: this.user.name,
       })
       .then(response => {
-        this.$swal({
-          title:
-            "El usuario " +
-            this.user.names +
-            " ha sido guardado correctamente.",
-          icon: "success",
-          timer: 3000,
-          showConfirmButton: false
-          
-        });
+       
         console.log(response)
       })
       .catch(err => {
-        this.errors = [];
-        this.errors.push(err);
+
+        console.log(err)
       });
     },
 }
