@@ -162,7 +162,7 @@ methods:{
     }
   },
   storeUser() {
-      this.$axios.get("http://127.0.0.1:8000/api/usuarios", {
+      this.$axios.post("http://127.0.0.1:8000/api/usuarios", {
         names: this.user.name,
       })
       .then(response => {
