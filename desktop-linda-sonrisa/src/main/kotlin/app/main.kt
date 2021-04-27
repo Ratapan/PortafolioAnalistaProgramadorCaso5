@@ -1,16 +1,10 @@
 import androidx.compose.desktop.Window
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import app.navigation.Screen
-import app.view.login
-import app.view.menu
+import app.views.login
+import app.views.menu
 
 fun main() = Window {
-//    var text by remember { mutableStateOf("Hello, World!") }
-//
-//    MaterialTheme {
-//        login()
-//    }
     Main()
 }
 
