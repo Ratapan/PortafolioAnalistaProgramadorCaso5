@@ -102,14 +102,19 @@
         <div class="card-footer text-right">
           <button
             class="btn btn-sm btn-danger col-4"
-            v-if="errPass == '' || user.password != user.passwordConfirm"
+            v-if="user.password != user.passwordConfirm"
             disabled
           >
             Guardar usuario
           </button>
           <button
             class="btn btn-sm btn-secondary col-4"
-            v-if="user.password == user.passwordConfirm"
+            v-if="   user.password  ==  user.passwordConfirm
+                  && user.name      !=  ''     
+                  && user.password  !=  ''     
+                  && user.rut       !=  ''   
+                  && user.email     !=  ''
+                "
             @click="storeUser()"
           >
             Guardar usuario
@@ -128,7 +133,7 @@ export default {
         name: "",
         rut: "",
         username: "",
-        email: "",
+        email: "",   
         password: "",
         passwordConfirm: "",
       },

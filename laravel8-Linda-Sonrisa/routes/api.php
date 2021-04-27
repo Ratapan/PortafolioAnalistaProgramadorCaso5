@@ -17,4 +17,12 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+//usuarios
 Route::post('/usuarios', 'App\Http\Controllers\pacienteController@register');
+
+
+
+
+//empleados
+Route::get('/employee', 'App\Http\Controllers\EmployeesController@getAll');
