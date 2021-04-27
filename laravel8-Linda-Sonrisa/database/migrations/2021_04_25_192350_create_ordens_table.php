@@ -18,9 +18,11 @@ class CreateOrdensTable extends Migration
             $table->string('tipo_producto_o');
             $table->boolean('cancelada_o');
             $table->date('fecha_venc_o');
-            $table->string('cant_produc_o');
+            $table->string('precio_total');
             $table->unsignedBigInteger('proveedor_id');
             $table->foreign('proveedor_id')->references('id')->on('proveedors');
+            $table->unsignedBigInteger('empleado_id');
+            $table->foreign('empleado_id')->references('id')->on('empleados');
             $table->timestamps();
         });
     }
