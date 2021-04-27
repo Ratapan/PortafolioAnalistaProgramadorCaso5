@@ -28,6 +28,7 @@ class CreateEmpleadosTable extends Migration
             $table->string('nombre_banco');
             $table->string('numero_banco');
             $table->string('tipo_cuenta');
+            $table->string('imagen');
             $table->unsignedBigInteger('sucursal_id');
             $table->foreign('sucursal_id')->references('id')->on('sucursals');
             $table->unsignedBigInteger('user_id');

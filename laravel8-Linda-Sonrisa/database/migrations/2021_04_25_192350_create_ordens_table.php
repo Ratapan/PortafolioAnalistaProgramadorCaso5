@@ -15,8 +15,10 @@ class CreateOrdensTable extends Migration
     {
         Schema::create('ordens', function (Blueprint $table) {
             $table->id();
-            $table->string('o_pedido');
-            $table->boolean('o_cancelada');
+            $table->string('tipo_producto_o');
+            $table->boolean('cancelada_o');
+            $table->date('fecha_venc_o');
+            $table->string('cant_produc_o');
             $table->unsignedBigInteger('proveedor_id');
             $table->foreign('proveedor_id')->references('id')->on('proveedors');
             $table->timestamps();

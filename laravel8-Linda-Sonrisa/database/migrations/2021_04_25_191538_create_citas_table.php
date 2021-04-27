@@ -20,6 +20,8 @@ class CreateCitasTable extends Migration
             $table->dateTime('fecha_cita');
             $table->unsignedBigInteger('paciente_id');
             $table->foreign('paciente_id')->references('id')->on('pacientes');
+            $table->unsignedBigInteger('hora_id');
+            $table->foreign('hora_id')->references('id')->on('horas');
             $table->timestamps();
         });
     }
