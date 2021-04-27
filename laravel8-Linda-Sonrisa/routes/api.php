@@ -26,3 +26,7 @@ Route::post('/usuarios', 'App\Http\Controllers\pacienteController@register');
 
 //empleados
 Route::get('/employee', 'App\Http\Controllers\EmployeesController@getAll');
+
+
+//servicios
+Route::get('/servicio', 'App\Http\Controllers\ServiceController@getAll');

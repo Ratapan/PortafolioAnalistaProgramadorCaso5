@@ -6,7 +6,7 @@
       <div class="container-fluid">
         <a class="navbar-brand" href="/">Linda sonrisa</a>
         
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -81,15 +81,13 @@
 
 </script>
 
-<style>
+<style scoped>
 html, body{
   font-family: 'Montserrat', sans-serif;
   }
 .pres{
   min-height: 500px;
   }
-</style>
-<style scoped>
 template{
   min-height:100%;
 }
