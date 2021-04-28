@@ -1,11 +1,14 @@
 import Vue from 'vue'
+import Vuex from 'vuex'
 import App from './App.vue'
 import VueRouter from "vue-router";
-import store from './store'
+//import store from './store'
 
+//import * as Cookies from "js-cookie";
 import axios from 'axios'
 Vue.prototype.$axios = axios
 
+Vue.use(Vuex)
 Vue.use(VueRouter);
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
@@ -67,6 +70,11 @@ const routes = [
     }
   },
 ];
+
+const store = new Vuex.Store({
+  
+});
+
 const router = new VueRouter({
   mode: "history",
   routes: routes,

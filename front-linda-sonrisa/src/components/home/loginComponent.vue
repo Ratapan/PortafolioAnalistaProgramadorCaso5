@@ -12,10 +12,10 @@
             <div class="col-1">
             </div>
             <div class="col-5 text-left">
-              <label>Nombre de usuario:</label>
+              <label>Correo:</label>
             </div>
             <div class="col-5">
-              <input v-model="username" type="text"><br> 
+              <input v-model="email" type="email"><br> 
             </div>
           </div>
           <br>
@@ -39,13 +39,14 @@
     </div>
 
   </div>
+
 </template>
 
 <script>
 export default {
 data() {
   return {
-    username: '',
+    email: '',
     password: '',
   }
 },
@@ -54,8 +55,23 @@ mounted() {
 },
 methods:{
   Login(){
-    
-  }
+    this.$axios
+        .post("http://127.0.0.1:8000/api/login", {
+          email: this.email,
+          password: this.password
+        })
+        .then(response => {
+          this.$store.commit("set_user_cookie", {
+            key: "user",
+            value: response.data
+          });
+          this.$router.push("/");
+        })
+        .catch(error => {
+          this.error = error.response.data;
+        });
+    }
+  
 }
 
 }

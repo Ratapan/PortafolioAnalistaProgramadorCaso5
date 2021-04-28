@@ -18,11 +18,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+//Login
+Route::post('/login', 'App\Http\Controllers\LoginController@login');
+Route::post('/session', 'App\Http\Controllers\LoginController@getIndex');
+
 //usuarios
 Route::post('/usuarios', 'App\Http\Controllers\pacienteController@register');
-
-
-
 
 //empleados
 Route::get('/employee', 'App\Http\Controllers\EmployeesController@getAll');
