@@ -18,10 +18,10 @@ class CreatePacientesTable extends Migration
             $table->string('rut_pa');
             $table->string('nombre_pa');
             $table->string('correo_pa');
-            /*$table->string('direccion_pa');
-            $table->string('num_telefono_pa');
+            $table->string('direccion_pa');
+            $table->integer('num_telefono_pa');
             $table->date('fecha_nac_pa');
-            $table->string('salud_pa');*/
+            $table->string('salud_pa');
             $table->string('documento');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
