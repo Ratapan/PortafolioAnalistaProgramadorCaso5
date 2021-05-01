@@ -18,4 +18,15 @@ class ServiceController extends Controller
 
         return response()->json($servicios,200);
     }
+
+    public function register(Request $request){
+        $newTipoServicio = new tipo_servicio();
+        $newTipoServicio->nombre_servicio = $request->nombre;
+        $newTipoServicio->precio = $request->precio;
+        $newTipoServicio->descripcion_servicio = $request->descripcion;
+        $newTipoServicio->save();
+
+        return response()->json([$newTipoServicio], 200);
+
+    }
 }
