@@ -6,7 +6,7 @@
     <br>
     <br>
     <div class="row flex-d justify-content-around">
-      <div class="card text-center col-6 card-login">
+      <div class="card text-center  col-xl-6 col-lg-8 col-md-11 col-sm-12 card-login">
         <div class="card-body flex-d justify-content-center">
           <div class="row">
             <div class="col-1">
@@ -29,15 +29,18 @@
               <input v-model="password" type="password"><br>
           </div>
           </div>
-          <br>
+          
         </div>
-      
+        <div class="row flex-d justify-content-center">
+          <div v-if= "error != ''" class="alert alert-danger col-xl-8 col-lg-8 col-md-9 col-sm-9" role="alert">
+              {{ error }}
+          </div>
+        </div>
         <div class="card-footer text-right">
           <button class="btn btn-sm btn-secondary col-4" @click="Login()">Entrar</button>
         </div>
       </div>
     </div>
-
   </div>
 
 </template>
@@ -48,6 +51,7 @@ data() {
   return {
     email: '',
     password: '',
+    error:'',
   }
 },
 mounted() {
@@ -61,11 +65,15 @@ methods:{
           password: this.password
         })
         .then(response => {
-          this.$store.commit("set_user_cookie", {
+          console.log(response.data)
+          this.$store.getters = {
             key: "user",
             value: response.data
-          });
-          this.$router.push("/");
+          };
+          //console.log(this.$store)
+          if(this.$store.getters.value.rol_id == 1){this.$router.push("/");}
+          if(this.$store.getters.value.rol_id == 2){this.$router.push("/");}
+          if(this.$store.getters.value.rol_id == 3){this.$router.push("/");}
         })
         .catch(error => {
           this.error = error.response.data;

@@ -55,6 +55,7 @@ data() {
 mounted() {
     this.getEmp();
     this.getService();
+    console.log(this.$store)
   },
 methods:{
   upperCase(str){

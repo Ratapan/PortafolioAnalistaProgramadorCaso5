@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import App from './App.vue'
 import VueRouter from "vue-router";
-//import store from './store'
+import store from './store'
 
 //import * as Cookies from "js-cookie";
 import axios from 'axios'
@@ -71,9 +71,7 @@ const routes = [
   },
 ];
 
-const store = new Vuex.Store({
-  
-});
+//const store = new Vuex.Store({});
 
 const router = new VueRouter({
   mode: "history",

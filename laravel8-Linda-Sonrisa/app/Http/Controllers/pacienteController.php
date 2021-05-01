@@ -12,13 +12,18 @@ class pacienteController extends Controller
 {
 public function register(Request $request)
 {
-        $newUser = new User;
-        $newUser->email    = $request->email;
-        $newUser->password = Hash::make($request->password, ['rounds' => 12,]);
-        $newUser->eliminado = 1;
-        $newUser->rol_id = 1;
-        $newUser->save();
+        if(User::where('email', $request->email)->first()){
+                return response()->json("El email ya existe", 500);
+        }
+        else{
+                $newUser = new User;
+                $newUser->email    = $request->email;
+                $newUser->password = Hash::make($request->password, ['rounds' => 12,]);
+                $newUser->eliminado = 1;
+                $newUser->rol_id = 1;
+                $newUser->save();
 
-        return response()->json([$newUser], 200);
+                return response()->json([$newUser], 200);
+        }
 }
 }

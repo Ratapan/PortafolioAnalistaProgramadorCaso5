@@ -99,6 +99,11 @@
           </div>
           <br />
         </div>
+        <div class="row flex-d justify-content-center">
+          <div v-if= "error != ''" class="alert alert-danger col-xl-8 col-lg-8 col-md-9 col-sm-9" role="alert">
+              {{ error }}
+          </div>
+        </div>
         <div class="card-footer text-right">
           <button
             class="btn btn-sm btn-danger col-4"
@@ -118,7 +123,7 @@
             @click="storeUser()"
           >
             Guardar usuario
-          </button>
+          </button>  
         </div>
       </div>
     </div>
@@ -138,7 +143,7 @@ export default {
         passwordConfirm: "",
       },
       errPass: "",
-      errors: "",
+      error: [],
     };
   },
   mounted() {},
@@ -168,6 +173,7 @@ export default {
           console.log(response);
         })
         .catch((err) => {
+          this.error = err;
           console.log("hola", err);
         });
     },
