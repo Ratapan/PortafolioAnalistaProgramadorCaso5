@@ -26,8 +26,16 @@ public function register(Request $request)
                 $newUser->eliminado = 1;
                 $newUser->rol_id = 1;
                 $newUser->save();
+                $id_user = $newUser->id;
 
-                return response()->json([$newUser], 200);
+                $newPaciente = new paciente();
+                $newPaciente->num_telefono_pa = $request->telefono;
+                $newPaciente->salud_pa = $request->salud;
+                $newPaciente->documento = $request->documento;
+                $newPaciente->id_user = $id_user;
+                $newPaciente->save();
+                
+                return response()->json([$newUser,$newPaciente], 200);
         }
 }
 }
