@@ -29,10 +29,11 @@ Vue.component("presentation-component", PresentationComponent );
 import FooterComponent from "./views/Footer.vue";
 Vue.component("footer-component", FooterComponent );
 
-import LoginComponent      from "./components/home/loginComponent.vue";
-import CreateUserComponent from "./components/home/createUserComponent.vue";
-
+import LoginComponent              from "./components/home/loginComponent.vue";
+import CreateUserComponent         from "./components/home/createUserComponent.vue";
 import AppointmentRequestComponent from "./components/client/appointmentRequestComponent.vue";
+import appointmentRequestComponentAct from "./components/client/appointmentRequestComponentAct.vue";
+import EmployeeComponent           from "./components/employee/employeeComponent.vue"
 
 const routes = [
   {
@@ -62,6 +63,14 @@ const routes = [
     }
   },
   {
+    name: "appointmentRequestAct",
+    path: "/citasac",
+    component: appointmentRequestComponentAct,
+    meta: {
+      auth: true
+    }
+  },
+  {
     name: "createUser",
     path: "/crearusuario",
     component: CreateUserComponent,
@@ -69,9 +78,17 @@ const routes = [
       auth: true
     }
   },
+  {
+    name: "employee",
+    path: "/empleado",
+    component: EmployeeComponent,
+    meta: {
+      auth: true
+    }
+  },
 ];
 
-//const store = new Vuex.Store({});
+//const store = new Vuex.Store({});appointmentRequestComponentAct
 
 const router = new VueRouter({
   mode: "history",

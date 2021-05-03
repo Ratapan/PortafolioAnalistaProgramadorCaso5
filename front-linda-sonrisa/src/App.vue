@@ -3,7 +3,7 @@
       <!--<router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>-->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container-fluid">
+      
         <a class="navbar-brand">Linda sonrisa</a>
         
         <button 
@@ -47,10 +47,30 @@
                 </router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Citas activas</a>
+              <router-link
+                  class="nav-link dropdown-item dropdown-item-pyme"
+                  style="border-radius: 500px"
+                  :to="{ name: 'appointmentRequestAct' }"
+                  type="button"
+                  data-toggle="collapse"
+                  data-target="#navbarNav"
+                  aria-expanded="false"
+                >
+                  Citas activas
+                </router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Citas anteriores</a>
+              <router-link
+                  class="nav-link dropdown-item dropdown-item-pyme"
+                  style="border-radius: 500px"
+                  :to="{ name: 'appointmentRequestAct' }"
+                  type="button"
+                  data-toggle="collapse"
+                  data-target="#navbarNav"
+                  aria-expanded="false"
+                >
+                  Citas anteriores
+                </router-link>
             </li>
           </ul>
           <ul class="navbar-nav" v-if="$store.getters.value != null && $store.getters.value.rol_id == 2">
@@ -58,7 +78,7 @@
               <router-link
                   class="nav-link dropdown-item dropdown-item-pyme"
                   style="border-radius: 500px"
-                  :to="{ name: 'init' }"
+                  :to="{ name: 'employee' }"
                   type="button"
                   data-toggle="collapse"
                   data-target="#navbarNav"
@@ -115,12 +135,11 @@
             </li>
           </ul>
         </div>
-      </div>
+      
     </nav>
     <br>
     <section class="pres">
-      <section v-if="$store.getters.value != null">{{$store.getters.value.rol_id}}</section>
-
+      <!-- <section v-if="$store.getters.value != null">{{$store.getters.value.rol_id}}</section> -->
     <transition name="fade" mode="out-in">
       <router-view></router-view>
     </transition>
@@ -134,7 +153,7 @@
 export default {
   methods: {
     logout() {
-      this.$store.getters = null
+      this.$store.getters.value = null; 
     }
   }
 };
