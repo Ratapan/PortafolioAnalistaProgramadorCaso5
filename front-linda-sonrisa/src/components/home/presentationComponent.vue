@@ -9,20 +9,20 @@
     </div>
     <br>
     <div class="row d-flex justify-content-center">
-      <div class="col-xl-8 col-md-10 col-sm-12">
+      <div class="col-xl-8 col-md-10 col-sm-12 d-flex justify-content-center">
         <img class="img-presentation" src="../../assets/stock_dentista.jpg" alt="">
       </div>
     </div>
     <br>
     <br>
     <div class="row d-flex justify-content-around">
-      <div class="col-lg-3 col-md-4 col-sm-6 d-flex justify-content-center" v-for="se in services" :key="se">
+      <div class="col-xl-4 col-lg-5 col-md-6 col-sm-12 d-flex justify-content-center" v-for="se in services" :key="se">
         <div>
           <div class="card cardfrm">
             <img class="card-img-top" src="" alt="Card image cap">
             <div class="card-body">
-              <h3>{{se.nombre_servicio}}</h3>
-              <p class="card-text">{{se.descripcion_servicio}}</p>
+              <h3>{{upperCase(se.nombre_servicio)}}</h3>
+              <p class="card-text">{{upperCase(se.descripcion_servicio)}}</p>
             </div>
           </div>
         </div>
@@ -49,6 +49,10 @@
       this.getService();
     },
     methods: {
+      upperCase(str){
+        const stringUpper = str.charAt(0).toUpperCase() + str.slice(1);
+        return stringUpper;
+      },
       titleStile(){
         //gsap.to(graph,{ duration: 2.5, ease: "sine.out", y: -500});
       },
@@ -71,7 +75,15 @@
   height: 500px;
 }
 .cardfrm{
-  height: 200px;
-  margin: 10px;
+  padding: 10px;
+  min-height: 250px;
+  min-width: 320px;
+  margin: 15px 5px;
+}
+.card-body {
+    flex: 1 1 auto;
+    min-height: 1px;
+    max-width: 500px;
+    padding: 1.25rem;
 }
 </style>

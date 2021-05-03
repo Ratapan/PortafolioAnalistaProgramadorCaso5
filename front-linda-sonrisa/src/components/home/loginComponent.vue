@@ -6,7 +6,7 @@
     <br>
     <br>
     <div class="row flex-d justify-content-around">
-      <div class="card text-center  col-xl-6 col-lg-8 col-md-11 col-sm-12 card-login">
+      <div class="card text-center  col-xl-6 col-lg-7 col-md-9 col-sm-12 card-login">
         <div class="card-body flex-d justify-content-center">
           <div class="row">
             <div class="col-1">

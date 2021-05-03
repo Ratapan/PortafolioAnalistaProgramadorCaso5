@@ -37,6 +37,36 @@
             </div>
           </div>
           <br />
+
+          <div class="row">
+            <div class="col-1"></div>
+            <div class="col-5 text-left">
+              <label>Dirección:</label>
+            </div>
+            <div class="col-5">
+              <input
+                v-model="user.direction"
+                class="form-control form-control-sm"
+                type="text"
+              /><br />
+            </div>
+          </div>
+          <br />
+
+          <div class="row">
+            <div class="col-1"></div>
+            <div class="col-5 text-left">
+              <label>Fecha de nacimiento:</label>
+            </div>
+            <div class="col-5">
+              <input
+                v-model="user.birthDate"
+                class="form-control form-control-sm"
+                type="text"
+              /><br />
+            </div>
+          </div>
+          <br />
           <!--
           <div class="row">
             <div class="col-1">
@@ -127,6 +157,11 @@
         </div>
       </div>
     </div>
+    <br>
+    <br>
+    <br>
+
+    <br>
   </div>
 </template>
 
@@ -138,6 +173,8 @@ export default {
         name: "",
         rut: "",
         username: "",
+        direction: "",
+        birthDate: "",
         email: "",   
         password: "",
         passwordConfirm: "",
@@ -164,10 +201,12 @@ export default {
     storeUser() {
       this.$axios
         .post("http://127.0.0.1:8000/api/usuarios", {
-          name: this.user.name,
-          email: this.user.email,
-          password: this.user.password,
-          rut: this.user.rut,
+          name:      this.user.name,
+          direction: this.user.direction,
+          birthDate: this.user.birthDate,
+          email:     this.user.email,
+          password:  this.user.password,
+          rut:       this.user.rut,
         })
         .then((response) => {
           console.log(response);
