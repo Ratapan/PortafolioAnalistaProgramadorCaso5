@@ -17,8 +17,12 @@ public function register(Request $request)
         }
         else{
                 $newUser = new User;
-                $newUser->email    = $request->email;
+                $newUser->email = $request->email;
                 $newUser->password = Hash::make($request->password, ['rounds' => 12,]);
+                $newUser->rut = $request->rut;
+                $newUser->nombre_ape = $request->nombre;
+                $newUser->direccion = $request->direccion;
+                $newUser->fecha_nac = $request->fecha;
                 $newUser->eliminado = 1;
                 $newUser->rol_id = 1;
                 $newUser->save();
