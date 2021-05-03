@@ -3,11 +3,17 @@ import Vuex from 'vuex'
 import App from './App.vue'
 import VueRouter from "vue-router";
 import store from './store'
+import Datepicker from 'vuejs-datepicker';
 
+import DatePicker from 'vue2-datepicker';
+import 'vue2-datepicker/index.css';
+Vue.use(DatePicker)
 //import * as Cookies from "js-cookie";
 import axios from 'axios'
 Vue.prototype.$axios = axios
 
+
+Vue.use(Datepicker)
 Vue.use(Vuex)
 Vue.use(VueRouter);
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'

@@ -59,11 +59,7 @@
               <label>Fecha de nacimiento:</label>
             </div>
             <div class="col-5">
-              <input
-                v-model="user.birthDate"
-                class="form-control form-control-sm"
-                type="text"
-              /><br />
+              <date-picker v-model="user.birthDate" valueType="format"></date-picker><br/>
             </div>
           </div>
           <br />
@@ -202,8 +198,8 @@ export default {
       this.$axios
         .post("http://127.0.0.1:8000/api/usuarios", {
           name:      this.user.name,
-          direction: this.user.direction,
-          birthDate: this.user.birthDate,
+          direccion: this.user.direction,
+          fecha:     this.user.birthDate,
           email:     this.user.email,
           password:  this.user.password,
           rut:       this.user.rut,
