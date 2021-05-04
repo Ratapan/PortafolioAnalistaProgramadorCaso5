@@ -8,4 +8,5 @@ sealed class Screen {
 sealed class Content {
     object Dashboard : Content()
     object Appointment : Content()
+    object User : Content()
 }

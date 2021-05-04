@@ -11,14 +11,15 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
 import app.navigation.Content
 import app.views.dashboard_views.dashboard
-import app.views.dashboard_views.registerAppointment
+import app.views.dashboard_views.manage_appointment.registerAppointment
+import app.views.dashboard_views.manage_user.userList
 
 @Composable
 fun menu(onBack: () -> Unit) {
     var contentState by remember { mutableStateOf<Content>(Content.Dashboard) }
     Row {
         Column(modifier = Modifier
-            .weight(2f)
+            .width(200.dp)
             .padding(0.dp)
             .fillMaxHeight(),
             verticalArrangement = Arrangement.SpaceBetween
@@ -27,15 +28,15 @@ fun menu(onBack: () -> Unit) {
                 Text ("Linda Sonrisa",
                     modifier = Modifier.padding(5.dp))
                 MenuButton("Dashboard", { contentState = Content.Dashboard})
-                MenuButton("Registrar Cita", { contentState = Content.Appointment})
-                MenuButton("Registrar Horario", {})
-                MenuButton("Registrar Usuario", {})
+                MenuButton("Administrar Citas", { contentState = Content.Appointment})
+                MenuButton("Administrar Horarios", {})
+                MenuButton("Administrar Usuarios", { contentState = Content.User})
             }
             Column(modifier = Modifier
                 .padding(5.dp)
             ) {
-                Button(onClick = { onBack() }){
-                    Text("Log out")
+                OutlinedButton(onClick = { onBack() }){
+                    Text("Log out", color = Color.Black)
                 }
             }
         }
@@ -46,7 +47,7 @@ fun menu(onBack: () -> Unit) {
                 .width(1.dp)
         )
         Column(modifier = Modifier
-            .weight(5f)
+            .fillMaxWidth()
             .padding(4.dp)
         ) {
             when (val content = contentState) {
@@ -55,6 +56,9 @@ fun menu(onBack: () -> Unit) {
 
                 is Content.Appointment ->
                     registerAppointment()
+
+                is Content.User ->
+                    userList()
             }
         }
     }
