@@ -32,7 +32,7 @@
                 </router-link>
             </li>
           </ul>
-          <ul class="navbar-nav" v-if="$store.getters.value != null && $store.getters.value.rol_id == 1">
+          <ul class="navbar-nav" v-if="$store.getters.value != null && $store.getters.value.roles_id_rol == 1">
             <li class="nav-item">
               <router-link
                   class="nav-link dropdown-item dropdown-item-pyme"
@@ -73,7 +73,7 @@
                 </router-link>
             </li>
           </ul>
-          <ul class="navbar-nav" v-if="$store.getters.value != null && $store.getters.value.rol_id == 2">
+          <ul class="navbar-nav" v-if="$store.getters.value != null && $store.getters.value.roles_id_rol == 2">
             <li class="nav-item">
               <router-link
                   class="nav-link dropdown-item dropdown-item-pyme"
@@ -88,7 +88,7 @@
                 </router-link>
             </li>
           </ul>
-          <ul class="navbar-nav" v-if="$store.getters.value != null && $store.getters.value.rol_id == 3">
+          <ul class="navbar-nav" v-if="$store.getters.value != null && $store.getters.value.roles_id_rol == 3">
             <li class="nav-item">
               <router-link
                   class="nav-link dropdown-item dropdown-item-pyme"
@@ -143,10 +143,11 @@
     <transition name="fade" mode="out-in">
       <router-view></router-view>
     </transition>
-    
     </section>
     <br><br>
-    <footer-component></footer-component>
+    <br><br>
+    <br><br>
+    <footer-component class="footer"></footer-component>
   </div>
 </template>
 <script>
@@ -166,6 +167,15 @@ html, body{
 .pres{
   min-height: 500px;
   }
+.footer {
+        position: fixed;
+        padding: 10px 10px 0px 10px;
+        bottom: 0;
+        width: 100%;
+        /* Height of the footer*/ 
+        height: 170px;
+        background: grey;
+}
 template{
   min-height:100%;
 }

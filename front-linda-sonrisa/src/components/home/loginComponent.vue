@@ -71,9 +71,9 @@ methods:{
             value: response.data
           };
           //console.log(this.$store)
-          if(this.$store.getters.value.rol_id == 1){this.$router.push("/");}
-          if(this.$store.getters.value.rol_id == 2){this.$router.push("/");}
-          if(this.$store.getters.value.rol_id == 3){this.$router.push("/");}
+          if(this.$store.getters.value.roles_id_rol == 1){this.$router.push("/");}
+          if(this.$store.getters.value.roles_id_rol == 2){this.$router.push("/");}
+          if(this.$store.getters.value.roles_id_rol == 3){this.$router.push("/");}
         })
         .catch(error => {
           this.error = error.response.data;

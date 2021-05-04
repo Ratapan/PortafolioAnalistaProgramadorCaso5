@@ -63,19 +63,55 @@
             </div>
           </div>
           <br />
-          <!--
+
           <div class="row">
-            <div class="col-1">
-            </div>
+            <div class="col-1"></div>
             <div class="col-5 text-left">
-              <label>Nombre de usuario:</label>
+              <label>Numero movil:</label>
             </div>
             <div class="col-5">
-              <input v-model="user.username" class="form-control form-control-sm" type="text"><br> 
+              <input
+                v-model="user.phone"
+                class="form-control form-control-sm"
+                type="text"
+              /><br />
             </div>
           </div>
-          <br>
--->
+          <br />
+
+          <div class="row">
+            <div class="col-1"></div>
+            <div class="col-5 text-left">
+              <label>Salud:</label>
+            </div>
+            <div class="col-5">
+
+              <select   v-model="user.salud" class="form-control form-control-sm">
+                <option selected>Seleccione</option>
+                <option value="1">Fonasa</option>
+                <option value="2">Isapre</option>
+              </select>
+
+              <br />
+            </div>
+          </div>
+          <br />
+
+          <div class="row">
+            <div class="col-1"></div>
+            <div class="col-5 text-left">
+              <label>Documento de situación económica:</label>
+            </div>
+            <div class="col-5">
+              <input
+                class="form-control-file"
+                type="file" id="file" ref="file"
+                @change="handleFileUpload()"
+              /><br />
+            </div>
+          </div>
+          <br />
+
           <div class="row">
             <div class="col-1"></div>
             <div class="col-5 text-left">
@@ -89,7 +125,7 @@
               /><br />
             </div>
           </div>
-          <br />
+          <br/>
 
           <div class="row">
             <div class="col-1"></div>
@@ -165,12 +201,16 @@
 export default {
   data() {
     return {
+      files: '',
       user: {
         name: "",
         rut: "",
         username: "",
         direction: "",
         birthDate: "",
+        phone: "",
+        salud: "",
+        document: "",
         email: "",   
         password: "",
         passwordConfirm: "",
@@ -197,9 +237,12 @@ export default {
     storeUser() {
       this.$axios
         .post("http://127.0.0.1:8000/api/usuarios", {
-          name:      this.user.name,
+          nombre:    this.user.name,
           direccion: this.user.direction,
           fecha:     this.user.birthDate,
+          telefono:  this.user.phone,
+          salud:     this.user.salud,
+          documento: this.user.document,
           email:     this.user.email,
           password:  this.user.password,
           rut:       this.user.rut,

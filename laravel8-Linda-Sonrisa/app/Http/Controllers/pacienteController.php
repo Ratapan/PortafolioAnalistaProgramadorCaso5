@@ -24,15 +24,16 @@ public function register(Request $request)
                 $newUser->direccion = $request->direccion;
                 $newUser->fecha_nac = $request->fecha;
                 $newUser->eliminado = 1;
-                $newUser->rol_id = 1;
+                $newUser->roles_id_rol = 1;
                 $newUser->save();
-                $id_user = $newUser->id;
 
-                $newPaciente = new paciente();
+                $id_user = $newUser->id_user;
+
+                $newPaciente = new paciente;
                 $newPaciente->num_telefono_pa = $request->telefono;
                 $newPaciente->salud_pa = $request->salud;
                 $newPaciente->documento = $request->documento;
-                $newPaciente->id_user = $id_user;
+                $newPaciente->users_id_user = $id_user;
                 $newPaciente->save();
                 
                 return response()->json([$newUser,$newPaciente], 200);

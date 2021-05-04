@@ -12,6 +12,11 @@ Vue.use(DatePicker)
 import axios from 'axios'
 Vue.prototype.$axios = axios
 
+// Main JS (in UMD format)
+import VueTimepicker from 'vue2-timepicker'
+// CSS
+import 'vue2-timepicker/dist/VueTimepicker.css'
+Vue.use(VueTimepicker)
 
 Vue.use(Datepicker)
 Vue.use(Vuex)
@@ -35,11 +40,12 @@ Vue.component("presentation-component", PresentationComponent );
 import FooterComponent from "./views/Footer.vue";
 Vue.component("footer-component", FooterComponent );
 
-import LoginComponent              from "./components/home/loginComponent.vue";
-import CreateUserComponent         from "./components/home/createUserComponent.vue";
-import AppointmentRequestComponent from "./components/client/appointmentRequestComponent.vue";
+import LoginComponent                 from "./components/home/loginComponent.vue";
+import CreateUserComponent            from "./components/home/createUserComponent.vue";
+import AppointmentRequestComponent    from "./components/client/appointmentRequestComponent.vue";
 import appointmentRequestComponentAct from "./components/client/appointmentRequestComponentAct.vue";
-import EmployeeComponent           from "./components/employee/employeeComponent.vue"
+import EmployeeComponent              from "./components/employee/employeeComponent.vue"
+Vue.component("employee-component", EmployeeComponent );
 
 const routes = [
   {
