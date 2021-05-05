@@ -65,15 +65,14 @@ methods:{
           password: this.password
         })
         .then(response => {
-          console.log(response.data)
           this.$store.getters = {
             key: "user",
             value: response.data
           };
-          //console.log(this.$store)
+          console.log(this.$store)
           if(this.$store.getters.value.roles_id_rol == 1){this.$router.push("/");}
-          if(this.$store.getters.value.roles_id_rol == 2){this.$router.push("/");}
           if(this.$store.getters.value.roles_id_rol == 3){this.$router.push("/");}
+          if(this.$store.getters.value.roles_id_rol == 4){this.$router.push("/");}
         })
         .catch(error => {
           this.error = error.response.data;

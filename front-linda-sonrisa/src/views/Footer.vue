@@ -47,12 +47,6 @@
           <li>
             <a href="#!" class="text-dark">Forma 2</a>
           </li>
-          <li>
-            <a href="#!" class="text-dark">Forma 3</a>
-          </li>
-          <li>
-            <a href="#!" class="text-dark">Forma 4</a>
-          </li>
         </ul>
       </div>
       <!--Grid column-->

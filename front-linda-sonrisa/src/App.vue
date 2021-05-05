@@ -73,7 +73,7 @@
                 </router-link>
             </li>
           </ul>
-          <ul class="navbar-nav" v-if="$store.getters.value != null && $store.getters.value.roles_id_rol == 2">
+          <ul class="navbar-nav" v-if="$store.getters.value != null && $store.getters.value.roles_id_rol == 3">
             <li class="nav-item">
               <router-link
                   class="nav-link dropdown-item dropdown-item-pyme"
@@ -84,11 +84,24 @@
                   data-target="#navbarNav"
                   aria-expanded="false"
                 >
+                  Horas
+                </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link 
+                  class="nav-link dropdown-item dropdown-item-pyme"
+                  style="border-radius: 500px"
+                  :to="{ name: 'employeeOrder' }"
+                  type="button"
+                  data-toggle="collapse"
+                  data-target="#navbarNav"
+                  aria-expanded="false"
+                >
                   Realizar orden
                 </router-link>
             </li>
           </ul>
-          <ul class="navbar-nav" v-if="$store.getters.value != null && $store.getters.value.roles_id_rol == 3">
+          <ul class="navbar-nav" v-if="$store.getters.value != null && $store.getters.value.roles_id_rol == 4">
             <li class="nav-item">
               <router-link
                   class="nav-link dropdown-item dropdown-item-pyme"
@@ -131,7 +144,7 @@
               </router-link>
             </li>
             <li class="nav-item ">
-              <label class="nav-link nav-link dropdown-item" @click="logout()" v-if="$store.getters.value != null ">Salir</label>
+              <a class="nav-link dropdown-item" @click="logout()" v-if="$store.getters.value != null ">Salir</a>
             </li>
           </ul>
         </div>
@@ -154,7 +167,11 @@
 export default {
   methods: {
     logout() {
+      console.log("1",this.$store.getters) 
       this.$store.getters.value = null; 
+      console.log("2",this.$store.getters.value) 
+      console.log("3",this.$store.getters) 
+      this.$router.push("/acceder");
     }
   }
 };
@@ -172,7 +189,6 @@ html, body{
         padding: 10px 10px 0px 10px;
         bottom: 0;
         width: 100%;
-        /* Height of the footer*/ 
         height: 170px;
         background: grey;
 }

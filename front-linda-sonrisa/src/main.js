@@ -45,6 +45,7 @@ import CreateUserComponent            from "./components/home/createUserComponen
 import AppointmentRequestComponent    from "./components/client/appointmentRequestComponent.vue";
 import appointmentRequestComponentAct from "./components/client/appointmentRequestComponentAct.vue";
 import EmployeeComponent              from "./components/employee/employeeComponent.vue"
+import EmployeeOrdenComponent         from "./components/employee/employeeOrdenComponent.vue"
 Vue.component("employee-component", EmployeeComponent );
 
 const routes = [
@@ -94,6 +95,14 @@ const routes = [
     name: "employee",
     path: "/empleado",
     component: EmployeeComponent,
+    meta: {
+      auth: true
+    }
+  },
+  {
+    name: "employeeOrder",
+    path: "/empleado-orden",
+    component: EmployeeOrdenComponent,
     meta: {
       auth: true
     }

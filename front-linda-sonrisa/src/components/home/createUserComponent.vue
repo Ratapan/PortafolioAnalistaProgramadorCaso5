@@ -249,6 +249,7 @@ export default {
         })
         .then((response) => {
           console.log(response);
+          this.$router.push("/");
         })
         .catch((err) => {
           this.error = err;

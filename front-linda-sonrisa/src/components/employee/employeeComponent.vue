@@ -16,28 +16,56 @@
 
     <div v-if="stat" class="row flex-d justify-content-center">
       <br>
-      <div class="col-8 flex-d justify-content-around">
+      <div class="col-4">
         <label>Dia</label>
+      </div>
+      <div class="col-6">
         <date-picker v-model="dayHour" valueType="format"></date-picker>
       </div>
       <br>
-      <div class="col-8">
+    </div>
+    <br>
+    <div v-if="stat" class="row flex-d justify-content-center">
+      <div class="col-4">
         <label>Hora inicial</label>
-        <vue-timepicker v-model="iniHour"></vue-timepicker>
       </div>
-      <br>
-      <div class="col-8">
-        <label>Hora de fin</label>
-        <vue-timepicker v-model="endHour"></vue-timepicker>
+      <div class="col-6">
+        <date-picker
+          v-model="iniHour"
+          value-type="format"
+          type="time"
+          :open.sync="openI"
+          placeholder="Selecciona hora de inicio"
+          @change="handleChange"
+        ></date-picker>
       </div>
       <br>
     </div>
+    <br>
     <div v-if="stat" class="row flex-d justify-content-center">
-    <button v-if="stat"  type="button" class="btn btn-success" @click="sta()">Agregar hora</button>
+      <div class="col-4">
+        <label>Hora de fin</label>
+      </div>
+      <div class="col-6">
+        <date-picker
+          v-model="endHour"
+          value-type="format"
+          type="time"
+          :open.sync="openE"
+          placeholder="Selecciona hora de fin"
+          @change="handleChange"
+        ></date-picker>
+      </div>
+      <br>
+    </div>
+    <br>
+    <div v-if="stat" class="row flex-d justify-content-center">
+    <button v-if="stat"  type="button" class="btn btn-success" @click="sta(), storeHora()">Agregar hora</button>
     </div>
 
-{{iniHour}}
-{{endHour}}
+    <p>{{dayHour}} {{iniHour}}</p>
+    <p>{{dayHour}} {{endHour}}</p>
+
     <br />
     <div class="row flex-d justify-content-around">
       <table class="table">
@@ -73,10 +101,15 @@ export default {
   data() {
     return{
       stat: false,
+      openI: false,
+      openE: false,
       dayHour:'',
       iniHour:'',
       endHour:'',
     };
+  },
+  mounted() {
+    this.getHoras();
   },
   methods: {
     sta(){
@@ -85,6 +118,36 @@ export default {
     logout() {
       this.$store.getters.value = null; 
     },
+    handleChange(value, type) {
+      if (type === 'second') {
+        this.open = false;
+      }
+    },
+    storeHora() {
+      this.$axios
+        .post("http://127.0.0.1:8000/api/hora", {
+          inicio:     `${this.dayHour} ${this.iniHour}`,
+          fin:        `${this.dayHour} ${this.endHour}`,
+          id_emp:     this.$store.getters.value.id_user,
+                      
+        })
+        .then((response) => {
+          console.log(response);
+          this.getHoras();
+        })
+        .catch((err) => {
+          this.error = err;
+        });
+    },
+    getHoras(){
+      let page = 1
+      this.$axios.
+      get("http://127.0.0.1:8000/api/hora?page="+page).
+      then(response => {
+        this.services = response.data.data;
+        console.log(this.services)
+      });
+    }
 
   }
 };
