@@ -1,18 +1,15 @@
-package app.views.dashboard_views
+package app.views.dashboard_views.dashboard_main
 
 import androidx.compose.desktop.LocalAppWindow
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-
 
 
 @Composable
@@ -30,7 +27,7 @@ fun dashboard() {
 //    width = LocalDensity.current.run {windowSize.width.toDp()}
 //    height = LocalDensity.current.run {windowSize.height.toDp()}
 //    Text(text = "Size: $windowSize, Width: $width, Height: $height")
-    when(val x = windowSize.width) {
+    when(windowSize.width) {
         in 0..650 -> singleColumnLayout()
         in 651..900 -> doubleColumnLayout()
         else -> okeyLetsMakeIt2Rows()

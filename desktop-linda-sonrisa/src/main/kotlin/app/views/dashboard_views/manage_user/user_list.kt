@@ -1,61 +1,109 @@
 package app.views.dashboard_views.manage_user
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import app.components.tableRow
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
+import app.components.*
+import app.data.User
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import org.jetbrains.exposed.sql.transactions.transaction
 
-
-@Serializable
-data class User(
-    val id: String,
-    val email: String,
-    val password: String,
-    val eliminado: Char?,
-    val rol: String,
+private val COLUMN_NAME_VALUES = mapOf(
+    "ID" to 1f,
+    "Email" to 3f,
+    "Rut" to 2f,
+    "Nombre" to 3f,
+    "Direccion" to 3f,
+    "Fecha Nacimiento" to 2f,
+    "Eliminado" to 1f,
+    "Rol" to 3f
 )
 
 @Composable
-fun userList(){
-    var data = listOf<User>(
-        User("1", "email1", "password1", null, "rol1",),
-        User("2", "email2", "password2", 'F', "rol2",),
-        User("3", "email3", "password3", 'F', "rol3",),
-        User("4", "email4", "password4", 'F', "rol4",),
-        User("5", "email5", "password5", 'F', "rol5",),
-        User("6", "email6", "password6", 'F', "rol6",),
-        User("7", "email7", "password7", 'F', "rol7",)
-    )
-    Column (modifier = Modifier
-        .fillMaxSize()
-        .padding(5.dp)
-    ) {
-        Spacer(modifier=Modifier.height(10.dp))
-        Text("Lista de Usuarios")
-        Row (modifier = Modifier
+fun userList(
+    toRegister : () -> Unit,
+    toEdit : () -> Unit
+) {
+    val data = transaction {
+        User.all().toList()
+    }
+    val (selectedUser, setSelectedUser) = remember { mutableStateOf(data[0])}
+    val (showDialog, setShowDialog) =  remember { mutableStateOf(false) }
+    userEdit(showDialog, setShowDialog, selectedUser)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
             .padding(5.dp)
-            .fillMaxWidth()
-        ){
-            Spacer(modifier=Modifier.height(10.dp))
-            LazyColumn(modifier = Modifier
+    ) {
+        Spacer(modifier = Modifier.height(10.dp))
+        Text("Lista de Usuarios")
+        Row(
+            modifier = Modifier
+                .padding(10.dp)
                 .fillMaxWidth()
-            ){
-                items(data, itemContent = { item ->
-                    tableRow(item)
-                })
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Row {
+                    for ((k, v) in COLUMN_NAME_VALUES) {
+                        tableCell(k, modifier = Modifier.weight(v))
+                    }
+                }
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    var clickCount = 0
+                    items(data, itemContent = { item ->
+                        userTableRow(item, modifier = Modifier.clickable(onClick =
+                        {
+                            clickCount++
+                            when (clickCount) {
+                                1 -> {
+                                    GlobalScope.launch {
+                                        delay(1000)
+                                        if(clickCount == 1){
+                                            clickCount = 0
+                                            println("Counter restarted")
+                                        }
+                                    }
+                                }
+                                2 -> {
+                                    setSelectedUser(item)
+                                    setShowDialog(true)
+                                    clickCount = 0
+                                }
+                            }
+                        }
+                        ))
+                    })
+                }
             }
-            Spacer(modifier=Modifier.height(10.dp))
-
         }
+        Row(
+            modifier = Modifier
+                .fillMaxSize(),
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.Bottom
+        ) {
+            OutlinedButton(onClick = { toRegister() }) {
+                Text("Register User")
+            }
+            OutlinedButton(onClick = { toRegister() }) {
+                Text("Something")
+            }
+        }
+        Spacer(modifier = Modifier.height(200.dp))
     }
 }

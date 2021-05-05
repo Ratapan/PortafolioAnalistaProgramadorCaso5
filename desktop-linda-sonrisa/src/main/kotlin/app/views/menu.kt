@@ -9,14 +9,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
-import app.navigation.Content
-import app.views.dashboard_views.dashboard
+import app.navigation.ContentView
+import app.views.dashboard_views.dashboard_main.dashboard
 import app.views.dashboard_views.manage_appointment.registerAppointment
-import app.views.dashboard_views.manage_user.userList
+import app.views.dashboard_views.manage_user.userView
 
 @Composable
 fun menu(onBack: () -> Unit) {
-    var contentState by remember { mutableStateOf<Content>(Content.Dashboard) }
+    var contentState by remember { mutableStateOf<ContentView>(ContentView.ContentViewDashboard) }
     Row {
         Column(modifier = Modifier
             .width(200.dp)
@@ -27,10 +27,10 @@ fun menu(onBack: () -> Unit) {
             Column {
                 Text ("Linda Sonrisa",
                     modifier = Modifier.padding(5.dp))
-                MenuButton("Dashboard", { contentState = Content.Dashboard})
-                MenuButton("Administrar Citas", { contentState = Content.Appointment})
+                MenuButton("Dashboard", { contentState = ContentView.ContentViewDashboard })
+                MenuButton("Administrar Citas", { contentState = ContentView.ContentViewAppointment })
                 MenuButton("Administrar Horarios", {})
-                MenuButton("Administrar Usuarios", { contentState = Content.User})
+                MenuButton("Administrar Usuarios", { contentState = ContentView.ContentViewUser })
             }
             Column(modifier = Modifier
                 .padding(5.dp)
@@ -51,14 +51,14 @@ fun menu(onBack: () -> Unit) {
             .padding(4.dp)
         ) {
             when (val content = contentState) {
-                is Content.Dashboard ->
+                is ContentView.ContentViewDashboard ->
                     dashboard()
 
-                is Content.Appointment ->
+                is ContentView.ContentViewAppointment ->
                     registerAppointment()
 
-                is Content.User ->
-                    userList()
+                is ContentView.ContentViewUser ->
+                    userView()
             }
         }
     }

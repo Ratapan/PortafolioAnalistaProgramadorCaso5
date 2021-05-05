@@ -4,7 +4,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.4.30"
-    kotlin("plugin.serialization") version "1.4.32"
     id("org.jetbrains.compose") version "0.3.1"
 }
 
@@ -24,9 +23,6 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-dao:0.31.1")
     implementation("org.jetbrains.exposed:exposed-jdbc:0.31.1")
     implementation("org.jetbrains.exposed:exposed-java-time:0.31.1")
-    implementation("com.google.code.gson:gson:2.8.6")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.32")
 }
 
 tasks.withType<KotlinCompile>() {
