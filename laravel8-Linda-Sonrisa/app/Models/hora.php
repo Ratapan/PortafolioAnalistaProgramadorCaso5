@@ -7,5 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class hora extends Model
 {
+    public $timestamps = false;
+    protected $primaryKey = 'id_hora';
     use HasFactory;
 }

@@ -128,7 +128,6 @@ export default {
         .post("http://127.0.0.1:8000/api/hora", {
           inicio:     `${this.dayHour} ${this.iniHour}`,
           fin:        `${this.dayHour} ${this.endHour}`,
-          id_emp:     this.$store.getters.value.id_user,
                       
         })
         .then((response) => {
