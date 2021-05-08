@@ -23,6 +23,13 @@ class HorasController extends Controller
         return response()->json([$newHora], 200);
 
     }
+
+    public function delete(Request $request){
+        $hora = hora::find($request->id);
+        $hora->delete();
+        return redirect()->back();
+    }
+
     public function getAll(Request $request)
     {
         $servicios = hora::orderBy('inicio_hora','asc')
