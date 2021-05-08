@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\DB;
 class CitasController extends Controller
 {
     public function register(Request $request){
-        $id_paciente = DB::table('pacientes')->select('id_paciente')->where('id_user','=',Auth::id())->value('id_paciente');
+        $id_paciente = DB::table('pacientes')->select('id_paciente')->where('USERS_ID_USER', $request->id_user)->value('id_paciente');
         $newCita = new cita();
-        $newCita->estado = '1';
+        $newCita->estado = 'D';
         $newCita->fecha_solicitacion = $request->fecha;
         $newCita->id_paciente = $id_paciente;
         $newCita->id_hora = $request->id_hora;
