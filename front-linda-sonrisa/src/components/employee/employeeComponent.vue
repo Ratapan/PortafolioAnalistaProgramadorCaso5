@@ -9,12 +9,13 @@
       <h3><strong> Horas </strong></h3>
     </div>
     <br />
+    <!--
     <div class="row flex-d justify-content-around">
       <button type="button" class="btn btn-primary" @click="sta()">Agregar</button>
     </div>
     <br />
-
-    <div v-if="stat" class="row flex-d justify-content-center">
+-->
+    <div class="row flex-d justify-content-center">
       <br>
       <div class="col-4">
         <label>Dia</label>
@@ -25,7 +26,7 @@
       <br>
     </div>
     <br>
-    <div v-if="stat" class="row flex-d justify-content-center">
+    <div class="row flex-d justify-content-center">
       <div class="col-4">
         <label>Hora inicial</label>
       </div>
@@ -42,7 +43,7 @@
       <br>
     </div>
     <br>
-    <div v-if="stat" class="row flex-d justify-content-center">
+    <div class="row flex-d justify-content-center">
       <div class="col-4">
         <label>Hora de fin</label>
       </div>
@@ -59,12 +60,9 @@
       <br>
     </div>
     <br>
-    <div v-if="stat" class="row flex-d justify-content-center">
-    <button v-if="stat"  type="button" class="btn btn-success" @click="sta(), storeHora()">Agregar hora</button>
+    <div class="row flex-d justify-content-center">
+      <button type="button" class="btn btn-success" @click="sta(), storeHora()">Agregar hora</button>
     </div>
-
-    <p>{{dayHour}} {{iniHour}}</p>
-    <p>{{dayHour}} {{endHour}}</p>
 
     <br />
     <div class="row flex-d justify-content-around">
@@ -77,9 +75,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td scope="row">1</td>
-            <td>Mark</td>
+          <tr v-for="hora in horas" :key="hora">
+            <td>{{hora.fin_hora}}</td>
+            <td>{{hora.inicio_hora}}</td>
             <td>  
               <div class="row flex-d justify-content-around">
                 <button type="button" class="btn btn-warning">Editar</button>
@@ -106,7 +104,9 @@ export default {
       dayHour:'',
       iniHour:'',
       endHour:'',
+      horas:[],
     };
+    
   },
   mounted() {
     this.getHoras();
@@ -144,8 +144,8 @@ export default {
       this.$axios.
       get("http://127.0.0.1:8000/api/hora?page="+page).
       then(response => {
-        this.services = response.data.data;
-        console.log(this.services)
+        this.horas = response.data.data;
+        console.log(this.horas)
       });
     }
 

@@ -13,7 +13,6 @@ class EmployeesController extends Controller
     {
 
         $empleados = empleado::where('TIPO_CUENTA','Dentista')
-                            ->orderBy('NOMBRE_E','asc')
                             ->paginate(15);
 
         return response()->json($empleados,200);
