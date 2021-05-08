@@ -81,7 +81,7 @@
             <td>  
               <div class="row flex-d justify-content-around">
                 <button type="button" class="btn btn-warning">Editar</button>
-                <button type="button" class="btn btn-danger">Eliminar</button>
+                <button type="button" class="btn btn-danger" @click="deleteHora(hora.id_hora)">Eliminar {{hora.id_hora}}</button>
               </div>
             </td>
           </tr>
@@ -133,6 +133,22 @@ export default {
         })
         .then((response) => {
           console.log(response);
+          this.getHoras();
+        })
+        .catch((err) => {
+          this.error = err;
+        });
+    },
+    deleteHora(id){
+      //
+      console.log(id)
+
+      this.$axios
+        .post("http://127.0.0.1:8000/api/horad", {
+          id:  id
+        })
+        .then((response) => {
+          console.log(response)
           this.getHoras();
         })
         .catch((err) => {

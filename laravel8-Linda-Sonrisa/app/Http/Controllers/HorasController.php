@@ -27,7 +27,7 @@ class HorasController extends Controller
     public function delete(Request $request){
         $hora = hora::find($request->id);
         $hora->delete();
-        return redirect()->back();
+        return response()->json([$hora], 200);
     }
 
     public function getAll(Request $request)

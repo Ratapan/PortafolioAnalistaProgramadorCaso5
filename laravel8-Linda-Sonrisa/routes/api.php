@@ -30,8 +30,9 @@ Route::post('/usuarios', 'App\Http\Controllers\pacienteController@register');
 Route::get('/employee', 'App\Http\Controllers\EmployeesController@getAll');
 
 //horas
-Route::post('/hora', 'App\Http\Controllers\HorasController@register');
-Route::get('/hora', 'App\Http\Controllers\HorasController@getAll');
+Route::post( '/hora',  'App\Http\Controllers\HorasController@register');
+Route::post( '/horad', 'App\Http\Controllers\HorasController@delete');
+Route::get(  '/hora',  'App\Http\Controllers\HorasController@getAll');
 
 //servicios
 Route::get('/servicio', 'App\Http\Controllers\ServiceController@getAll');
