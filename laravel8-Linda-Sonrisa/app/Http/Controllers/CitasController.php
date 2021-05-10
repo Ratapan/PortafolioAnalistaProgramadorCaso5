@@ -14,10 +14,17 @@ class CitasController extends Controller
         $id_paciente = DB::table('pacientes')->select('id_paciente')->where('USERS_ID_USER', $request->id_user)->value('id_paciente');
         $newCita = new cita();
         $newCita->estado = 'D';
-        $newCita->fecha_solicitacion = $request->fecha;
-        $newCita->id_paciente = $id_paciente;
-        $newCita->id_hora = $request->id_hora;
+        $newCita->pacientes_id_paciente = $id_paciente;
+        $newCita->fecha_solicitacion = $request->fecha;//?
+        $newCita->horas_id_hora = $request->id_hora;
         $newCita->save();
         return response()->json([$newCita], 200);
+    }
+    public function getUs(Request $request){
+        $id_paciente = DB::table('pacientes')->select('id_paciente')->where('USERS_ID_USER', $request->id_user)->value('id_paciente');
+        $servicios   = cita::orderBy('fecha_solicitacion','asc')
+                    ->where('pacientes_id_paciente', $id_paciente)
+                    ->paginate(15);
+        return response()->json($servicios,200);
     }
 }

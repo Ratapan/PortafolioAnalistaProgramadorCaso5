@@ -33,6 +33,11 @@ Route::get('/employee', 'App\Http\Controllers\EmployeesController@getAll');
 Route::post( '/hora',  'App\Http\Controllers\HorasController@register');
 Route::post( '/horad', 'App\Http\Controllers\HorasController@delete');
 Route::get(  '/hora',  'App\Http\Controllers\HorasController@getAll');
+Route::get(  '/hora-d','App\Http\Controllers\HorasController@getDent');
 
 //servicios
 Route::get('/servicio', 'App\Http\Controllers\ServiceController@getAll');
+
+
+//citas
+Route::post('/cita', 'App\Http\Controllers\CitasController@register');

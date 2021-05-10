@@ -63,7 +63,6 @@
     <div class="row flex-d justify-content-center">
       <button type="button" class="btn btn-success" @click="sta(), storeHora()">Agregar hora</button>
     </div>
-
     <br />
     <div class="row flex-d justify-content-around">
       <table class="table">
@@ -81,7 +80,7 @@
             <td>  
               <div class="row flex-d justify-content-around">
                 <button type="button" class="btn btn-warning">Editar</button>
-                <button type="button" class="btn btn-danger" @click="deleteHora(hora.id_hora)">Eliminar {{hora.id_hora}}</button>
+                <button type="button" class="btn btn-danger" @click="deleteHora(hora.id_hora)">Eliminar</button>
               </div>
             </td>
           </tr>

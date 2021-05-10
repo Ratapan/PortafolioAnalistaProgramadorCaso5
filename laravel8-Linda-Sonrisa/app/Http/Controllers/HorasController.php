@@ -37,4 +37,12 @@ class HorasController extends Controller
         return response()->json($servicios,200);
     }
 
+    public function getDent(Request $request)
+    {
+        $servicios = hora::orderBy('inicio_hora','asc')
+                    ->where('empleados_id_empleado', $request->id_emp)
+                    ->paginate(15);
+        return response()->json($servicios,200);
+    }
+
 }
