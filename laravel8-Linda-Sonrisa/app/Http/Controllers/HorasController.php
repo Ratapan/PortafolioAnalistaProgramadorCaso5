@@ -23,6 +23,13 @@ class HorasController extends Controller
         return response()->json([$newHora], 200);
 
     }
+    public function edit(Request $request){
+        $horaEdit = hora::find($request->id);
+        $horaEdit->inicio_hora = $request->inicio;
+        $horaEdit->fin_hora = $request->fin;
+        $horaEdit->save();
+        return response()->json([$horaEdit], 200);
+    }
 
     public function delete(Request $request){
         $hora = hora::find($request->id);

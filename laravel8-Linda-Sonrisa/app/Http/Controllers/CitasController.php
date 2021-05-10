@@ -7,15 +7,18 @@ use Illuminate\Http\Request;
 use App\Models\cita;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class CitasController extends Controller
 {
     public function register(Request $request){
         $id_paciente = DB::table('pacientes')->select('id_paciente')->where('USERS_ID_USER', $request->id_user)->value('id_paciente');
+        $fecha = Carbon::now();
+        $fecha = $fecha->format('Y-m-d');
         $newCita = new cita();
         $newCita->estado = 'D';
         $newCita->pacientes_id_paciente = $id_paciente;
-        $newCita->fecha_solicitacion = $request->fecha;//?
+        $newCita->fecha_solicitacion = $fecha;//?
         $newCita->horas_id_hora = $request->id_hora;
         $newCita->save();
         return response()->json([$newCita], 200);
@@ -26,5 +29,14 @@ class CitasController extends Controller
                     ->where('pacientes_id_paciente', $id_paciente)
                     ->paginate(15);
         return response()->json($servicios,200);
+    }
+    public function getCitasActivas(Request $request){
+        $fecha = Carbon::now();
+        $id_paciente = DB::table('pacientes')->select('id_paciente')->where('USERS_ID_USER', $request->id_user)->value('id_paciente');
+        $citas   = cita::orderBy('fecha_solicitacion','asc')
+                    ->where('pacientes_id_paciente', $id_paciente)
+                    ->where('fecha_solicitacion', $fecha)
+                    ->paginate(15);
+        return response()->json($citas,200);
     }
 }

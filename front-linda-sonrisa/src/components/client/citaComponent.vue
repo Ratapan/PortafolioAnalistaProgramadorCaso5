@@ -54,10 +54,8 @@ export default {
     },
     storeHora(id) {
       console.log(id)
-      let diaHoy = new Date();
       this.$axios
         .post("http://127.0.0.1:8000/api/cita", {
-          fecha:          `${this.addZero(diaHoy.getFullYear(),2)}-${this.addZero(diaHoy.getMonth(),2)}-${this.addZero(diaHoy.getDate(),2)} ${this.addZero(diaHoy.getHours(),2)}:${this.addZero(diaHoy.getMinutes(),2)}:${this.addZero(diaHoy.getSeconds(),2)}`,
           id_hora:         id,
           id_user:         this.$store.getters.value.id_user,
         })
