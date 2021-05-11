@@ -81,6 +81,7 @@ export default {
       }
     },
     storeHora(id) {
+
       console.log(id);
       let diaHoy = new Date();
       this.$axios
@@ -97,6 +98,7 @@ export default {
           )}`,
           id_hora: id,
           id_user: this.$store.getters.value.id_user,
+
         })
         .then((response) => {
           console.log(response);

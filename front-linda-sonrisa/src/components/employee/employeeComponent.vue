@@ -75,8 +75,8 @@
         </thead>
         <tbody>
           <tr v-for="hora in horas" :key="hora">
-            <td>{{hora.fin_hora}}</td>
             <td>{{hora.inicio_hora}}</td>
+            <td>{{hora.fin_hora}}</td>
             <td>  
               <div class="row flex-d justify-content-around">
                 <button type="button" class="btn btn-warning">Editar</button>
