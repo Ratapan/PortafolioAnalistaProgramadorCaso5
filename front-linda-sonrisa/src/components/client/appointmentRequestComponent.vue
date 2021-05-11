@@ -47,17 +47,29 @@
             <div class="card-body">
               <h5 class="card-title">Nombre: {{ em.nombre_e }}</h5>
               <p class="card-text">desc de prof.</p>
-              <a href="#" class="btn btn-primary" @click="empleado = em"
-                >Ver horas</a
-              >
+              <button v-b-modal.modal-1 class="btn btn-primary" @click="empleado = em"
+                >Ver horas</button>
             </div>
           </div>
         </div>
       </div>
     </section>
-    <cita-request-component 
-      :empleado="empleado" 
-    />
+
+
+
+
+
+
+  <b-modal size="xl" id="modal-1" title="BootstrapVue">
+      <cita-request-component 
+        :empleado="empleado" 
+      />
+  </b-modal>
+
+
+
+  
+
   </div>
 </template>
 

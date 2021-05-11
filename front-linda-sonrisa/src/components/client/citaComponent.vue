@@ -1,9 +1,27 @@
 <template>
   <div class="container">
-    <ul class="list-group">
-      <li class="list"  v-for="hora in horas" :key="hora"><button class="btn btn-info" @click="storeHora(hora.id_hora)">{{btnHora(hora.inicio_hora)}} | {{btnHora(hora.fin_hora)}}</button></li>
-    </ul>
-    
+    <div class="row flex-d justify-content-around space">
+      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
+        <ul class="list-group">
+          <li class="list" v-for="hora in horas" :key="hora">
+            <button class="btn btn-info" @click="storeHora(hora.id_hora)">
+              {{ btnHora(hora.inicio_hora) }} | {{ btnHora(hora.fin_hora) }}
+            </button>
+          </li>
+        </ul>
+      </div>
+      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
+        <date-picker
+          v-model="dateO"
+          value-type="format"
+          type="time"
+          :open.sync="openE"
+          placeholder="Selecciona hora de fin"
+          @change="handleChange"
+        ></date-picker>
+      </div>
+    </div>
+    {{ dateO }}
   </div>
 </template>
 
@@ -11,55 +29,74 @@
 export default {
   props: {
     empleado: {
-      type: Object
-    }
+      type: Object,
+    },
   },
   data() {
-    return{
+    return {
       stat: false,
       openI: false,
       openE: false,
-      dayHour:'',
-      iniHour:'',
-      endHour:'',
-      horas:[],
+      dayHour: "",
+      iniHour: "",
+      endHour: "",
+      horas: [],
+      dateO: "",
     };
-    
   },
-  mounted() {
-  },
+  mounted() {},
   watch: {
     empleado: function() {
       this.getHoras();
-    }
+    },
   },
   methods: {
-    btnHora(hr){
-      let hora = new Date(hr)
-      return `${this.addZero(hora.getHours(),2)}:${this.addZero(hora.getMinutes(),2)}`
+    btnHora(hr) {
+      let hora = new Date(hr);
+      return `${this.addZero(hora.getHours(), 2)}:${this.addZero(
+        hora.getMinutes(),
+        2
+      )}`;
     },
-    addZero(a,b){
-      if(a.toString().length < b){return `0${a}` }else{return `${a}`}
+    addZero(a, b) {
+      if (a.toString().length < b) {
+        return `0${a}`;
+      } else {
+        return `${a}`;
+      }
     },
-    sta(){
-      if(this.stat == false){this.stat = true}else{this.stat = false}
+    sta() {
+      if (this.stat == false) {
+        this.stat = true;
+      } else {
+        this.stat = false;
+      }
     },
     logout() {
-      this.$store.getters.value = null; 
+      this.$store.getters.value = null;
     },
     handleChange(value, type) {
-      if (type === 'second') {
+      if (type === "second") {
         this.open = false;
       }
     },
     storeHora(id) {
-      console.log(id)
+      console.log(id);
       let diaHoy = new Date();
       this.$axios
         .post("http://127.0.0.1:8000/api/cita", {
-          fecha:          `${this.addZero(diaHoy.getFullYear(),2)}-${this.addZero(diaHoy.getMonth(),2)}-${this.addZero(diaHoy.getDate(),2)} ${this.addZero(diaHoy.getHours(),2)}:${this.addZero(diaHoy.getMinutes(),2)}:${this.addZero(diaHoy.getSeconds(),2)}`,
-          id_hora:         id,
-          id_user:         this.$store.getters.value.id_user,
+          fecha: `${this.addZero(diaHoy.getFullYear(), 2)}-${this.addZero(
+            diaHoy.getMonth(),
+            2
+          )}-${this.addZero(diaHoy.getDate(), 2)} ${this.addZero(
+            diaHoy.getHours(),
+            2
+          )}:${this.addZero(diaHoy.getMinutes(), 2)}:${this.addZero(
+            diaHoy.getSeconds(),
+            2
+          )}`,
+          id_hora: id,
+          id_user: this.$store.getters.value.id_user,
         })
         .then((response) => {
           console.log(response);
@@ -69,22 +106,30 @@ export default {
           this.error = err;
         });
     },
-    getHoras(){
-      let page = 1
-      this.$axios.
-      get("http://127.0.0.1:8000/api/hora-d?page="+page+"&id_emp="+ this.empleado.id_empleado).
-      then(response => {
-        this.horas = response.data.data;
-        console.log(this.horas)
-      });
+    getHoras() {
+      let page = 1;
+      this.$axios
+        .get(
+          "http://127.0.0.1:8000/api/hora-d?page=" +
+            page +
+            "&id_emp=" +
+            this.empleado.id_empleado
+        )
+        .then((response) => {
+          this.horas = response.data.data;
+          console.log(this.horas);
+        });
     },
-  }
+  },
 };
 </script>
 
 <style scoped>
 .list {
-  list-style:none;
+  list-style: none;
   margin: 5px 0px;
+}
+.space {
+  margin: 30px 10px;
 }
 </style>

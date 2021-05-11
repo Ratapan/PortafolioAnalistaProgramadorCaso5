@@ -160,6 +160,8 @@
     <br><br>
     <br><br>
     <br><br>
+    <br><br>
+    <br><br>
     <footer-component class="footer"></footer-component>
   </div>
 </template>
