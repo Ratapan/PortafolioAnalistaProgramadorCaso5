@@ -59,7 +59,8 @@
               <label>Fecha de nacimiento:</label>
             </div>
             <div class="col-5">
-              <date-picker v-model="user.birthDate" valueType="format"></date-picker><br/>
+              <date-picker v-model="user.birthDate" 
+              valueType="format"></date-picker><br/>
             </div>
           </div>
           <br />

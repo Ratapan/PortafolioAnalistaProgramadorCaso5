@@ -1,7 +1,14 @@
 <template>
   <div class="container">
-    <div class="row flex-d justify-content-around space">
-      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
+    <div class="row flex-d justify-content-around">
+      <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 flex-d justify-content-center">
+        <date-picker
+          v-model="dateO"
+          value-type="format"
+          placeholder="Selecciona hora de fin"
+        ></date-picker>
+      </div>
+      <!--<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
         <ul class="list-group">
           <li class="list" v-for="hora in horas" :key="hora">
             <button class="btn btn-info" @click="storeHora(hora.id_hora)">
@@ -9,19 +16,15 @@
             </button>
           </li>
         </ul>
-      </div>
-      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
-        <date-picker
-          v-model="dateO"
-          value-type="format"
-          type="time"
-          :open.sync="openE"
-          placeholder="Selecciona hora de fin"
-          @change="handleChange"
-        ></date-picker>
+      </div>-->
+      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 list"  v-for="(hora,i) in horas" :key="i">
+
+            <button class="btn btn-info" @click="storeHora(hora.id_hora)">
+              {{ btnHora(hora.inicio_hora) }} | {{ btnHora(hora.fin_hora) }}
+            </button>
+
       </div>
     </div>
-    {{ dateO }}
   </div>
 </template>
 
@@ -49,14 +52,14 @@ export default {
     empleado: function() {
       this.getHoras();
     },
+    dateO: function() {
+      this.getHoras();
+    },
   },
   methods: {
     btnHora(hr) {
       let hora = new Date(hr);
-      return `${this.addZero(hora.getHours(), 2)}:${this.addZero(
-        hora.getMinutes(),
-        2
-      )}`;
+      return `${this.addZero(hora.getHours(), 2)}:${this.addZero(hora.getMinutes(),2)}`;
     },
     addZero(a, b) {
       if (a.toString().length < b) {
@@ -113,9 +116,13 @@ export default {
       this.$axios
         .get(
           "http://127.0.0.1:8000/api/hora-d?page=" +
-            page +
-            "&id_emp=" +
-            this.empleado.id_empleado
+            page 
+            +"&id_emp=" 
+            +this.empleado.id_empleado
+            +"&fini="
+            +`${this.dateO} 00:00:00`
+            +"&ffin="
+            +`${this.dateO} 23:59:50`
         )
         .then((response) => {
           this.horas = response.data.data;

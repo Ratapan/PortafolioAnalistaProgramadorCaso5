@@ -5,6 +5,7 @@
         <h1>Pedir citas (usuario logeado)</h1>
       </div>
       <br />
+      <br />
       <div class="row d-flex justify-content-around">
         <div class="col-6">
           <input
@@ -25,7 +26,7 @@
           <button class="btn btn-primary fontbu">
             {{ upperCase(se.nombre_servicio) }}
           </button>
-          <br />
+          <br/>
           <p class="text-center">{{ se.precio }}</p>
         </div>
       </div>
@@ -45,9 +46,11 @@
               alt="imagen"
             />
             <div class="card-body">
-              <h5 class="card-title">Nombre: {{ em.nombre_e }}</h5>
-              <p class="card-text">desc de prof.</p>
-              <button v-b-modal.modal-1 class="btn btn-primary" @click="empleado = em"
+              <h5 class="card-title">Nombre: {{ em.user }}</h5>
+              <p class="card-text">
+                {{em.tipo_cuenta}}
+              </p>
+              <button @click="empleado = em" v-b-modal.modal-1 class="btn btn-primary"
                 >Ver horas</button>
             </div>
           </div>
@@ -60,7 +63,7 @@
 
 
 
-  <b-modal size="xl" id="modal-1" title="BootstrapVue">
+  <b-modal size="xl" id="modal-1" title="Horas">
       <cita-request-component 
         :empleado="empleado" 
       />

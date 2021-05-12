@@ -13,6 +13,7 @@ class EmployeesController extends Controller
     {
 
         $empleados = empleado::where('TIPO_CUENTA','Dentista')
+                            ->with(['user'])
                             ->paginate(15);
 
         return response()->json($empleados,200);

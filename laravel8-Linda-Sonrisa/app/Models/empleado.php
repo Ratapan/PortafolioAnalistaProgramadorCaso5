@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class empleado extends Model
 {
     use HasFactory;
+    public $timestamps = false;
+    protected $primaryKey = 'id_empleado';
+    public function user()
+    {
+        return $this->belongsTo('App\Models\user');
+    }
 }

@@ -35,7 +35,7 @@ class CitasController extends Controller
         $id_paciente = DB::table('pacientes')->select('id_paciente')->where('USERS_ID_USER', $request->id_user)->value('id_paciente');
         $citas   = cita::orderBy('fecha_solicitacion','asc')
                     ->where('pacientes_id_paciente', $id_paciente)
-                    ->where('fecha_solicitacion', $fecha)
+                    ->where('fecha_solicitacion','>=',$request->fecha)
                     ->paginate(15);
         return response()->json($citas,200);
     }
