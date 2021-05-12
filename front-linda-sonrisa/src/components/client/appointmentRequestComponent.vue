@@ -2,7 +2,7 @@
   <div class="container">
     <section>
       <div class="row d-flex justify-content-around">
-        <h1>Pedir citas (usuario logeado)</h1>
+        <h1>Pedir citas</h1>
       </div>
       <br />
       <br />

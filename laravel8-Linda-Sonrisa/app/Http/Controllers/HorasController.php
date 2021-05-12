@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\cita;
 use Illuminate\Http\Request;
 use App\Models\hora;
 use App\Models\empleado;
@@ -32,9 +33,17 @@ class HorasController extends Controller
     }
 
     public function delete(Request $request){
-        $hora = hora::find($request->id);
-        $hora->delete();
-        return response()->json([$hora], 200);
+        if ($cita = cita::where('horas_id_hora', $request->id)){
+            $cita->delete();
+            $hora = hora::find($request->id);
+            $hora->delete();
+            return response()->json([$cita, $hora], 300);
+        }
+        else{
+            $hora = hora::find($request->id);
+            $hora->delete();
+            return response()->json([$hora], 200);
+        }
     }
 
     public function getAll(Request $request)
