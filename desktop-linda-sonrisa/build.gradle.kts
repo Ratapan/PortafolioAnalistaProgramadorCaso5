@@ -3,8 +3,8 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.4.30"
-    id("org.jetbrains.compose") version "0.3.1"
+    kotlin("jvm") version "1.4.32"
+    id("org.jetbrains.compose") version "0.4.0-build188"
 }
 
 group = "me.ichig"
@@ -18,10 +18,19 @@ repositories {
 
 dependencies {
     implementation(compose.desktop.currentOs)
+    implementation("com.oracle.ojdbc:ojdbc8:19.3.0.0")
+    implementation("org.jetbrains.exposed:exposed-core:0.31.1")
+    implementation("org.jetbrains.exposed:exposed-dao:0.31.1")
+    implementation("org.jetbrains.exposed:exposed-jdbc:0.31.1")
+    implementation("org.jetbrains.exposed:exposed-java-time:0.31.1")
+    implementation("com.ToxicBakery.library.bcrypt:bcrypt:+")
+    implementation("com.github.barteksc:pdfium-android:1.9.0")
 }
 
 tasks.withType<KotlinCompile>() {
-    kotlinOptions.jvmTarget = "13"
+    kotlinOptions{
+        jvmTarget = "13"
+    }
 }
 
 compose.desktop {

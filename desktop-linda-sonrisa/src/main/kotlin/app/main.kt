@@ -1,32 +1,35 @@
+import androidx.compose.desktop.LocalAppWindow
 import androidx.compose.desktop.Window
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
-import app.navigation.Screen
-import app.view.login
-import app.view.menu
+import app.navigation.MainView
+import app.views.login
+import app.views.menu
+import org.jetbrains.exposed.sql.Database
 
 fun main() = Window {
-//    var text by remember { mutableStateOf("Hello, World!") }
-//
-//    MaterialTheme {
-//        login()
-//    }
     Main()
 }
 
 @Composable
 fun Main() {
-    var screenState by remember { mutableStateOf<Screen>(Screen.Login) }
+    Database.connect("jdbc:oracle:thin:@localhost:1521:xe", driver = "oracle.jdbc.driver.OracleDriver",
+        user = "bd", password = "bd")
+    var screenState by remember { mutableStateOf<MainView>(MainView.MainViewLogin) }
 
-    when (val screen = screenState) {
-        is Screen.Login ->
+    LocalAppWindow.current.apply {
+        events.onOpen = { maximize() }
+        window.title ="Linda Sonrisa - Desktop"
+    }
+
+    when (screenState) {
+        is MainView.MainViewLogin ->
             login(
-                onItemClick = { screenState = Screen.Menu }
+                onItemClick = { screenState = MainView.MainViewMenu }
             )
 
-        is Screen.Menu ->
+        is MainView.MainViewMenu ->
             menu(
-                onBack = { screenState = Screen.Login }
+                onBack = { screenState = MainView.MainViewLogin }
             )
     }
 }
