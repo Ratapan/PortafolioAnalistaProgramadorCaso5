@@ -1,14 +1,11 @@
 package app.data
 
-import org.jetbrains.exposed.dao.Entity
-import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 
-class Administrador(id: EntityID<String>) : Entity<String>(id) {
-    companion object : EntityClass<String, Administrador>(Administradores)
-    var num_telefono by Administradores.num_telefono
+class Administrador(id: EntityID<Int>) : IntEntity(id) {
+    companion object : IntEntityClass<Administrador>(Administradores)
 
     var id_user by Administradores.id_user
     var user by User referencedOn Administradores.id_user //this is the actual object, don't call outside of a transaction or BOOM
@@ -90,7 +87,6 @@ class Hora(id: EntityID<Int>) : IntEntity(id) {
 
 class Orden(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<Orden>(Ordenes)
-    var tipo_producto by Ordenes.tipo_producto
     var cancelada by Ordenes.cancelada
     var fecha_venc by Ordenes.fecha_venc
     var precio_total by Ordenes.precio_total
@@ -98,18 +94,18 @@ class Orden(id: EntityID<Int>) : IntEntity(id) {
     var id_proveedor by Ordenes.id_proveedor
     var proveedor by Proveedor referencedOn Ordenes.id_proveedor
 
-    var id_empleado by Ordenes.id_empleado
+    var idEmpleado by Ordenes.id_empleado
     var empleado by Empleado referencedOn Ordenes.id_empleado
 
 }
 
 class Paciente(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<Paciente>(Pacientes)
-    var num_telefono by Pacientes.num_telefono
-    var salud_paciente by Pacientes.salud_paciente
+    var numTelefono by Pacientes.num_telefono
+    var saludPaciente by Pacientes.salud_paciente
     var documento by Pacientes.documento
 
-    var id_user by Pacientes.id_user
+    var idUser by Pacientes.id_user
     var user by User referencedOn Pacientes.id_user
 }
 
@@ -118,20 +114,20 @@ class Producto(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<Producto>(Productos)
     var nombre by Productos.nombre
     var descripcion by Productos.descripcion
-    var precio_c by Productos.precio_c
-    var precio_v by Productos.precio_v
+    var precioC by Productos.precio_c
+    var precioV by Productos.precio_v
     var stock by Productos.stock
-    var stock_critico by Productos.stock_critico
+    var stockCritico by Productos.stock_critico
 
-    var id_familia_producto by Productos.id_familia_producto
-    var familia_producto by Familia_Producto referencedOn Productos.id_familia_producto
+    var idFamiliaProducto by Productos.id_familia_producto
+    var familiaProducto by Familia_Producto referencedOn Productos.id_familia_producto
 }
 
 class Proveedor(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<Proveedor>(Proveedores)
     var num_telefono_empresa by Proveedores.num_telefono_empresa
 
-    var id_user by Proveedores.id_user
+    var idUser by Proveedores.id_user
     var user by User referencedOn Proveedores.id_user
 }
 
@@ -140,10 +136,10 @@ class Recepcion(id: EntityID<Int>) : IntEntity(id) {
     var codigo by Recepciones.codigo
     var estado by Recepciones.estado
 
-    var id_orden by Recepciones.id_orden
+    var idOrden by Recepciones.id_orden
     var orden by Orden referencedOn Recepciones.id_orden
 
-    var id_empleado by Recepciones.id_empleado
+    var idEmpleado by Recepciones.id_empleado
     var empleado by Empleado referencedOn Recepciones.id_empleado
 }
 
@@ -156,8 +152,8 @@ class Rol(id: EntityID<Int>) : IntEntity(id) {
 class Servicio(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<Servicio>(Servicios)
 
-    var id_tipo_servicio by Servicios.id_tipo_servicio
-    var tipo_servicio by Tipo_Servicio referencedOn Servicios.id_tipo_servicio
+    var idTipoServicio by Servicios.id_tipo_servicio
+    var tipoServicio by Tipo_Servicio referencedOn Servicios.id_tipo_servicio
 
     var id_cita by Servicios.id_cita
     var cita by Cita referencedOn Servicios.id_cita
@@ -183,7 +179,7 @@ class User(id: EntityID<Int>) : IntEntity(id) {
     var rut by Users.rut
     var nombre by Users.nombre
     var direccion by Users.direccion
-    var fecha_nac by Users.fecha_nac
+    var fechaNac by Users.fecha_nac
     var eliminado by Users.eliminado
 
     var id_rol by Users.rol

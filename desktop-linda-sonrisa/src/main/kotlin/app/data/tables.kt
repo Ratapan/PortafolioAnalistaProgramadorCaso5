@@ -1,18 +1,15 @@
 package app.data
 
-import org.jetbrains.exposed.dao.id.EntityID
-import org.jetbrains.exposed.dao.id.IdTable
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.`java-time`.date
+import org.jetbrains.exposed.sql.`java-time`.timestamp
 import org.jetbrains.exposed.sql.statements.api.ExposedBlob
+import java.time.Instant
 import java.time.LocalDate
 
-object Administradores : IdTable<String>("administradores") {
-    val myIdColumn = varchar("id_adm", 100).uniqueIndex()
-    override val id: Column<EntityID<String>> = myIdColumn.entityId()
-
-    val num_telefono: Column<Int> = integer("num_telefono_a")
+object Administradores : IntIdTable("Administradores", "id_adm") {
+    val num_telefono: Column<Long> = long("num_telefono_a")
     val id_user: Column<Int> = integer("users_id_user").references(Users.id)
     override val primaryKey = PrimaryKey(id, name = "administrador_PK_id_adm")
 }
@@ -47,14 +44,14 @@ object Emp_Tserv : IntIdTable("Emp_Tserv", "id_emp_tserv") {
 }
 
 object Empleados : IntIdTable("Empleados", "ID_EMPLEADO") {
-    val num_telefono: Column<Int> = integer("NUM_TELEFONO_E1")
+    val num_telefono: Column<Long> = long("NUM_TELEFONO_E1")
     val salud_empleado: Column<Char> = char("SALUD_E")
-    val salario: Column<Int> = integer("SALARIO")
+    val salario: Column<Long> = long("SALARIO")
     val inicio_contrato: Column<LocalDate> = date("INICIO_CONTRATO")
     val fin_contrato: Column<LocalDate> = date("FIN_CONTRATO")
     val afp: Column<String> = varchar("AFP", 30)
     val nombre_banco: Column<String> = varchar("NOMBRE_BANCO", 30)
-    val numero_banco: Column<Int> = integer("NUMERO_BANCO")
+    val numero_banco: Column<Long> = long("NUMERO_BANCO")
     val tipo_cuenta: Column<String> = varchar("TIPO_CUENTA", 30)
     val id_sucursal: Column<Int> = integer("SUCURSALES_ID_SUCURSAL").references(Sucursales.id)
     val imagen: Column<ExposedBlob> = blob("IMAGEN")
@@ -70,15 +67,14 @@ object Familia_Productos : IntIdTable("Familia_Productos", "ID_T_FAM") {
 
 
 object Horas : IntIdTable("Horas", "ID_HORA") {
-    val hora_inicio: Column<LocalDate> = date("INICIO_HORA")
-    val hora_fin: Column<LocalDate> = date("FIN_HORA")
+    val hora_inicio: Column<Instant> = timestamp("INICIO_HORA")
+    val hora_fin: Column<Instant> = timestamp("FIN_HORA")
     val id_empleado: Column<Int> = integer("EMPLEADOS_ID_EMPLEADO").references(Empleados.id)
     override val primaryKey = PrimaryKey(id, name = "Horas_PK_ID_HORA")
 }
 
 
 object Ordenes : IntIdTable("Ordenes", "ID_ORDEN") {
-    val tipo_producto: Column<String> = varchar("TIPO_PRODUCTO_O", 3)
     val cancelada: Column<Char> = char("CANCELADA_O")
     val fecha_venc: Column<LocalDate> = date("FECHA_VENC_O")
     val precio_total: Column<Int> = integer("PRECIO_TOTAL")
@@ -88,7 +84,7 @@ object Ordenes : IntIdTable("Ordenes", "ID_ORDEN") {
 }
 
 object Pacientes : IntIdTable("Pacientes", "ID_PACIENTE") {
-    val num_telefono: Column<Int> = integer("NUM_TELEFONO_PA")
+    val num_telefono: Column<Long> = long("NUM_TELEFONO_PA")
     val salud_paciente: Column<Char> = char("SALUD_PA")
     val documento: Column<ExposedBlob> = blob("DOCUMENTO")
     val id_user: Column<Int> = integer("USERS_ID_USER").references(Users.id)
@@ -100,14 +96,14 @@ object Productos : IntIdTable("Productos", "ID_TIPOP") {
     val descripcion: Column<String> = varchar("DESC_TIPOP", 200)
     val precio_c: Column<Int> = integer("PRECIO_C_TIPOP")
     val precio_v: Column<Int> = integer("PRECIO_V_TIPOP")
-    val stock: Column<String> = varchar("STOCK_TIPOP", 200)
-    val stock_critico: Column<String> = varchar("STOCK_C_TIPOP", 200)
+    val stock: Column<Int> = integer("STOCK_TIPOP")
+    val stock_critico: Column<Int> = integer("STOCK_C_TIPOP")
     val id_familia_producto: Column<Int> = integer("FAMILIA_PRODUCTOS_ID_T_FAM").references(Familia_Productos.id)
     override val primaryKey = PrimaryKey(id, name = "Productos_PK_ID_TIPOP")
 }
 
 object Proveedores : IntIdTable("Proveedores", "ID_PROVEEDOR") {
-    val num_telefono_empresa: Column<Int> = integer("TELEFONO_EMPRESA_P")
+    val num_telefono_empresa: Column<Long> = long("TELEFONO_EMPRESA_P")
     val id_user: Column<Int> = integer("USERS_ID_USER").references(Users.id)
     override val primaryKey = PrimaryKey(id, name = "Proveedores_PK_ID_PROVEEDOR")
 }

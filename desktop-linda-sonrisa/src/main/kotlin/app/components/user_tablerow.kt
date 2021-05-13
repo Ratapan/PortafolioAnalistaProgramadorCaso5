@@ -33,10 +33,10 @@ fun userTableRow (
         tableCell(user.rut, modifier = Modifier.weight(RUT_COLUMN_WEIGHT))
         tableCell(user.nombre, modifier = Modifier.weight(NOMBRE_COLUMN_WEIGHT))
         tableCell(user.direccion, modifier = Modifier.weight(DIRECCION_COLUMN_WEIGHT))
-        tableCell(user.fecha_nac.toString(), modifier = Modifier.weight(FECHA_NACIMIENTO_COLUMN_WEIGHT))
+        tableCell(user.fechaNac.toString(), modifier = Modifier.weight(FECHA_NACIMIENTO_COLUMN_WEIGHT))
         tableCell(
             when(user.eliminado){
-                '1' -> "False"
+                'F' -> "False"
                 else -> "True"
             }, modifier = Modifier.weight(ELIMINADO_COLUMN_WEIGHT))
         tableCell(

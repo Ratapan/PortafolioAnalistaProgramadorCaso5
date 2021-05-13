@@ -23,7 +23,7 @@ fun userEdit(active: Boolean, setShowDialog: (Boolean) -> Unit, user: User) {
 
     if (active) {
 
-        var id by remember { mutableStateOf(user.id) }
+        val id by remember { mutableStateOf(user.id) }
         var email by remember { mutableStateOf(user.email) }
         var nombre by remember { mutableStateOf(user.nombre) }
         var eliminado by remember { mutableStateOf(user.eliminado) }

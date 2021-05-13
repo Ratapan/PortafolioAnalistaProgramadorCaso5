@@ -20,7 +20,7 @@ fun userView() {
 
         }
         is UserView.UserViewRegister -> {
-
+            userRegister()
         }
     }
 }

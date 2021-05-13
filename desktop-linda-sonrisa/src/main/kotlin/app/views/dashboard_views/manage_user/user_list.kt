@@ -6,11 +6,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import app.components.*
+import app.components.tableCell
+import app.components.userTableRow
 import app.data.User
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -33,9 +36,10 @@ fun userList(
     toRegister : () -> Unit,
     toEdit : () -> Unit
 ) {
-    val data = transaction {
+
+    val (data, setData) = remember { mutableStateOf(transaction {
         User.all().toList()
-    }
+    }) }
     val (selectedUser, setSelectedUser) = remember { mutableStateOf(data[0])}
     val (showDialog, setShowDialog) =  remember { mutableStateOf(false) }
     userEdit(showDialog, setShowDialog, selectedUser)
@@ -57,7 +61,49 @@ fun userList(
             ) {
                 Row {
                     for ((k, v) in COLUMN_NAME_VALUES) {
-                        tableCell(k, modifier = Modifier.weight(v))
+                        tableCell(k, modifier = Modifier
+                            .weight(v)
+                            .clickable {
+                                when (k) {
+                                    "ID" ->
+                                        setData(data.sortedBy {
+                                            it.id
+                                        })
+                                    "Email" ->
+                                        setData(data.sortedBy {
+                                            it.email
+                                        })
+                                    "Rut" ->
+                                        setData(data.sortedBy {
+                                            it.rut
+                                        })
+                                    "Nombre" ->
+                                        setData(data.sortedBy {
+                                            it.nombre
+                                        })
+                                    "Direccion" ->
+                                        setData(data.sortedBy {
+                                            it.direccion
+                                        })
+                                    "Fecha Nacimiento" ->
+                                        setData(data.sortedBy {
+                                            it.fechaNac
+                                        })
+                                    "Eliminado" ->
+                                        setData(data.sortedBy {
+                                            it.eliminado
+                                        })
+                                    "Rol" ->
+                                        setData(data.sortedBy {
+                                            it.id_rol
+                                        })
+                                    else ->
+                                        setData(data.sortedBy {
+                                            it.id
+                                        })
+                                }
+                            }
+                        )
                     }
                 }
                 LazyColumn(
