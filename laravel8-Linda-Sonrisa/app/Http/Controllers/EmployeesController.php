@@ -12,7 +12,7 @@ class EmployeesController extends Controller
     public function getAll(Request $request)
     {
 
-        $empleados = empleado::where('TIPO_CUENTA','Dentista')
+        $empleados = empleado::where('TIPO_EMPLEADOS_ID_TIPO_EMP','1')
                             ->with(['user'])
                             ->paginate(15);
 
