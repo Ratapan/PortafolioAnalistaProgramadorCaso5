@@ -1,13 +1,17 @@
 <template>
   <div class="container">
+    <br>
     <div class="row flex-d justify-content-around">
-      <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 flex-d justify-content-center">
+      <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 d-flex justify-content-center">
         <date-picker
+
           v-model="dateO"
           value-type="format"
           placeholder="Selecciona hora de fin"
         ></date-picker>
       </div>
+      <br>
+      <br>
       <!--<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
         <ul class="list-group">
           <li class="list" v-for="hora in horas" :key="hora">
@@ -25,6 +29,7 @@
 
       </div>
     </div>
+    <br><br>
   </div>
 </template>
 

@@ -44,4 +44,5 @@ class CitasController extends Controller
                     ->paginate(15);
         return response()->json($citas,200);
     }
+    
 }

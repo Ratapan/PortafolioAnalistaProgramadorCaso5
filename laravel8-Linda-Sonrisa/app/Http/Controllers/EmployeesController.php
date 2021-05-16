@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\empleado;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class EmployeesController extends Controller
@@ -16,6 +17,7 @@ class EmployeesController extends Controller
                             ->with(['user'])
                             ->paginate(15);
 
-        return response()->json($empleados,200);
+
+        return response()->json([$empleados],200);
     }
 }

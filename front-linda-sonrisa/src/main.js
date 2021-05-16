@@ -47,6 +47,13 @@ import appointmentRequestComponentAct from "./components/client/appointmentReque
 import CitaRequestComponent           from "./components/client/citaComponent.vue";
 import EmployeeComponent              from "./components/employee/employeeComponent.vue"
 import EmployeeOrdenComponent         from "./components/employee/employeeOrdenComponent.vue"
+import EmployeeAppointmentComponent   from "./components/employee/employeeAppointmentComponent.vue"
+
+
+
+import ViewOrderComponent         from "./components/vendors/viewOrderComponent.vue"
+
+
 Vue.component("employee-component",     EmployeeComponent );
 Vue.component("cita-request-component", CitaRequestComponent );
 
@@ -103,8 +110,24 @@ const routes = [
   },
   {
     name: "employeeOrder",
-    path: "/empleado-orden",
+    path: "/empleado/orden",
     component: EmployeeOrdenComponent,
+    meta: {
+      auth: true
+    }
+  },
+  {
+    name: "employeeAppointment",
+    path: "/empleado/citas",
+    component: EmployeeAppointmentComponent,
+    meta: {
+      auth: true
+    }
+  },
+  {
+    name: "viewOrders",
+    path: "/ver/ordenes",
+    component: ViewOrderComponent,
     meta: {
       auth: true
     }

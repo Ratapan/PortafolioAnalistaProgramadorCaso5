@@ -91,6 +91,19 @@
               <router-link 
                   class="nav-link dropdown-item dropdown-item-pyme"
                   style="border-radius: 500px"
+                  :to="{ name: 'employeeAppointment' }"
+                  type="button"
+                  data-toggle="collapse"
+                  data-target="#navbarNav"
+                  aria-expanded="false"
+                >
+                  Citas
+                </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link 
+                  class="nav-link dropdown-item dropdown-item-pyme"
+                  style="border-radius: 500px"
                   :to="{ name: 'employeeOrder' }"
                   type="button"
                   data-toggle="collapse"
@@ -106,7 +119,7 @@
               <router-link
                   class="nav-link dropdown-item dropdown-item-pyme"
                   style="border-radius: 500px"
-                  :to="{ name: 'init' }"
+                  :to="{ name: 'viewOrders' }"
                   type="button"
                   data-toggle="collapse"
                   data-target="#navbarNav"

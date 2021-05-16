@@ -1,69 +1,10 @@
 <template>
   <div class="container">
     <div class="row flex-d justify-content-around">
-      <h1>Crear hoas</h1>
-    </div>
-    <br />
-    <br />
-    <div class="row flex-d justify-content-around">
-      <h3><strong> Horas </strong></h3>
-    </div>
-    <br />
-    <!--
-    <div class="row flex-d justify-content-around">
-      <button type="button" class="btn btn-primary" @click="sta()">Agregar</button>
-    </div>
-    <br />
--->
-    <div class="row flex-d justify-content-center">
-      <br>
-      <div class="col-4">
-        <label>Dia</label>
-      </div>
-      <div class="col-6">
-        <date-picker v-model="dayHour" valueType="format"></date-picker>
-      </div>
-      <br>
+      <h1>Citas</h1>
     </div>
     <br>
-    <div class="row flex-d justify-content-center">
-      <div class="col-4">
-        <label>Hora inicial</label>
-      </div>
-      <div class="col-6">
-        <date-picker
-          v-model="iniHour"
-          value-type="format"
-          type="time"
-          :open.sync="openI"
-          placeholder="Selecciona hora de inicio"
-          @change="handleChange"
-        ></date-picker>
-      </div>
-      <br>
-    </div>
     <br>
-    <div class="row flex-d justify-content-center">
-      <div class="col-4">
-        <label>Hora de fin</label>
-      </div>
-      <div class="col-6">
-        <date-picker
-          v-model="endHour"
-          value-type="format"
-          type="time"
-          :open.sync="openE"
-          placeholder="Selecciona hora de fin"
-          @change="handleChange"
-        ></date-picker>
-      </div>
-      <br>
-    </div>
-    <br>
-    <div class="row flex-d justify-content-center">
-      <button type="button" class="btn btn-success" @click="sta(), storeHora()">Agregar hora</button>
-    </div>
-    <br />
     <div class="row flex-d justify-content-around">
       <table class="table">
         <thead>

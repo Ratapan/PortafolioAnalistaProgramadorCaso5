@@ -4,9 +4,10 @@
       <h1>Ordenes</h1>
     </div>
     <br />
+    <div>
+      <h1>hohoho</h1>
+    </div>
     <br />
-    
-
   </div>
 </template>
 
