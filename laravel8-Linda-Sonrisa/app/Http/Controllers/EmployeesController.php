@@ -14,7 +14,7 @@ class EmployeesController extends Controller
     {
 
         $empleados = empleado::where('TIPO_EMPLEADOS_ID_TIPO_EMP','1')
-                            ->with(['user'])
+                            ->join('users', 'users.id_user', '=', 'empleados.users_id_user')
                             ->paginate(15);
 
 

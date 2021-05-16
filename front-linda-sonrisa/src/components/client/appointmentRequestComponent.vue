@@ -20,7 +20,7 @@
       <div class="row d-flex justify-content-around">
         <div
           v-for="se in services"
-          :key="se"
+          :key="se.id_user"
           class="col-xl-2 col-lg-3 col-md-4 col-sm-6  d-flex justify-content-center  flex-column"
         >
           <button class="btn btn-primary fontbu">
@@ -46,7 +46,7 @@
               alt="imagen"
             />
             <div class="card-body">
-              <h5 class="card-title">Nombre: {{ em.user }}</h5>
+              <h5 class="card-title">Nombre: {{ em.nombre_ape }}</h5>
               <p class="card-text">
                 {{em.tipo_cuenta}}
               </p>
@@ -101,8 +101,8 @@ export default {
       this.$axios
         .get("http://127.0.0.1:8000/api/employee?page=" + page)
         .then((response) => {
-          this.employees = response.data.data;
-          console.log(this.employees);
+          this.employees = response.data[0].data;
+          console.log(response.data[0].data);
         });
     },
     getService() {
