@@ -103,7 +103,21 @@ export default {
         this.horas = response.data.data;
         console.log(this.horas)
       });
-    }
+    },
+    getCitaHoras() {
+      let page = 1;
+      this.$axios
+        .get(
+          "http://127.0.0.1:8000/api/cita/hora?page=" +
+            page 
+            + "&id_user="
+            + this.$store.getters.value.id_user
+        )
+        .then((response) => {
+          this.horas = response.data.data;
+          console.log(this.horas);
+        });
+    },
 
   }
 };

@@ -52,6 +52,16 @@ class HorasController extends Controller
                     ->paginate(15);
         return response()->json($servicios,200);
     }
+    public function getHourCitas(Request $request)
+    {
+        $id_emp = DB::table('empleados')->select('id_empleado')->where('USERS_ID_USER', $request->id_user)->value('id_empleado');
+        $servicios = hora::orderBy('inicio_hora','asc')
+                    ->where('empleados_id_empleado' , $id_emp)
+                    ->where('estado', 'T')
+                    ->join('users', 'users.id_user', '=', 'empleados.users_id_user')
+                    ->paginate(15);
+        return response()->json($servicios,200);
+    }
 
     public function getDent(Request $request){
         $servicios = hora::orderBy('inicio_hora','asc')

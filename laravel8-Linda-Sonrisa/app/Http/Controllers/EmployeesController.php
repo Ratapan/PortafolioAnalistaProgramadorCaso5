@@ -18,6 +18,6 @@ class EmployeesController extends Controller
                             ->paginate(15);
 
 
-        return response()->json([$empleados],200);
+        return response()->json($empleados,200);
     }
 }

@@ -42,3 +42,4 @@ Route::get('/servicio', 'App\Http\Controllers\ServiceController@getAll');
 //citas
 Route::post('/cita', 'App\Http\Controllers\CitasController@register');
 Route::get('/citas', 'App\Http\Controllers\CitasController@getCitasActivas');
+Route::get('/cita/hora','App\Http\Controllers\HorasController@getHourCitas');

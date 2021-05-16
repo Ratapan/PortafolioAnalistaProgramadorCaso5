@@ -101,8 +101,8 @@ export default {
       this.$axios
         .get("http://127.0.0.1:8000/api/employee?page=" + page)
         .then((response) => {
-          this.employees = response.data[0].data;
-          console.log(response.data[0].data);
+          this.employees = response.data.data;
+          console.log(response.data.data);
         });
     },
     getService() {

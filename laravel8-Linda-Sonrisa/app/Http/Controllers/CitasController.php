@@ -47,10 +47,7 @@ class CitasController extends Controller
                     ->paginate(15);
         return response()->json($citas,200);
     }
-<<<<<<< HEAD
     
-=======
-
     public function getCitasAntiguas(Request $request){
         $fecha = Carbon::now();
         $id_paciente = DB::table('pacientes')->select('id_paciente')->where('USERS_ID_USER', $request->id_user)->value('id_paciente');
@@ -74,5 +71,4 @@ class CitasController extends Controller
         $cita->delete();
         return response()->json([$cita], 300);
     }
->>>>>>> f7525a9bd196d03602d78a9a9a9da8ea4133c8de
 }
