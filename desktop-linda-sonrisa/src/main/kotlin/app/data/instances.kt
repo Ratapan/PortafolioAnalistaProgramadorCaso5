@@ -62,10 +62,11 @@ class Empleado(id: EntityID<Int>) : IntEntity(id) {
     var fin_contrato by Empleados.fin_contrato
     var afp by Empleados.afp
     var nombre_banco by Empleados.nombre_banco
-    var numero_banco by Empleados.numero_banco
-    var tipo_cuenta by Empleados.tipo_cuenta
-    var id_sucursal by Empleados.id_sucursal
+    var numero_cuenta by Empleados.numero_cuenta
     var imagen by Empleados.imagen
+
+    var id_tipo_emp by Empleados.id_tipo_emp
+    var tipo_empleado by Tipo_Empleado referencedOn Empleados.id_tipo_emp
 
     var id_user by Empleados.id_user
     var user by User referencedOn Empleados.id_user
@@ -80,6 +81,7 @@ class Hora(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<Hora>(Horas)
     var hora_inicio by Horas.hora_inicio
     var hora_fin by Horas.hora_fin
+    var estado by Horas.estado
 
     var id_empleado by Horas.id_empleado
     var empleado by Empleado referencedOn Horas.id_empleado
@@ -135,6 +137,7 @@ class Recepcion(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<Recepcion>(Recepciones)
     var codigo by Recepciones.codigo
     var estado by Recepciones.estado
+    var comentario by Recepciones.comentario
 
     var idOrden by Recepciones.id_orden
     var orden by Orden referencedOn Recepciones.id_orden
@@ -159,10 +162,9 @@ class Servicio(id: EntityID<Int>) : IntEntity(id) {
     var cita by Cita referencedOn Servicios.id_cita
 }
 
-class Sucursal(id: EntityID<Int>) : IntEntity(id) {
-    companion object : IntEntityClass<Sucursal>(Sucursales)
-    var nombre by Sucursales.nombre
-    var direccion by Sucursales.direccion
+class Tipo_Empleado(id: EntityID<Int>) : IntEntity(id) {
+    companion object : IntEntityClass<Tipo_Empleado>(Tipo_Empleados)
+    var nombre by Tipo_Empleados.nombre
 }
 
 class Tipo_Servicio(id: EntityID<Int>) : IntEntity(id) {

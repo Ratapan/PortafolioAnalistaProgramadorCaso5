@@ -1,17 +1,21 @@
 package app.views
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Divider
+import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import app.navigation.ContentView
 import app.views.dashboard_views.dashboard_main.dashboard
 import app.views.dashboard_views.manage_appointment.registerAppointment
+import app.views.dashboard_views.manage_hours.hoursView
 import app.views.dashboard_views.manage_user.userView
 
 @Composable
@@ -29,7 +33,7 @@ fun menu(onBack: () -> Unit) {
                     modifier = Modifier.padding(5.dp))
                 MenuButton("Dashboard", { contentState = ContentView.ContentViewDashboard })
                 MenuButton("Administrar Citas", { contentState = ContentView.ContentViewAppointment })
-                MenuButton("Administrar Horarios", {})
+                MenuButton("Administrar Horarios", { contentState = ContentView.ContentViewHours })
                 MenuButton("Administrar Usuarios", { contentState = ContentView.ContentViewUser })
             }
             Column(modifier = Modifier
@@ -59,6 +63,9 @@ fun menu(onBack: () -> Unit) {
 
                 is ContentView.ContentViewUser ->
                     userView()
+
+                is ContentView.ContentViewHours ->
+                    hoursView()
             }
         }
     }

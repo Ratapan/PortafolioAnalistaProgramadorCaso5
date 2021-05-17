@@ -9,6 +9,7 @@ sealed class ContentView {
     object ContentViewDashboard : ContentView()
     object ContentViewAppointment : ContentView()
     object ContentViewUser : ContentView()
+    object ContentViewHours : ContentView()
 }
 
 sealed class UserView {

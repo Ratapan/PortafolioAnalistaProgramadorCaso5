@@ -80,6 +80,11 @@ fun dayPicker(
     val yearMonthObject = YearMonth.of(selectYear.toInt(), selectMonth.toInt())
     val maxDays = yearMonthObject.lengthOfMonth()
 
+    var dayText by remember { mutableStateOf(selectDay) }
+    if (dayText.length > 2) {
+        dayText = dayText.takeLast(2)
+    }
+
     Row ( verticalAlignment = Alignment.CenterVertically
     ) {
         TextField(value = selectDay,
@@ -92,12 +97,30 @@ fun dayPicker(
                     if (it.length <= 3) {
                         dayValue = it.filter { it.isDigit() }.toInt()
                     }
+                    dayText += dayValue.toString().last()
                     when {
                         dayValue < 1 -> {
                             setSelectedDay(1.toString())
                         }
                         dayValue >= maxDays -> {
-                            setSelectedDay(maxDays.toString())
+                            when(dayText.takeLast(2).first()) {
+                                '0' -> {
+                                    setSelectedDay(dayText.takeLast(1))
+                                }
+                                '1', '2' -> {
+                                    setSelectedDay(dayText.takeLast(2))
+                                }
+                                '3' -> {
+                                    if (dayText.takeLast(1).toInt() > 1) {
+                                        setSelectedDay(maxDays.toString())
+                                    } else {
+                                        setSelectedDay(dayText.takeLast(2))
+                                    }
+                                }
+                                else -> {
+                                    setSelectedDay(maxDays.toString())
+                                }
+                            }
                         }
                         else -> {
                             setSelectedDay(dayValue.toString())

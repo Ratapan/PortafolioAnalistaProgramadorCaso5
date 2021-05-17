@@ -8,18 +8,20 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 
 @Composable
-fun dropdownSelect(name: String, list: List<Pair<Any, String>>, selectedValue: Int, setSelectedValue: (Int) -> Unit) {
+fun dropdownSelect(name: String, list: List<Pair<Any, String>>, selectedValue: Int, setSelectedValue: (Int) -> Unit, arrangement: Any = Arrangement.SpaceBetween) {
     var expanded by remember { mutableStateOf(false) }
     Row (
         modifier = Modifier
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = arrangement as Arrangement.Horizontal
     ) {
         Text("$name:", fontSize = 20.sp)
+        Spacer(modifier = Modifier.width(10.dp))
         Box {
             OutlinedButton(
                 onClick = {
@@ -30,7 +32,6 @@ fun dropdownSelect(name: String, list: List<Pair<Any, String>>, selectedValue: I
             ) {
                 Text(list[selectedValue].second, color = Color.Black)
             }
-
             DropdownMenu(
                 expanded = expanded,
                 onDismissRequest = { expanded = false },

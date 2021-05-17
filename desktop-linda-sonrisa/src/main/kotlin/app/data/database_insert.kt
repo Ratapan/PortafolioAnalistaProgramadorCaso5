@@ -29,9 +29,8 @@ fun insertEmpleado(
     finContrato: LocalDate,
     AFP: String,
     nombreBanco: String,
-    numeroBanco: Long,
-    tipoCuenta: String,
-    sucursal: Int,
+    numeroCuenta: Long,
+    id_tipo_empleado: Int,
     imagenFile: ByteArray
 ):Boolean {
     val userId = insertUser(email, password, rut, nombre, direccion, fechaNac, eliminado, rol)
@@ -41,17 +40,15 @@ fun insertEmpleado(
             it[id] = 0
             val phoneNumberInt = phoneNumber
                 .replace("\\s".toRegex(), "")
-                .replace("[+]".toRegex(), "")
-            it[num_telefono] = phoneNumberInt.toLong()
+            it[num_telefono] = phoneNumberInt
             it[salud_empleado] = saludEmpleado
             it[salario] = salarioValue
             it[inicio_contrato] = inicioContrato
             it[fin_contrato] = finContrato
             it[afp] = AFP
             it[nombre_banco] = nombreBanco
-            it[numero_banco] = numeroBanco
-            it[tipo_cuenta] = tipoCuenta
-            it[id_sucursal] = sucursal
+            it[numero_cuenta] = numeroCuenta
+            it[id_tipo_emp] = id_tipo_empleado
             if (!imagenFile.contentEquals(File(blankProfilePicture.toURI()).readBytes())) {
                 it[imagen] = ExposedBlob(imagenFile)
             }
@@ -83,8 +80,7 @@ fun insertPaciente(
             it[id] = 0
             val phoneNumberInt = phoneNumber
                 .replace("\\s".toRegex(), "")
-                .replace("[+]".toRegex(), "")
-            it[num_telefono] = phoneNumberInt.toLong()
+            it[num_telefono] = phoneNumberInt
             it[salud_paciente] = saludEmpleado
             if (!documentoFile.contentEquals(File(blankProfilePicture.toURI()).readBytes())) {
                 it[documento] = ExposedBlob(documentoFile)
@@ -114,10 +110,9 @@ fun insertProveedor(
         addLogger(StdOutSqlLogger)
         Proveedores.insert {
             it[id] = 0
-            val phoneNumberInt = phoneNumber
-                .replace("\\s".toRegex(), "")
+            val phoneNumber = phoneNumber
                 .replace("[+]".toRegex(), "")
-            it[num_telefono_empresa] = phoneNumberInt.toLong()
+            it[num_telefono_empresa] = phoneNumber
             it[id_user] = userId
         }
     }
@@ -142,10 +137,9 @@ fun insertAdmin(
         addLogger(StdOutSqlLogger)
         Administradores.insert {
             it[id] = 0
-            val phoneNumberInt = phoneNumber
+            val phoneNumber = phoneNumber
                 .replace("\\s".toRegex(), "")
-                .replace("[+]".toRegex(), "")
-            it[num_telefono] = phoneNumberInt.toLong()
+            it[num_telefono] = phoneNumber
             it[id_user] = userId
         }
     }

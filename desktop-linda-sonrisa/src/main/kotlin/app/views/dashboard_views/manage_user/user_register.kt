@@ -46,8 +46,8 @@ private val roles = transaction {
     Rol.all().toList().map{ it.id.value to it.nombre }
 }
 
-private val sucursales = transaction {
-    Sucursal.all().toList().map{ it.id.value to it.nombre }
+private val tiposEmpleados = transaction {
+    Tipo_Empleado.all().toList().map{ it.id.value to it.nombre }
 }
 
 private val eliminado = listOf(
@@ -100,9 +100,8 @@ fun userRegister() {
     val (finContrato, setFinContrato) = remember { mutableStateOf(LocalDate.of(1970, 1, 1)) }
     val (AFP, setAFP) = remember { mutableStateOf("") }
     val (nombreBanco, setNombreBanco) = remember { mutableStateOf("") }
-    val (numeroBanco, setNumeroBanco) = remember { mutableStateOf(0.toLong()) }
-    val (tipoCuenta, setTipoCuenta) = remember { mutableStateOf("") }
-    val (sucursal, setSucursal) = remember { mutableStateOf(0) }
+    val (numeroCuenta, setNumeroCuenta) = remember { mutableStateOf(0.toLong()) }
+    val (tipoEmpleado, setTipoEmpleado) = remember { mutableStateOf(0) }
     val (imagen, setImagen) = remember { mutableStateOf(File(blankProfilePicture.toURI()).readBytes()) }
 
     //Paciente
@@ -110,11 +109,14 @@ fun userRegister() {
 
     // Confirm
     val (confirmWindow, setConfirmWindow) = remember { mutableStateOf(false) }
+    println(
+        LocalDate.of(selectedYear.toInt(), selectedMonth.toInt(), selectedDay.toInt())
+    )
 
     confirmWindowDialog(confirmWindow, setConfirmWindow,
         email, password, rut, nombre, direccion, selectedYear, selectedMonth, selectedDay, selectedEliminado, selectedRol,
         phoneNumber,
-        saludEmpleado, salario, inicioContrato, finContrato, AFP, nombreBanco, numeroBanco, tipoCuenta, sucursal, imagen,
+        saludEmpleado, salario, inicioContrato, finContrato, AFP, nombreBanco, numeroCuenta, imagen, tipoEmpleado,
         file
     )
 
@@ -311,10 +313,9 @@ fun userRegister() {
                     finContrato, setFinContrato,
                     AFP, setAFP,
                     nombreBanco, setNombreBanco,
-                    numeroBanco, setNumeroBanco,
-                    tipoCuenta, setTipoCuenta,
-                    sucursal, setSucursal,
-                    imagen, setImagen
+                    numeroCuenta, setNumeroCuenta,
+                    imagen, setImagen,
+                    tipoEmpleado, setTipoEmpleado
                 )
             } else if (roles[selectedRol].second == "Proveedor") {
                 registerProveedorView(phoneNumber, setPhoneNumber)
@@ -430,10 +431,9 @@ fun confirmWindowDialog(
     finContrato: LocalDate,
     AFP: String,
     nombreBanco: String,
-    numeroBanco: Long,
-    tipoCuenta: String,
-    sucursal: Int,
+    numeroCuenta: Long,
     imagen: ByteArray,
+    tipoEmpleado: Int,
     file: ByteArray
 ) {
     if (confirmWindow) {
@@ -459,8 +459,8 @@ fun confirmWindowDialog(
                             phoneNumber,
                             salud_e[saludEmpleado].first, salario,
                             inicioContrato, finContrato,
-                            AFP, nombreBanco, numeroBanco,
-                            tipoCuenta, sucursales[sucursal].first, imagen
+                            AFP, nombreBanco, numeroCuenta,
+                            tiposEmpleados[tipoEmpleado].first, imagen
                         )
                     } else if (roles[selectedRol].second == "Proveedor") {
                         insertProveedor(
@@ -577,7 +577,7 @@ fun registerPacienteView(
 
         formSpacer(modifier = Modifier.height(10.dp), correctPhoneNumber, "Invalid phone number.")
 
-        dropdownSelect("Salud Empleado", salud_e, saludEmpleado, setSaludEmpleado)
+        dropdownSelect("Salud Paciente", salud_e, saludEmpleado, setSaludEmpleado)
 
         formSpacer(modifier = Modifier.height(10.dp))
 
@@ -658,14 +658,12 @@ fun registerEmpleadoView(
     setAFP: (String) -> Unit,
     nombreBanco: String,
     setNombreBanco: (String) -> Unit,
-    numeroBanco: Long,
-    setNumeroBanco: (Long) -> Unit,
-    tipoCuenta: String,
-    setTipoCuenta: (String) -> Unit,
-    sucursal: Int,
-    setSucursal: (Int) -> Unit,
+    numeroCuenta: Long,
+    setNumeroCuenta: (Long) -> Unit,
     imagen: ByteArray,
-    setImagen: (ByteArray) -> Unit
+    setImagen: (ByteArray) -> Unit,
+    tipoEmpleado: Int,
+    setTipoEmpleado: (Int) -> Unit,
 ) {
 
     val (correctPhoneNumber, setCorrectPhoneNumber) = remember { mutableStateOf(false) }
@@ -753,6 +751,7 @@ fun registerEmpleadoView(
 
             datePickerWithLocalDate("Fin Contrato", finContrato, setFinContrato)
 
+
             formSpacer(modifier = Modifier.height(10.dp))
 
             OutlinedTextField(value = AFP,
@@ -775,42 +774,32 @@ fun registerEmpleadoView(
 
             formSpacer(modifier = Modifier.height(10.dp))
 
-            OutlinedTextField(value = numeroBanco.toString(),
+            OutlinedTextField(value = numeroCuenta.toString(),
                 onValueChange = {
                     if (it.isEmpty()) {
-                        setNumeroBanco(0)
+                        setNumeroCuenta(0)
                     } else {
                         if (it.length > 0 ){
                             val value = it
                                 .filter { it.isDigit() }
                                 .toLong()
-                            if (numeroBanco == 0.toLong()) {
-                                setNumeroBanco(value/10)
+                            if (numeroCuenta == 0.toLong()) {
+                                setNumeroCuenta(value/10)
                             } else {
-                                setNumeroBanco(value)
+                                setNumeroCuenta(value)
                             }
                         } else {
-                            setNumeroBanco(0)
+                            setNumeroCuenta(0)
                         }
                     }
                 },
-                label = { Text("Numero Banco") },
+                label = { Text("Numero Cuenta") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true)
 
             formSpacer(modifier = Modifier.height(10.dp))
 
-            OutlinedTextField(value = tipoCuenta,
-                onValueChange = {
-                    setTipoCuenta(it)
-                },
-                label = { Text("Tipo Cuenta") },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true)
-
-            formSpacer(modifier = Modifier.height(10.dp), correctPhoneNumber, "Invalid phone number.")
-
-            dropdownSelect("Sucursal", sucursales, sucursal, setSucursal)
+            dropdownSelect("Tipo Empleado", tiposEmpleados, tipoEmpleado, setTipoEmpleado)
         }
         Spacer(modifier=Modifier.width(20.dp))
         Column (
