@@ -24,9 +24,22 @@ class CitasController extends Controller
         $newCita->save();
 
         $horaEdit = hora::find($request->id_hora);
-        $horaEdit->estado = 'T';
+        $horaEdit->estado_hora = 'T';
         $horaEdit->save();
+
         return response()->json([$newCita,$horaEdit], 200);
+    }
+    public function cancel(Request $request){
+        
+        $citaEdit = cita::find($request->id_cita);
+        $citaEdit->estado = 'C';
+        $citaEdit->save();
+
+        $horaEdit = hora::find($request->id_hora);
+        $horaEdit->estado_hora = 'D';
+        $horaEdit->save();
+        
+        return response()->json("Cancelación exitosa", 200);
     }
 
     public function getUs(Request $request){
@@ -41,6 +54,8 @@ class CitasController extends Controller
         $fecha = Carbon::now();
         $id_paciente = DB::table('pacientes')->select('id_paciente')->where('USERS_ID_USER', $request->id_user)->value('id_paciente');
         $citas   = cita::orderBy('fecha_solicitacion','asc')
+                    //->join('horas', 'horas.id_hora' , '=' , 'citas.horas_id_hora' )
+                    //->join('empleados', 'empleados.id_empleado' , '=', 'horas.empleados_id_empleado')
                     ->where('pacientes_id_paciente', $id_paciente)
                     ->where('fecha_solicitacion','>=',$request->fecha)
                     ->where('estado', 'R')
@@ -70,5 +85,21 @@ class CitasController extends Controller
         $cita = cita::where('horas_id_hora', $request->id);
         $cita->delete();
         return response()->json([$cita], 300);
+    }
+
+    public function getHourCitas(Request $request)
+    {
+        $id_emp = DB::table('empleados')->select('id_empleado')->where('USERS_ID_USER', $request->id_user)->value('id_empleado');
+        $servicios = cita::orderBy('inicio_hora','asc')
+                    
+
+                    ->join('horas', 'horas.id_hora' , '=' , 'citas.horas_id_hora' )
+                    ->join('empleados', 'empleados.id_empleado', '=', 'horas.empleados_id_empleado')
+                    ->join('pacientes', 'pacientes.id_paciente', '=', 'citas.pacientes_id_paciente')
+                    ->join('users', 'users.id_user', '=', 'pacientes.users_id_user')
+                    
+                    ->where('id_empleado' , $id_emp)
+                    ->paginate(15);
+        return response()->json($servicios,200);
     }
 }

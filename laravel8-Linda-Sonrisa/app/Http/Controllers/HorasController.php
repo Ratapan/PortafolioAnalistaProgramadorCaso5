@@ -18,7 +18,7 @@ class HorasController extends Controller
         $newHora = new hora();
         $newHora->inicio_hora             = $request->inicio;
         $newHora->fin_hora                = $request->fin;
-        $newHora->estado                = 'D';
+        $newHora->estado_hora                = 'D';
         $newHora->empleados_id_empleado   = $id_emp;
         $newHora->save();
         return response()->json([$newHora], 200);
@@ -52,23 +52,24 @@ class HorasController extends Controller
                     ->paginate(15);
         return response()->json($servicios,200);
     }
-    public function getHourCitas(Request $request)
-    {
-        $id_emp = DB::table('empleados')->select('id_empleado')->where('USERS_ID_USER', $request->id_user)->value('id_empleado');
-        $servicios = hora::orderBy('inicio_hora','asc')
-                    ->where('empleados_id_empleado' , $id_emp)
-                    ->where('estado', 'T')
-                    ->join('users', 'users.id_user', '=', 'empleados.users_id_user')
-                    ->paginate(15);
-        return response()->json($servicios,200);
-    }
+    //public function getHourCitas(Request $request)
+    //{
+    //    $id_emp = DB::table('empleados')->select('id_empleado')->where('USERS_ID_USER', $request->id_user)->value('id_empleado');
+    //    $servicios = hora::orderBy('inicio_hora','asc')
+    //                ->where('estado', 'T')
+    //                ->join('empleados', 'empleados.id_empleado', '=', 'horas.empleados_id_empleado')
+    //                ->join('citas', 'citas.horas_id_hora', '=', 'horas.id_hora')
+    //                ->where('id_empleado' , $id_emp)
+    //                ->paginate(15);
+    //    return response()->json($servicios,200);
+    //}
 
     public function getDent(Request $request){
         $servicios = hora::orderBy('inicio_hora','asc')
                     ->where('empleados_id_empleado', $request->id_emp)
                     ->where('inicio_hora','>=',$request->fini) 
                     ->where('inicio_hora','<=',$request->ffin) 
-                    ->where('estado', 'D')
+                    ->where('estado_hora', 'D')
                     ->paginate(15);
         return response()->json($servicios,200);
     }

@@ -74,7 +74,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="hora in horas" :key="hora">
+          <tr v-for="hora in horas" :key="hora" :class="statusColor(hora.estado_hora)">
             <td>{{hora.inicio_hora}}</td>
             <td>{{hora.fin_hora}}</td>
             <td>  
@@ -162,7 +162,15 @@ export default {
         this.horas = response.data.data;
         console.log(this.horas)
       });
-    }
+    },
+    statusColor(st){
+      if(st == "T"){
+        return "table-success"
+      }
+      if(st == "D"){
+        return "table-light"
+      }
+    },
 
   }
 };
