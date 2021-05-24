@@ -70,14 +70,15 @@
     <div class="row">
       <div class="col-1"></div>
       <div class="col-3 text-left">
-        <label>Rut:</label>
+        <label>Numero:</label>
       </div>
       <div class="col-7">
-        <label>{{verCita.nombre_ape}}</label>
+        <label>+56{{verCita.num_telefono_pa}}</label>
       </div>
     </div>
     <br>
-    
+    <button v-if="verCita.estado == 'R'" type="button" class="btn btn-danger"  @click="terminarHoraCita(verCita.id_cita)">Terminar</button>
+    <button v-if="verCita.estado == 'R'" type="button" class="btn btn-danger"  @click="terminarHoraCita(verCita.id_cita)">Terminar</button>
     <br>
   </b-modal>
 
@@ -179,6 +180,7 @@ export default {
           id_cita:     ci,
         })
         .then((response) => {
+          this.getCitaHoras();
           this.$swal({
               title:
                 "Hora cancelada.",
@@ -187,7 +189,46 @@ export default {
               showConfirmButton: false
             });
           console.log(response);
+        })
+        .catch((err) => {
+          this.error = err;
+        });
+    },
+    terminarHoraCita(ci) {
+      this.$axios
+        .put("http://127.0.0.1:8000/api/cita/end", {
+          id_cita:     ci,
+        })
+        .then((response) => {
           this.getCitaHoras();
+          this.$swal({
+              title:
+                "Cita terminada.",
+              icon: "success",
+              timer: 3000,
+              showConfirmButton: false
+            });
+          console.log(response);
+        })
+        .catch((err) => {
+          this.error = err;
+        });
+    },
+    aCita(ci) {
+      this.$axios
+        .put("http://127.0.0.1:8000/api/cita/end", {
+          id_cita:     ci,
+        })
+        .then((response) => {
+          this.getCitaHoras();
+          this.$swal({
+              title:
+                "Cita terminada.",
+              icon: "success",
+              timer: 3000,
+              showConfirmButton: false
+            });
+          console.log(response);
         })
         .catch((err) => {
           this.error = err;
@@ -198,4 +239,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+  button{
+    margin-left:  3px;
+    margin-right: 3px;
+  }
+</style>

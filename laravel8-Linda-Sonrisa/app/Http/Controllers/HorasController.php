@@ -48,7 +48,7 @@ class HorasController extends Controller
 
     public function getAll(Request $request)
     {
-        $servicios = hora::orderBy('inicio_hora','asc')
+        $servicios = hora::orderBy('inicio_hora','desc')
                     ->paginate(15);
         return response()->json($servicios,200);
     }
@@ -65,7 +65,7 @@ class HorasController extends Controller
     //}
 
     public function getDent(Request $request){
-        $servicios = hora::orderBy('inicio_hora','asc')
+        $servicios = hora::orderBy('inicio_hora','desc')
                     ->where('empleados_id_empleado', $request->id_emp)
                     ->where('inicio_hora','>=',$request->fini) 
                     ->where('inicio_hora','<=',$request->ffin) 

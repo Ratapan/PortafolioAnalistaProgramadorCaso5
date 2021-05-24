@@ -1,15 +1,14 @@
 <template>
   <div class="container">
-    <br>
-    <div class="row flex-d justify-content-around">
-      <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 d-flex justify-content-center">
+    <div class="row flex-d justify-content-center">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 d-flex justify-content-center list">
         <date-picker
-
           v-model="dateO"
           value-type="format"
           placeholder="Selecciona hora de fin"
         ></date-picker>
       </div>
+      <br>
       <br>
       <br>
       <!--<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
@@ -21,12 +20,11 @@
           </li>
         </ul>
       </div>-->
-      <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 list"  v-for="(hora,i) in horas" :key="i">
-            <br>
-            <button class="btn btn-info" @click="storeHora(hora.id_hora)">
-              {{ btnHora(hora.inicio_hora) }} | {{ btnHora(hora.fin_hora) }}
-            </button>
-
+      <div class="col-xl-3 col-lg-3 col-md-4 col-sm-4 d-flex justify-content-center list"  v-for="(hora,i) in horas" :key="i">
+        <br>
+        <button class="btn btn-info" @click="storeHora(hora.id_hora)">
+          {{ btnHora(hora.inicio_hora) }} | {{ btnHora(hora.fin_hora) }}
+        </button>
       </div>
     </div>
     <br><br>
@@ -141,7 +139,7 @@ export default {
 <style scoped>
 .list {
   list-style: none;
-  margin: 5px 0px;
+  margin: 15px 0px;
 }
 .space {
   margin: 30px 10px;

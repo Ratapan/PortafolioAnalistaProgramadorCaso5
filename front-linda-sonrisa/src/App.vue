@@ -2,7 +2,7 @@
   <div id="app">
       <!--<router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>-->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light">
       
         <a class="navbar-brand">Linda sonrisa</a>
         
@@ -63,13 +63,13 @@
               <router-link
                   class="nav-link dropdown-item dropdown-item-pyme"
                   style="border-radius: 500px"
-                  :to="{ name: 'appointmentRequestAct' }"
+                  :to="{ name: 'appointmentRequestAnt' }"
                   type="button"
                   data-toggle="collapse"
                   data-target="#navbarNav"
                   aria-expanded="false"
                 >
-                  Citas anteriores
+                  Citas inactivas
                 </router-link>
             </li>
           </ul>
@@ -100,7 +100,7 @@
                   Citas
                 </router-link>
             </li>
-            <li class="nav-item">
+            <!--<li class="nav-item">
               <router-link 
                   class="nav-link dropdown-item dropdown-item-pyme"
                   style="border-radius: 500px"
@@ -112,7 +112,7 @@
                 >
                   Realizar orden
                 </router-link>
-            </li>
+            </li>-->
           </ul>
           <ul class="navbar-nav" v-if="$store.getters.value != null && $store.getters.value.roles_id_rol == 4">
             <li class="nav-item">
@@ -170,11 +170,7 @@
       <router-view></router-view>
     </transition>
     </section>
-    <br><br>
-    <br><br>
-    <br><br>
-    <br><br>
-    <br><br>
+    <br>
     <footer-component class="footer"></footer-component>
   </div>
 </template>
@@ -196,19 +192,25 @@ export default {
 html, body{
   font-family: 'Montserrat', sans-serif;
   }
+.navbar-nav .nav-link {
+    padding-right:0;
+    padding-left: 0;
+}
 .pres{
-  min-height: 500px;
+  min-height: 800px;
   }
 .footer {
-        position: fixed;
-        padding: 10px 10px 0px 10px;
-        bottom: 0;
-        width: 100%;
-        height: 170px;
-        background: grey;
+  padding: 10px 10px 0px 10px;
+  bottom: 0;
+  width: 100%;
+  background: grey;
+}
+.nav{
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0px;
 }
 template{
   min-height:100%;
 }
 </style>
-

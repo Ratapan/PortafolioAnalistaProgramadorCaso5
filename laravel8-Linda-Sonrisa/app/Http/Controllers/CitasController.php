@@ -41,10 +41,18 @@ class CitasController extends Controller
         
         return response()->json("Cancelación exitosa", 200);
     }
+    public function terminar(Request $request){
+        
+        $citaEdit = cita::find($request->id_cita);
+        $citaEdit->estado = 'T';
+        $citaEdit->save();
+        
+        return response()->json("Cita terminada", 200);
+    }
 
     public function getUs(Request $request){
         $id_paciente = DB::table('pacientes')->select('id_paciente')->where('USERS_ID_USER', $request->id_user)->value('id_paciente');
-        $servicios   = cita::orderBy('fecha_solicitacion','asc')
+        $servicios   = cita::orderBy('fecha_solicitacion','desc')
                     ->where('pacientes_id_paciente', $id_paciente)
                     ->paginate(15);
         return response()->json($servicios,200);
@@ -53,9 +61,11 @@ class CitasController extends Controller
     public function getCitasActivas(Request $request){
         $fecha = Carbon::now();
         $id_paciente = DB::table('pacientes')->select('id_paciente')->where('USERS_ID_USER', $request->id_user)->value('id_paciente');
-        $citas   = cita::orderBy('fecha_solicitacion','asc')
-                    //->join('horas', 'horas.id_hora' , '=' , 'citas.horas_id_hora' )
-                    //->join('empleados', 'empleados.id_empleado' , '=', 'horas.empleados_id_empleado')
+        $citas   = cita::orderBy('fecha_solicitacion','desc')
+                    ->join('horas', 'horas.id_hora' , '=' , 'citas.horas_id_hora' )
+                    ->join('empleados', 'empleados.id_empleado' , '=', 'horas.empleados_id_empleado')
+                    ->join('users', 'users.id_user' , '=', 'empleados.users_id_user')
+                    //users_id_user
                     ->where('pacientes_id_paciente', $id_paciente)
                     ->where('fecha_solicitacion','>=',$request->fecha)
                     ->where('estado', 'R')
@@ -65,10 +75,15 @@ class CitasController extends Controller
     
     public function getCitasAntiguas(Request $request){
         $fecha = Carbon::now();
+
         $id_paciente = DB::table('pacientes')->select('id_paciente')->where('USERS_ID_USER', $request->id_user)->value('id_paciente');
-        $citas   = cita::orderBy('fecha_solicitacion','asc')
+        $citas   = cita::orderBy('fecha_solicitacion','desc')
+                    ->join('horas', 'horas.id_hora' , '=' , 'citas.horas_id_hora' )
+                    ->join('empleados', 'empleados.id_empleado' , '=', 'horas.empleados_id_empleado')
+                    ->join('users', 'users.id_user' , '=', 'empleados.users_id_user')
+                    //users_id_user
                     ->where('pacientes_id_paciente', $id_paciente)
-                    ->where('fecha_solicitacion','>=',$request->fecha)
+                    //->where('fecha_solicitacion','<=',$request->fecha)
                     ->whereIn('estado', ['C', 'T', 'A'])
                     ->paginate(15);
         return response()->json($citas,200);
@@ -90,7 +105,7 @@ class CitasController extends Controller
     public function getHourCitas(Request $request)
     {
         $id_emp = DB::table('empleados')->select('id_empleado')->where('USERS_ID_USER', $request->id_user)->value('id_empleado');
-        $servicios = cita::orderBy('inicio_hora','asc')
+        $servicios = cita::orderBy('inicio_hora','desc')
                     
 
                     ->join('horas', 'horas.id_hora' , '=' , 'citas.horas_id_hora' )

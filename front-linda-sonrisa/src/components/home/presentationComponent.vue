@@ -1,5 +1,5 @@
 <template>
-  <section class="container">
+  <div>
     <div class="row">
       <div class="col-12 d-flex justify-content-center">
         <div class="d-flex text-center">
@@ -17,20 +17,17 @@
     <br>
     <div class="row d-flex justify-content-around">
       <div class="col-xl-4 col-lg-5 col-md-6 col-sm-12 d-flex justify-content-center" v-for="se in services" :key="se">
-        <div>
           <div class="card cardfrm">
-            <img class="card-img-top" src="" alt="Card image cap">
             <div class="card-body">
               <h3>{{upperCase(se.nombre_servicio)}}</h3>
               <p class="card-text">{{upperCase(se.descripcion_servicio)}}</p>
             </div>
-          </div>
         </div>
       </div>
     </div>
     <br>
     <br>
-  </section>
+  </div>
 </template>
 
 <script>
@@ -76,8 +73,8 @@
 }
 .cardfrm{
   padding: 10px;
-  min-height: 250px;
-  min-width: 320px;
+  min-height: 200px;
+  width: 350px;
   margin: 15px 5px;
 }
 .card-body {

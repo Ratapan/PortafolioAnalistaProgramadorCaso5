@@ -63,7 +63,7 @@
 
 
 
-  <b-modal size="xl" id="modal-1" title="Horas">
+  <b-modal size="xl" id="modal-1" title="Horas" hide-footer>
       <cita-request-component 
         :empleado="empleado" 
       />

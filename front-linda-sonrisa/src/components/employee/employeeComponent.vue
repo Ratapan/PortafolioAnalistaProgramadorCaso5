@@ -68,15 +68,15 @@
       <table class="table">
         <thead>
           <tr>
-            <th scope="col"><h3> Inicio hora </h3></th>
-            <th scope="col"><h3>Fin hora</h3></th>
+            <th scope="col"><h3> Día </h3></th>
+            <th scope="col"><h3>Inicio y fin de hora</h3></th>
             <th scope="col"><h3>Acciones</h3></th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="hora in horas" :key="hora" :class="statusColor(hora.estado_hora)">
-            <td>{{hora.inicio_hora}}</td>
-            <td>{{hora.fin_hora}}</td>
+            <td>{{formDate(hora.inicio_hora)}}</td>
+            <td>{{formHora(hora.inicio_hora)}}-{{formHora(hora.fin_hora)}}</td>
             <td>  
               <div class="row flex-d justify-content-around">
                 <button type="button" class="btn btn-warning">Editar</button>
@@ -111,6 +111,21 @@ export default {
     this.getHoras();
   },
   methods: {
+    formHora(hr) {
+      let hora = new Date(hr);
+      return `${this.addZero(hora.getHours(), 2)}:${this.addZero(hora.getMinutes(),2)}`;
+    },
+    formDate(dt) {
+      let date = new Date(dt);
+      return `${this.addZero(date.getDate(), 2)}/${this.addZero(date.getMonth()+1,2)}`;
+    },
+    addZero(a, b) {
+      if (a.toString().length < b) {
+        return `0${a}`;
+      } else {
+        return `${a}`;
+      }
+    },
     sta(){
       if(this.stat == false){this.stat = true}else{this.stat = false}
     },
@@ -128,7 +143,6 @@ export default {
           inicio:     `${this.dayHour} ${this.iniHour}`,
           fin:        `${this.dayHour} ${this.endHour}`,
           id_user:     this.$store.getters.value.id_user,
-                      
         })
         .then((response) => {
           console.log(response);
