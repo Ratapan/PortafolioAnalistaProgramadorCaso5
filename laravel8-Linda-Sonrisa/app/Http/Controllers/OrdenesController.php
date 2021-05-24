@@ -30,6 +30,10 @@ class OrdenesController extends Controller
         $newDetalle->ordenes_id_orden                      = $id_orden;
         $newDetalle->save();
 
+        $newOrden = orden::find($id_orden);
+        $newOrden->precio_total = '123';//aqui va la suma de todos los precios
+        $newOrden->save();
+
         return response()->json([$newOrden,$newDetalle], 200);
 
     }
