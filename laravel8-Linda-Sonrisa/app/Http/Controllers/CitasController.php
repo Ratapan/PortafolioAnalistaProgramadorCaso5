@@ -30,10 +30,10 @@ class CitasController extends Controller
         return response()->json([$newCita,$horaEdit], 200);
     }
     public function cancel(Request $request){
-        $citaEdit = cita::where('horas_id_hora', $request->id)->first();
+        $citaEdit = cita::where('id_cita', $request->id_cita)->first();
             $citaEdit->estado = 'C';
             $citaEdit->save();
-            $horaEdit = hora::find($request->id);
+            $horaEdit = hora::find($request->id_hora);
             $horaEdit->estado_hora = 'D';
             $horaEdit->save();
             return response()->json([$citaEdit, $horaEdit], 300);

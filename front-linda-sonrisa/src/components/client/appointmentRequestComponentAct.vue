@@ -19,7 +19,7 @@
             <td>{{formDate(cita.inicio_hora)}} {{formHora(cita.inicio_hora)}}</td>
             <td>{{cita.nombre_ape}}</td>
             <td>
-              <button type="button" class="btn btn-danger" @click="deleteCita(cita.horas_id_hora)">Cancelar</button>
+              <button type="button" class="btn btn-danger" @click="deleteCita(cita.id_cita,cita.horas_id_hora)">Cancelar</button>
             </td>
           </tr>
         </tbody>
@@ -78,13 +78,14 @@ methods:{
       return `${a}`;
     }
   },
-  deleteCita(id){
+  deleteCita(id_cita,id_hora){
       //
-      console.log(id)
+      console.log(id_cita,id_hora)
 
       this.$axios
         .post("http://127.0.0.1:8000/api/cita/cancel", {
-          id:  id
+          id_cita:  id_cita,
+          id_hora:  id_hora
         })
         .then((response) => {
           console.log(response)
