@@ -146,6 +146,7 @@ class ComposerStaticInitfb1a2fee53e5b3ebf155acd320650d81
         'F' => 
         array (
             'Fruitcake\\Cors\\' => 15,
+            'Freshwork\\ChileanBundle\\' => 24,
             'Fideloper\\Proxy\\' => 16,
             'Faker\\' => 6,
             'Facade\\Ignition\\' => 16,
@@ -435,6 +436,10 @@ class ComposerStaticInitfb1a2fee53e5b3ebf155acd320650d81
         array (
             0 => __DIR__ . '/..' . '/fruitcake/laravel-cors/src',
         ),
+        'Freshwork\\ChileanBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/freshwork/chilean-bundle/src',
+        ),
         'Fideloper\\Proxy\\' => 
         array (
             0 => __DIR__ . '/..' . '/fideloper/proxy/src',
@@ -522,8 +527,13 @@ class ComposerStaticInitfb1a2fee53e5b3ebf155acd320650d81
     public static $classMap = array (
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
+        'App\\Http\\Controllers\\CitasController' => __DIR__ . '/../..' . '/app/Http/Controllers/CitasController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\EmployeesController' => __DIR__ . '/../..' . '/app/Http/Controllers/EmployeesController.php',
+        'App\\Http\\Controllers\\HorasController' => __DIR__ . '/../..' . '/app/Http/Controllers/HorasController.php',
+        'App\\Http\\Controllers\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/LoginController.php',
+        'App\\Http\\Controllers\\OrdenesController' => __DIR__ . '/../..' . '/app/Http/Controllers/OrdenesController.php',
+        'App\\Http\\Controllers\\ServiceController' => __DIR__ . '/../..' . '/app/Http/Controllers/ServiceController.php',
         'App\\Http\\Controllers\\pacienteController' => __DIR__ . '/../..' . '/app/Http/Controllers/pacienteController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
@@ -1442,6 +1452,11 @@ class ComposerStaticInitfb1a2fee53e5b3ebf155acd320650d81
         'Faker\\ValidGenerator' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/ValidGenerator.php',
         'Fideloper\\Proxy\\TrustProxies' => __DIR__ . '/..' . '/fideloper/proxy/src/TrustProxies.php',
         'Fideloper\\Proxy\\TrustedProxyServiceProvider' => __DIR__ . '/..' . '/fideloper/proxy/src/TrustedProxyServiceProvider.php',
+        'Freshwork\\ChileanBundle\\Exceptions\\InvalidFormatException' => __DIR__ . '/..' . '/freshwork/chilean-bundle/src/Exceptions/InvalidFormatException.php',
+        'Freshwork\\ChileanBundle\\Facades\\Rut' => __DIR__ . '/..' . '/freshwork/chilean-bundle/src/Facades/Rut.php',
+        'Freshwork\\ChileanBundle\\Laravel\\ChileanBundleServiceProvider' => __DIR__ . '/..' . '/freshwork/chilean-bundle/src/Laravel/ChileanBundleServiceProvider.php',
+        'Freshwork\\ChileanBundle\\Laravel\\Facades\\Rut' => __DIR__ . '/..' . '/freshwork/chilean-bundle/src/Laravel/Facades/Rut.php',
+        'Freshwork\\ChileanBundle\\Rut' => __DIR__ . '/..' . '/freshwork/chilean-bundle/src/Rut.php',
         'Fruitcake\\Cors\\CorsServiceProvider' => __DIR__ . '/..' . '/fruitcake/laravel-cors/src/CorsServiceProvider.php',
         'Fruitcake\\Cors\\HandleCors' => __DIR__ . '/..' . '/fruitcake/laravel-cors/src/HandleCors.php',
         'GrahamCampbell\\ResultType\\Error' => __DIR__ . '/..' . '/graham-campbell/result-type/src/Error.php',

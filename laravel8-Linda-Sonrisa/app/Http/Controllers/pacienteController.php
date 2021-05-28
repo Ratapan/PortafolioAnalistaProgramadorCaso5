@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\paciente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use ValidateRequests;
 
 class pacienteController extends Controller
 {
@@ -16,6 +17,11 @@ public function register(Request $request)
                 return response()->json("El email ya existe", 500);
         }
         else{
+                $this->validate($request, [
+                        'rut'   => 'required|cl_rut',
+                        'telefono' => 'required|regex:/^(^[+][0-9]{10,15}$)$/|min:12'
+                    ]);
+
                 $newUser = new User;
                 $newUser->email = $request->email;
                 $newUser->password = Hash::make($request->password, ['rounds' => 12,]);
