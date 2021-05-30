@@ -7,6 +7,9 @@ import org.jetbrains.skija.Image
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 import javax.imageio.ImageIO
 
 private val blankProfilePicture = {}.javaClass.classLoader.getResource("images/blank-profile-picture.png")!!
@@ -35,4 +38,20 @@ fun fileIsEmpty(file: File): String {
             file.absolutePath
         }
     }
+}
+
+fun getDailySlot(startTime: Instant, endTime: Instant, minTime: Instant):Int{
+    val difference = startTime.toEpochMilli()-minTime.toEpochMilli()
+    val duration = endTime.toEpochMilli()-startTime.toEpochMilli()
+    println("Difference $difference")
+    println("Duration $duration")
+    return (difference/duration).toInt()
+}
+
+fun main() {
+    val minTime = LocalDateTime.of(2021, 5, 18, 9, 0).toInstant(ZoneOffset.UTC)
+    val startTime = LocalDateTime.of(2021, 5, 18, 11, 0).toInstant(ZoneOffset.UTC)
+    val endTime = LocalDateTime.of(2021, 5, 18, 11, 30).toInstant(ZoneOffset.UTC)
+    println(getDailySlot(startTime, endTime, minTime))
+
 }

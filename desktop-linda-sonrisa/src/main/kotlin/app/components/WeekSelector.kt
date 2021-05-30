@@ -22,7 +22,8 @@ private val down = Icons.Default.KeyboardArrowDown
 @Composable
 fun weekPickerWithLocalDate(title: String,
                             selectLocalDate: LocalDate,
-                            setSelectedLocalDate: (LocalDate) -> Unit
+                            setSelectedLocalDate: (LocalDate) -> Unit,
+                            disabled: Boolean = false
 ) {
     // DatePicker
     val (selectedDay, setSelectedDay) = remember { mutableStateOf(selectLocalDate.dayOfMonth.toString())}
@@ -38,11 +39,11 @@ fun weekPickerWithLocalDate(title: String,
         ) {
             Text("${title}:", fontSize = 20.sp)
             Spacer(modifier = Modifier.width(10.dp))
-            dayPicker(selectedDay, setSelectedDay, selectedMonth, selectedYear, modifier = Modifier)
+            dayPicker(selectedDay, setSelectedDay, selectedMonth, selectedYear, modifier = Modifier, disabled)
             Spacer(modifier = Modifier.width(10.dp))
-            monthPicker(selectedMonth, setSelectedMonth)
+            monthPicker(selectedMonth, setSelectedMonth, disabled)
             Spacer(modifier = Modifier.width(10.dp))
-            yearPicker(selectedYear, setSelectedYear)
+            yearPicker(selectedYear, setSelectedYear, disabled)
         }
         val DateOfStartWeek = selectLocalDate.with(DayOfWeek.MONDAY)
         val DateOfEndWeek = selectLocalDate.with(DayOfWeek.SUNDAY)

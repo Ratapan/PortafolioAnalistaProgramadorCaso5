@@ -7,7 +7,7 @@ import java.util.regex.Pattern
  * Validación de RUT Chileno
  * algoritmo Modulo 11
  */
-object validator {
+object Validator {
     /**
      * Valida rut de la forma XXXXXXXX-X
      */

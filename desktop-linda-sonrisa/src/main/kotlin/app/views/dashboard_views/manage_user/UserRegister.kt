@@ -24,9 +24,9 @@ import app.components.datePickerWithLocalDate
 import app.components.dropdownSelect
 import app.components.formSpacer
 import app.data.*
-import app.data.validator.email
-import app.data.validator.phoneNumberValidator
-import app.data.validator.validaRut
+import app.data.Validator.email
+import app.data.Validator.phoneNumberValidator
+import app.data.Validator.validaRut
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
 import java.io.FileInputStream
@@ -565,7 +565,7 @@ fun registerPacienteView(
             onValueChange = {
                 setPhoneNumber(it)
                 if (phoneNumber.isNotEmpty() && phoneNumber.isNotBlank()) {
-                    setCorrectPhoneNumber(validator.phoneNumberValidator(phoneNumber).not())
+                    setCorrectPhoneNumber(Validator.phoneNumberValidator(phoneNumber).not())
                 } else {
                     setCorrectPhoneNumber(false)
                 }

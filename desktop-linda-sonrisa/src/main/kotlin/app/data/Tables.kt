@@ -68,7 +68,7 @@ object Familia_Productos : IntIdTable("Familia_Productos", "ID_T_FAM") {
 object Horas : IntIdTable("Horas", "ID_HORA") {
     val hora_inicio: Column<Instant> = timestamp("INICIO_HORA")
     val hora_fin: Column<Instant> = timestamp("FIN_HORA")
-    val estado: Column<Char> = char("ESTADO")
+    val estado: Column<Char> = char("ESTADO_HORA")
     val id_empleado: Column<Int> = integer("EMPLEADOS_ID_EMPLEADO").references(Empleados.id)
     override val primaryKey = PrimaryKey(id, name = "Horas_PK_ID_HORA")
 }

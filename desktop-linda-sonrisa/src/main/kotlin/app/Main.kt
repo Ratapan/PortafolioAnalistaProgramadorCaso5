@@ -1,3 +1,5 @@
+package app
+
 import androidx.compose.desktop.LocalAppWindow
 import androidx.compose.desktop.Window
 import androidx.compose.runtime.*
@@ -7,11 +9,11 @@ import app.views.menu
 import org.jetbrains.exposed.sql.Database
 
 fun main() = Window {
-    Main()
+    mainWindow()
 }
 
 @Composable
-fun Main() {
+fun mainWindow() {
     Database.connect("jdbc:oracle:thin:@localhost:1521:xe", driver = "oracle.jdbc.driver.OracleDriver",
         user = "bd", password = "bd")
     var screenState by remember { mutableStateOf<MainView>(MainView.MainViewLogin) }

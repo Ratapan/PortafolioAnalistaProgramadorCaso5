@@ -7,7 +7,9 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.statements.api.ExposedBlob
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
 
 private val blankProfilePicture = {}.javaClass.classLoader.getResource("images/blank-profile-picture.png")!!
 
@@ -174,4 +176,61 @@ fun insertUser(
 
     return id.value
 
+}
+
+
+// Hour Edit
+fun hourEdit(
+    id: Int,
+    horaInicio: Instant,
+    horaFin: Instant,
+    estado: Char
+) {
+    transaction {
+        addLogger(StdOutSqlLogger)
+        val hora = Hora.findById(id)
+        hora?.estado = estado
+        hora?.hora_inicio = horaInicio.atZone(ZoneId.of("+0")).toInstant()
+        hora?.hora_fin = horaFin.atZone(ZoneId.of("+0")).toInstant()
+    }
+}
+
+fun hourInsert(
+    horaInicio: Instant,
+    horaFin: Instant,
+    estadoHora: Char,
+    idEmpleado: Int
+) {
+    transaction {
+        addLogger(StdOutSqlLogger)
+        Horas.insert {
+            it[id] = 0
+            it[hora_inicio] = horaInicio.atZone(ZoneId.of("+0")).toInstant()
+            it[hora_fin] = horaFin.atZone(ZoneId.of("+0")).toInstant()
+            it[estado] = estadoHora
+            it[id_empleado] = idEmpleado
+        }
+    }
+}
+
+// Appointments
+
+fun appointmentInsert(
+    fechaSolicitud: LocalDate = LocalDate.now(),
+    estadoCita: Char,
+    idPaciente: Int,
+    idHora: Int
+) {
+    transaction {
+        addLogger(StdOutSqlLogger)
+        Citas.insert {
+            it[id] = 0
+            it[fecha_solicitacion] = fechaSolicitud
+            it[estado] = estadoCita
+            it[id_hora] = idHora
+            it[id_paciente] = idPaciente
+        }
+        val hora = Hora.findById(idHora)
+        hora?.estado = 'T'
+    }
 }
