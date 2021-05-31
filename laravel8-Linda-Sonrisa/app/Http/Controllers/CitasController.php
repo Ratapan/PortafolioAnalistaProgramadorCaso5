@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\cita;
 use App\Models\hora;
+use App\Models\servicio;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -23,9 +24,17 @@ class CitasController extends Controller
         $newCita->horas_id_hora = $request->id_hora;
         $newCita->save();
 
+        //$idcita = $newCita->id_cita;
+
         $horaEdit = hora::find($request->id_hora);
         $horaEdit->estado_hora = 'T';
         $horaEdit->save();
+
+        /*Para la boleta
+        $newServicio = new servicio();
+        $newServicio->tipo_servicios_id_t_serv = 'T';
+        $newServicio->citas_id_cita = $idcita;
+        $newServicio->save();*/
 
         return response()->json([$newCita,$horaEdit], 200);
     }
