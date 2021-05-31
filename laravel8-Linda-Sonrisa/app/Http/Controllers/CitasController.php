@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\boleta;
 use Illuminate\Http\Request;
 use App\Models\cita;
 use App\Models\hora;
@@ -24,17 +25,9 @@ class CitasController extends Controller
         $newCita->horas_id_hora = $request->id_hora;
         $newCita->save();
 
-        //$idcita = $newCita->id_cita;
-
         $horaEdit = hora::find($request->id_hora);
         $horaEdit->estado_hora = 'T';
         $horaEdit->save();
-
-        /*Para la boleta
-        $newServicio = new servicio();
-        $newServicio->tipo_servicios_id_t_serv = 'T';
-        $newServicio->citas_id_cita = $idcita;
-        $newServicio->save();*/
 
         return response()->json([$newCita,$horaEdit], 200);
     }
@@ -52,6 +45,19 @@ class CitasController extends Controller
         $citaEdit = cita::find($request->id_cita);
         $citaEdit->estado = 'T';
         $citaEdit->save();
+
+        $newServicio = new servicio();
+        $newServicio->tipo_servicios_id_t_serv = $request->id_servicio;
+        $newServicio->citas_id_cita = $request->id_cita;
+        $newServicio->save();
+
+        $idservicio = $newServicio->id_servicio;
+
+        $newBoleta = new boleta();
+        $newBoleta->servicios_id_servicio = $idservicio;
+        $newBoleta->save();
+
+
         return response()->json("Cita terminada", 200);
     }
     public function atrasar(Request $request){

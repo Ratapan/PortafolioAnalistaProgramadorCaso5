@@ -73,7 +73,19 @@
         <label>Numero:</label>
       </div>
       <div class="col-7">
-        <label>+56{{verCita.num_telefono_pa}}</label>
+        <label>{{verCita.num_telefono_pa}}</label>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-1"></div>
+      <div class="col-3 text-left">
+        <label>Servicios:</label>
+      </div>
+      <div class="col-7">
+       <select v-model="servicio">
+         <option v-for="tipo_servicio in servicios" :key="tipo_servicio" :value="tipo_servicio.id_t_serv">{{ tipo_servicio.nombre_servicio }}</option>
+       </select>
       </div>
     </div>
     <br>
@@ -98,11 +110,13 @@ export default {
       user:  {},
       citas:[],
       verCita:[],
+      servicios:[],
     };
     
   },
   mounted() {
     this.getCitaHoras();
+    this.getService();
   },
   methods: {
     status(st){
@@ -198,6 +212,7 @@ export default {
       this.$axios
         .put("http://127.0.0.1:8000/api/cita/end", {
           id_cita:     ci,
+          id_servicio:     this.servicio,
         })
         .then((response) => {
           this.getCitaHoras();
@@ -254,7 +269,15 @@ export default {
           this.error = err;
         });
     },
-
+    getService(){
+            let page = 1
+            this.$axios.
+            get("http://127.0.0.1:8000/api/servicio?page=" + page).
+            then(response => {
+              this.servicios = response.data.data;
+              console.log(this.servicios)
+      });
+    }
   }
 };
 </script>
