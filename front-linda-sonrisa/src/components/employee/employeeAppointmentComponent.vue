@@ -77,8 +77,8 @@
       </div>
     </div>
     <br>
-    <button v-if="verCita.estado == 'R'" type="button" class="btn btn-danger"  @click="terminarHoraCita(verCita.id_cita)">Terminar</button>
-    <button v-if="verCita.estado == 'R'" type="button" class="btn btn-danger"  @click="terminarHoraCita(verCita.id_cita)">Terminar</button>
+    <button v-if="verCita.estado == 'R' || verCita.estado == 'A'" type="button" class="btn btn-danger"     @click="terminarHoraCita(verCita.id_cita)">Terminar</button>
+    <button v-if="verCita.estado == 'R'" type="button" class="btn btn-secondary"  @click="atrasadaHoraCita(verCita.id_cita)">Atrasar</button>
     <br>
   </b-modal>
 
@@ -197,6 +197,26 @@ export default {
     terminarHoraCita(ci) {
       this.$axios
         .put("http://127.0.0.1:8000/api/cita/end", {
+          id_cita:     ci,
+        })
+        .then((response) => {
+          this.getCitaHoras();
+          this.$swal({
+              title:
+                "Cita terminada.",
+              icon: "success",
+              timer: 3000,
+              showConfirmButton: false
+            });
+          console.log(response);
+        })
+        .catch((err) => {
+          this.error = err;
+        });
+    },
+    atrasadaHoraCita(ci) {
+      this.$axios
+        .post("http://127.0.0.1:8000/api/cita/atrasar", {
           id_cita:     ci,
         })
         .then((response) => {

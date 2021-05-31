@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row flex-d justify-content-around">
-      <h1>Crear hoas</h1>
+      <h1>Crear horas</h1>
     </div>
     <br />
     <br />

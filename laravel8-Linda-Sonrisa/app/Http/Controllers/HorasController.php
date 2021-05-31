@@ -15,6 +15,7 @@ class HorasController extends Controller
 {
     public function register(Request $request){
         $id_emp = DB::table('empleados')->select('id_empleado')->where('USERS_ID_USER', $request->id_user)->value('id_empleado');
+
         $newHora = new hora();
         $newHora->inicio_hora             = $request->inicio;
         $newHora->fin_hora                = $request->fin;

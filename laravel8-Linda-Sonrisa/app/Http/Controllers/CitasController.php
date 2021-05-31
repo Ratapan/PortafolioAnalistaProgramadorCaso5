@@ -37,16 +37,19 @@ class CitasController extends Controller
             $horaEdit->estado_hora = 'D';
             $horaEdit->save();
             return response()->json([$citaEdit, $horaEdit], 300);
-        
-        
-        
     }
     public function terminar(Request $request){
         
         $citaEdit = cita::find($request->id_cita);
         $citaEdit->estado = 'T';
         $citaEdit->save();
+        return response()->json("Cita terminada", 200);
+    }
+    public function atrasar(Request $request){
         
+        $citaEdit = cita::find($request->id_cita);
+        $citaEdit->estado = 'A';
+        $citaEdit->save();
         return response()->json("Cita terminada", 200);
     }
 

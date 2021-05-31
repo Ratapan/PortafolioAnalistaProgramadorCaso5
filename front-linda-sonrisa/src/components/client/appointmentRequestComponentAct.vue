@@ -89,7 +89,7 @@ methods:{
         })
         .then((response) => {
           console.log(response)
-          this.getHoras();
+          this.getCitas();
         })
         .catch((err) => {
           this.error = err;

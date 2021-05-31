@@ -100,7 +100,7 @@
                   Citas
                 </router-link>
             </li>
-            <!--<li class="nav-item">
+            <li class="nav-item">
               <router-link 
                   class="nav-link dropdown-item dropdown-item-pyme"
                   style="border-radius: 500px"
@@ -112,7 +112,7 @@
                 >
                   Realizar orden
                 </router-link>
-            </li>-->
+            </li>
           </ul>
           <ul class="navbar-nav" v-if="$store.getters.value != null && $store.getters.value.roles_id_rol == 4">
             <li class="nav-item">

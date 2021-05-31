@@ -46,5 +46,5 @@ Route::get('/citas',       'App\Http\Controllers\CitasController@getCitasActivas
 Route::get('/citas/ant',   'App\Http\Controllers\CitasController@getCitasAntiguas');
 Route::get('/cita/hora',   'App\Http\Controllers\CitasController@getHourCitas');
 
-Route::put('/cita/cancel',  'App\Http\Controllers\CitasController@cancel');
 Route::post('/cita/cancel', 'App\Http\Controllers\CitasController@cancel');
+Route::post('/cita/atrasar', 'App\Http\Controllers\CitasController@atrasar');
