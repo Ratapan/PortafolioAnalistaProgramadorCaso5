@@ -15,7 +15,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="cita in citas" :key="cita" :class="statusColor(cita.estado)">
+          <tr v-for="cita in citas" :key="cita.id_cita" :class="statusColor(cita.estado)">
             <td>{{formDate(cita.inicio_hora)}} {{formHora(cita.inicio_hora)}}</td>
             <td>{{cita.nombre_ape}}</td>
             <td>{{status(cita.estado)}}</td>

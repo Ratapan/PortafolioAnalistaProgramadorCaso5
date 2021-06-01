@@ -74,7 +74,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="hora in horas" :key="hora" :class="statusColor(hora.estado_hora)">
+          <tr v-for="hora in horas" :key="hora.id_hora" :class="statusColor(hora.estado_hora)">
             <td>{{formDate(hora.inicio_hora)}}</td>
             <td>{{formHora(hora.inicio_hora)}}-{{formHora(hora.fin_hora)}}</td>
             <td>  

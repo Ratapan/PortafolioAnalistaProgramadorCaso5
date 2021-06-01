@@ -20,7 +20,7 @@
           </li>
         </ul>
       </div>-->
-      <div class="col-xl-3 col-lg-3 col-md-4 col-sm-4 d-flex justify-content-center list"  v-for="(hora,i) in horas" :key="i">
+      <div class="col-xl-3 col-lg-3 col-md-4 col-sm-4 d-flex justify-content-center list"  v-for="(hora,i) in horas" :key="i.id_hora">
         <br>
         <button class="btn btn-info" @click="storeHora(hora.id_hora)">
           {{ btnHora(hora.inicio_hora) }} | {{ btnHora(hora.fin_hora) }}

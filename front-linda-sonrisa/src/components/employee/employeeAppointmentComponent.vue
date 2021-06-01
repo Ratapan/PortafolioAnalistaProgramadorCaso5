@@ -16,7 +16,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="cita in citas" :key="cita" :class="statusColor(cita.estado)">
+          <tr v-for="cita in citas" :key="cita.id_cita" :class="statusColor(cita.estado)">
             <td>{{formDate(cita.inicio_hora)}}</td>
             <td>{{formHora(cita.inicio_hora)}}-{{formHora(cita.fin_hora)}}</td>
             <td>{{cita.nombre_ape}}</td>
@@ -84,7 +84,7 @@
       </div>
       <div class="col-7">
         <select v-model="servicio" class="form-select form-select-sm">
-          <option v-for="tipo_servicio in servicios" :key="tipo_servicio" :value="tipo_servicio.id_t_serv">{{ tipo_servicio.nombre_servicio }}</option>
+          <option v-for="tipo_servicio in servicios" :key="tipo_servicio.id_t_serv" :value="tipo_servicio.id_t_serv">{{ tipo_servicio.nombre_servicio }}</option>
         </select>
       </div>
     

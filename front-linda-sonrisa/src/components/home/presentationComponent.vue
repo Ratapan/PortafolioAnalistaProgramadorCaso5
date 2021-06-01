@@ -16,7 +16,7 @@
     <br>
     <br>
     <div class="row d-flex justify-content-around">
-      <div class="col-xl-4 col-lg-5 col-md-6 col-sm-12 d-flex justify-content-center" v-for="se in services" :key="se">
+      <div class="col-xl-4 col-lg-5 col-md-6 col-sm-12 d-flex justify-content-center" v-for="se in services" :key="se.id_servicio">
           <div class="card cardfrm">
             <div class="card-body">
               <h3>{{upperCase(se.nombre_servicio)}}</h3>

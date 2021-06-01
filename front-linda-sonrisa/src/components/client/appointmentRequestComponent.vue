@@ -36,7 +36,7 @@
         <div class="row d-flex justify-content-center">
           <div
             v-for="em in employees"
-            :key="em"
+            :key="em.id_empleado"
             class="card cardfrm"
             style="width: 18rem;"
           >

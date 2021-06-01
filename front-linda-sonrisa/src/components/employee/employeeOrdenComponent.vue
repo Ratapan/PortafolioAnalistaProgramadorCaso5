@@ -20,7 +20,7 @@
       </div>
       <div class="col-6">
         <select v-model="family" class="form-select form-select-sm">
-          <option v-for="tipo_servicio in servicios" :key="tipo_servicio" :value="tipo_servicio.id_t_serv">{{ tipo_servicio.nombre_servicio }}</option>
+          <option v-for="famil in familys" :key="famil.id_t_fam" :value="famil.id_t_fam">{{ famil.nombre_tipo_familia }}</option>
         </select>
       </div>
       <br>
@@ -32,7 +32,9 @@
         <label>Productos</label>
       </div>
       <div class="col-6">
-        <input class="form-control form-control-sm" type="text">
+        <select v-model="product" class="form-select form-select-sm">
+          <option v-for="produc in products" :key="produc.id_tipop" :value="produc.id_tipop">{{ produc.nombre_tipop }}</option>
+        </select>
       </div>
       <br>
     </div>
@@ -70,9 +72,7 @@
           v-model="iniHour"
           value-type="format"
           type="time"
-          :open.sync="openI"
           placeholder="Selecciona hora de inicio"
-          @change="handleChange"
         ></date-picker>
       </div>
       <br>
@@ -95,7 +95,7 @@ export default {
       dayHour:'',
       iniHour:'',
       endHour:'',
-      family :{},
+      family :'',
       product:{},
 
       familys :{},
@@ -109,7 +109,6 @@ export default {
   },
   mounted() {
     this.getFamily();
-    this.getProduct();
   },
   methods: {
     sta(){
@@ -130,7 +129,7 @@ export default {
     getProduct(){
             let page = 1
             this.$axios.
-            get("http://127.0.0.1:8000/api/producto?page=" + page).
+            get("http://127.0.0.1:8000/api/producto?page=" + page + "&id_familia=" + this.family).
             then(response => {
               this.products = response.data.data;
               console.log(this.products)
