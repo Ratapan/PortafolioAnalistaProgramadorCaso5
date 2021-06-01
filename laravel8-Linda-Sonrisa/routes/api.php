@@ -48,3 +48,7 @@ Route::get('/cita/hora',   'App\Http\Controllers\CitasController@getHourCitas');
 
 Route::post('/cita/cancel', 'App\Http\Controllers\CitasController@cancel');
 Route::post('/cita/atrasar', 'App\Http\Controllers\CitasController@atrasar');
+
+//familia y productos
+Route::get('/familia',   'App\Http\Controllers\FamiliaProductosController@getAll');
+Route::get('/producto',   'App\Http\Controllers\ProductosController@getAll');

@@ -83,14 +83,16 @@
         <label>Servicios:</label>
       </div>
       <div class="col-7">
-       <select v-model="servicio">
-         <option v-for="tipo_servicio in servicios" :key="tipo_servicio" :value="tipo_servicio.id_t_serv">{{ tipo_servicio.nombre_servicio }}</option>
-       </select>
+        <select v-model="servicio" class="form-select form-select-sm">
+          <option v-for="tipo_servicio in servicios" :key="tipo_servicio" :value="tipo_servicio.id_t_serv">{{ tipo_servicio.nombre_servicio }}</option>
+        </select>
       </div>
+    
     </div>
     <br>
-    <button v-if="verCita.estado == 'R' || verCita.estado == 'A'" type="button" class="btn btn-danger"     @click="terminarHoraCita(verCita.id_cita)">Terminar</button>
-    <button v-if="verCita.estado == 'R'" type="button" class="btn btn-secondary"  @click="atrasadaHoraCita(verCita.id_cita)">Atrasar</button>
+    <button v-if="verCita.estado == 'R' || verCita.estado == 'A' && servicio != ''" type="button" class="btn btn-danger" @click="terminarHoraCita(verCita.id_cita)">Terminar</button>
+    <button v-if="verCita.estado == 'R'" type="button" class="btn btn-secondary"  @click="atrasadaHoraCita(verCita.id_cita)">Atrasar</button>  
+    <label class="text-danger" v-if="verCita.estado == 'R' || verCita.estado == 'A' && servicio == ''">Para terminar la cita es necesario elejir el servicio</label>
     <br>
   </b-modal>
 
@@ -111,6 +113,7 @@ export default {
       citas:[],
       verCita:[],
       servicios:[],
+      servicio:'',
     };
     
   },
@@ -212,9 +215,10 @@ export default {
       this.$axios
         .put("http://127.0.0.1:8000/api/cita/end", {
           id_cita:     ci,
-          id_servicio:     this.servicio,
+          id_servicio: this.servicio,
         })
         .then((response) => {
+          this.servicio='';
           this.getCitaHoras();
           this.$swal({
               title:

@@ -19,7 +19,9 @@
         <label>Tipo productos</label>
       </div>
       <div class="col-6">
-        <input class="form-control form-control-sm" type="text">
+        <select v-model="family" class="form-select form-select-sm">
+          <option v-for="tipo_servicio in servicios" :key="tipo_servicio" :value="tipo_servicio.id_t_serv">{{ tipo_servicio.nombre_servicio }}</option>
+        </select>
       </div>
       <br>
     </div>
@@ -93,7 +95,21 @@ export default {
       dayHour:'',
       iniHour:'',
       endHour:'',
+      family :{},
+      product:{},
+
+      familys :{},
+      products:{},
     };
+  },
+  watch: {
+    family(){
+      this.getProduct();
+    }
+  },
+  mounted() {
+    this.getFamily();
+    this.getProduct();
   },
   methods: {
     sta(){
@@ -101,6 +117,24 @@ export default {
     },
     logout() {
       this.$store.getters.value = null; 
+    },
+    getFamily(){
+            let page = 1
+            this.$axios.
+            get("http://127.0.0.1:8000/api/familia?page=" + page).
+            then(response => {
+              this.familys = response.data.data;
+              console.log(this.familys)
+      });
+    },
+    getProduct(){
+            let page = 1
+            this.$axios.
+            get("http://127.0.0.1:8000/api/producto?page=" + page).
+            then(response => {
+              this.products = response.data.data;
+              console.log(this.products)
+      });
     },
 
 
