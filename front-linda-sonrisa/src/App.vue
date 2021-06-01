@@ -72,6 +72,19 @@
                   Citas inactivas
                 </router-link>
             </li>
+            <li class="nav-item">
+              <router-link
+                  class="nav-link dropdown-item dropdown-item-pyme"
+                  style="border-radius: 500px"
+                  :to="{ name: 'appointmentRequestBol' }"
+                  type="button"
+                  data-toggle="collapse"
+                  data-target="#navbarNav"
+                  aria-expanded="false"
+                >
+                  Boletas
+                </router-link>
+            </li>
           </ul>
           <ul class="navbar-nav" v-if="$store.getters.value != null && $store.getters.value.roles_id_rol == 3">
             <li class="nav-item">

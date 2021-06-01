@@ -37,7 +37,7 @@ Route::get(  '/hora-d','App\Http\Controllers\HorasController@getDent');
 
 //servicios
 Route::get('/servicio', 'App\Http\Controllers\ServiceController@getAll');
-
+Route::get('/servicioEmpleado', 'App\Http\Controllers\ServiceController@getServiciosEmpleados');
 
 //citas
 Route::post('/cita',       'App\Http\Controllers\CitasController@register');
@@ -52,3 +52,6 @@ Route::post('/cita/atrasar', 'App\Http\Controllers\CitasController@atrasar');
 //familia y productos
 Route::get('/familia',   'App\Http\Controllers\FamiliaProductosController@getAll');
 Route::get('/producto',   'App\Http\Controllers\ProductosController@getProd');
+
+//boletas
+Route::get('/boletas', 'App\Http\Controllers\BoletasController@getBoletasCliente');

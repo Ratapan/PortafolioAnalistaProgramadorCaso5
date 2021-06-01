@@ -45,6 +45,7 @@ import CreateUserComponent            from "./components/home/createUserComponen
 import AppointmentRequestComponent    from "./components/client/appointmentRequestComponent.vue";
 import appointmentRequestComponentAct from "./components/client/appointmentRequestComponentAct.vue";
 import appointmentRequestComponentAnt from "./components/client/appointmentRequestComponentAnt.vue";
+import appointmentRequestComponentBol from "./components/client/appointmentRequestComponentBol.vue";
 import CitaRequestComponent           from "./components/client/citaComponent.vue";
 import EmployeeComponent              from "./components/employee/employeeComponent.vue"
 import EmployeeOrdenComponent         from "./components/employee/employeeOrdenComponent.vue"
@@ -97,6 +98,14 @@ const routes = [
     name: "appointmentRequestAnt",
     path: "/citasan",
     component: appointmentRequestComponentAnt,
+    meta: {
+      auth: true
+    }
+  },
+  {
+    name: "appointmentRequestBol",
+    path: "/boletas",
+    component: appointmentRequestComponentBol,
     meta: {
       auth: true
     }
