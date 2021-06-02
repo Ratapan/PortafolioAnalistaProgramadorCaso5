@@ -51,6 +51,7 @@ Route::post('/cita/atrasar', 'App\Http\Controllers\CitasController@atrasar');
 
 //familia y productos
 Route::get('/familia',   'App\Http\Controllers\FamiliaProductosController@getAll');
+Route::get('/productos',   'App\Http\Controllers\ProductosController@getAll');
 Route::get('/producto',   'App\Http\Controllers\ProductosController@getProd');
 
 //boletas

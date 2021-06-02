@@ -70,6 +70,7 @@
           <tr>
             <th scope="col"><h3> Día </h3></th>
             <th scope="col"><h3>Inicio y fin de hora</h3></th>
+            <th scope="col"><h3>Estado</h3></th>
             <th scope="col"><h3>Acciones</h3></th>
           </tr>
         </thead>
@@ -77,10 +78,11 @@
           <tr v-for="hora in horas" :key="hora.id_hora" :class="statusColor(hora.estado_hora)">
             <td>{{formDate(hora.inicio_hora)}}</td>
             <td>{{formHora(hora.inicio_hora)}}-{{formHora(hora.fin_hora)}}</td>
+            <td>{{hourState(hora.estado_hora)}}</td>
             <td>  
               <div class="row flex-d justify-content-around">
-                <button type="button" class="btn btn-warning">Editar</button>
-                <button type="button" class="btn btn-danger" @click="deleteHora(hora.id_hora)">Eliminar</button>
+                <!--<button type="button" class="btn btn-warning">Editar</button>-->
+                <button v-if="hora.estado_hora =='D'" type="button" class="btn btn-danger" @click="deleteHora(hora.id_hora)">Eliminar</button>
               </div>
             </td>
           </tr>
@@ -128,6 +130,13 @@ export default {
     },
     sta(){
       if(this.stat == false){this.stat = true}else{this.stat = false}
+    },
+    hourState(st){
+      if(st == "D"){
+        return "Disponible"
+      }else{
+        return "Tomada"
+      }
     },
     logout() {
       this.$store.getters.value = null; 

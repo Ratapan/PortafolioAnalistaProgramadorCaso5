@@ -276,7 +276,7 @@ export default {
     getService(){
             let page = 1
             this.$axios.
-            get("http://127.0.0.1:8000/api/servicioEmpleado?page=" + page + 
+            get("http://127.0.0.1:8000/api/servicio?page=" + page + 
             "&id_user=" + this.$store.getters.value.id_user).
             then(response => {
               this.servicios = response.data.data;

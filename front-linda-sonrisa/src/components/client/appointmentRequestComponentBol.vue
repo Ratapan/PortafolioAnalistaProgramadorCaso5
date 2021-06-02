@@ -10,13 +10,15 @@
         <thead>
           <tr>
             <th scope="col"><h4>Fecha</h4></th>
-            <th scope="col"><h4>Nombre del servicio</h4></th>
+            <th scope="col"><h4>Dentista</h4></th>
+            <th scope="col"><h4>Servicio</h4></th>
             <th scope="col"><h4>Valor</h4></th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="boleta in boletas" :key="boleta">
-            <td>{{formDate(boleta.fin_hora)}} {{formHora(boleta.fin_hora)}}</td>
+            <td>{{formDate(boleta.fin_hora)}}  {{formHora(boleta.inicio_hora)}}-{{formHora(boleta.fin_hora)}}</td>
+            <td>{{boleta.nombre_ape}}</td>
             <td>{{boleta.nombre_servicio}}</td>
             <td>{{boleta.precio}}</td>
           </tr>

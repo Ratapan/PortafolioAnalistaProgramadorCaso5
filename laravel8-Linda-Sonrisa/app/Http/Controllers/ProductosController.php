@@ -10,6 +10,12 @@ use App\Models\producto;
 class ProductosController extends Controller
 {
     //
+    public function getAll(Request $request)
+    {
+        $familia = producto::orderBy('nombre_tipop','asc')
+                    ->paginate(30);
+        return response()->json($familia,200);
+    }
     public function getProd(Request $request)
     {
         $familia = producto::orderBy('nombre_tipop','desc')
