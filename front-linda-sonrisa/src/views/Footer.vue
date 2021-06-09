@@ -10,7 +10,7 @@
         <p class="text-uppercase">Nosotros</p>
 
         <p>
-          Somos una pyme que a pesar de la pandemia queríamos empujar este proyecto a un buen puerto, atreves de esfuerzo y dedicación
+          Somos una pyme que a pesar de la pandemia queríamos empujar este proyecto a un buen puerto, a través de esfuerzo y dedicación
         </p>
       </div>
       <!--Grid column-->

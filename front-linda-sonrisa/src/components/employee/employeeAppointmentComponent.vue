@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <br>
     <div class="row flex-d justify-content-around">
       <h1>Citas</h1>
     </div>

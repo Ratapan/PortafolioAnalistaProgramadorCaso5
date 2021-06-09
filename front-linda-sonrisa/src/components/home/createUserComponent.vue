@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <br>
     <div class="row flex-d justify-content-around">
       <h1>Bienvenido, Crea tu cuenta de usuario!!!</h1>
     </div>
@@ -270,6 +271,24 @@ export default {
 }
 .text-sm {
   font-size: 14px;
+}
+.mx-input {
+  display: block;
+  width: 100%;
+  font-size: 1rem;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+
+
+  height: calc(1.5em + 0.5rem + 2px);
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border-radius: 0.2rem;
 }
 </style>
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container"><br>
     <div class="row d-flex justify-content-around">
         <h1>Citas inactivas</h1>
       </div>

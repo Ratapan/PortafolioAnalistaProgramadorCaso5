@@ -1,8 +1,10 @@
 <template>
-  <div class="container">
+  <div class="container"><br>
     <div class="row flex-d justify-content-around">
       <h1>Bienvenido</h1>
     </div>
+    <br>
+    <br>
     <br>
     <br>
     <div class="row flex-d justify-content-around">
@@ -41,6 +43,26 @@
         </div>
       </div>
     </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br><br>
+    <br>
+    <br>
+    <br><br>
+    <br>
+    <br>
+    <br><br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
   </div>
 
 </template>

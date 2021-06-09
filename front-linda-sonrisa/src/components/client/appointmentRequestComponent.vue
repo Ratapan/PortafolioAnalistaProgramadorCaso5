@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container"><br>
     <section>
       <div class="row d-flex justify-content-around">
         <h1>Pedir citas</h1>

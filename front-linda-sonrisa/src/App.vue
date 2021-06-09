@@ -176,14 +176,18 @@
         </div>
       
     </nav>
-    <br>
-    <section class="pres">
+    <section class="pres" v-if="$store.getters.value == null || $store.getters.value.roles_id_rol == 1">
       <!-- <section v-if="$store.getters.value != null">{{$store.getters.value.rol_id}}</section> -->
-    <transition name="fade" mode="out-in">
-      <router-view></router-view>
-    </transition>
+      <transition name="fade" mode="out-in">
+        <router-view></router-view>
+      </transition>
     </section>
-    <br>
+    <section class="press" v-if="$store.getters.value != null && $store.getters.value.roles_id_rol != 1">
+      <!-- <section v-if="$store.getters.value != null">{{$store.getters.value.rol_id}}</section> -->
+      <transition name="fade" mode="out-in">
+        <router-view></router-view>
+      </transition>
+    </section>
     <footer-component class="footer"></footer-component>
   </div>
 </template>
@@ -210,7 +214,17 @@ html, body{
     padding-left: 0;
 }
 .pres{
-  min-height: 800px;
+  min-height: 900px;
+  background: linear-gradient(
+    1deg,
+    #f8f9fa 0%,
+    rgba(47, 0, 255, 0.2) 60%,
+    rgb(0, 166, 255, 0.45) 100%
+  );
+  }
+  .press{
+  min-height: 900px;
+  background: rgb(255, 255, 255);
   }
 .footer {
   padding: 10px 10px 0px 10px;
@@ -226,4 +240,5 @@ html, body{
 template{
   min-height:100%;
 }
+
 </style>
