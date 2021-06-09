@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.window.v1.DialogProperties
 import app.components.*
 import app.data.*
 import kotlinx.coroutines.GlobalScope
@@ -382,7 +382,13 @@ fun registerHourDialog(
                         Button(onClick = {
                             if (listOf('D', 'T').contains(status)) {
                                 setShowDialog(false)
-                                hourInsert(startTime, endTime, status, dentistas[selectedDentist].first.value)
+                                LocalDateTime.of(date, LocalTime.ofInstant(startTime, ZoneId.of("+0"))).toInstant(
+                                    ZoneOffset.ofHours(+0))
+                                hourInsert(
+                                    LocalDateTime.of(date, LocalTime.ofInstant(startTime, ZoneId.of("+0"))).toInstant(
+                                        ZoneOffset.ofHours(+0)),
+                                    LocalDateTime.of(date, LocalTime.ofInstant(endTime, ZoneId.of("+0"))).toInstant(
+                                        ZoneOffset.ofHours(+0)), status, dentistas[selectedDentist].first.value)
                             }
                         }) {
                             Text(text = "Confirmar")

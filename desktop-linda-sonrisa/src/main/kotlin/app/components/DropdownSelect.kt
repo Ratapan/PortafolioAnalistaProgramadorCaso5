@@ -13,7 +13,14 @@ import androidx.compose.ui.unit.sp
 
 
 @Composable
-fun dropdownSelect(name: String, list: List<Pair<Any, String>>, selectedValue: Int, setSelectedValue: (Int) -> Unit, arrangement: Any = Arrangement.SpaceBetween) {
+fun dropdownSelect(
+    name: String,
+    list: List<Pair<Any, String>>,
+    selectedValue: Int,
+    setSelectedValue: (Int) -> Unit,
+    arrangement: Any = Arrangement.SpaceBetween,
+    externalClickable: () -> Unit = {  }
+) {
     var expanded by remember { mutableStateOf(false) }
     Row (
         modifier = Modifier
@@ -42,6 +49,7 @@ fun dropdownSelect(name: String, list: List<Pair<Any, String>>, selectedValue: I
                         onClick = {
                             setSelectedValue(index)
                             expanded = false
+                            externalClickable()
                         },
                         modifier = Modifier
                             .height(IntrinsicSize.Min)

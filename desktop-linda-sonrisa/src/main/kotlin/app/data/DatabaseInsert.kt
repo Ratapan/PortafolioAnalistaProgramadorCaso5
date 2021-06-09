@@ -234,3 +234,28 @@ fun appointmentInsert(
         hora?.estado = 'T'
     }
 }
+
+fun appointmentEdit(
+    estadoCita: Char,
+    idCita: Int,
+    idHora: Int
+) {
+    transaction {
+        addLogger(StdOutSqlLogger)
+        val cita = Cita.findById(idCita)
+        cita?.estado = estadoCita
+        val hora = Hora.findById(idHora)
+        when (estadoCita) {
+            'R' ->
+                hora?.estado = 'T'
+            'C' ->
+                hora?.estado = 'D'
+            'T' ->
+                hora?.estado = 'T'
+            'A' ->
+                hora?.estado = 'T'
+            else ->
+                hora?.estado = 'T'
+        }
+    }
+}

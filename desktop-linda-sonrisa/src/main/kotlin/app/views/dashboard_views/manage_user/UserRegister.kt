@@ -18,7 +18,7 @@ import androidx.compose.ui.input.key.*
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.window.v1.DialogProperties
 import app.components.datePicker
 import app.components.datePickerWithLocalDate
 import app.components.dropdownSelect

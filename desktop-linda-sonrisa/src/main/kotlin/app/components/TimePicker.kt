@@ -24,7 +24,7 @@ fun timePicker(title: String = "Time Picker", time: Instant, setTime: (Instant) 
     val (selectedMinute, setSelectedMinute) = remember { mutableStateOf(LocalTime.ofInstant(time, ZoneId.of("+0")).minute.toString()) }
     val (selectedSecond, setSelectedSecond) = remember { mutableStateOf(LocalTime.ofInstant(time, ZoneId.of("+0")).second.toString()) }
 
-
+println("timePickerReloaded")
     val (selectedSectionOfDay, setSelectedSectionOfDay) = remember { mutableStateOf(SectionOfDay.AM) }
 
     setTime(LocalDateTime.of(LocalDate.ofInstant(time, ZoneId.of("-4")), LocalTime.of(selectedHour.toInt(), selectedMinute.toInt(), selectedSecond.toInt())).toInstant(
@@ -219,7 +219,7 @@ fun hourPicker(
             },
             singleLine = true,
             onValueChange = {
-                if (disabled) {
+                if (!disabled) {
                     if (it.isEmpty()) {
                         setSelectedHour(minHour.toString())
                     } else {
