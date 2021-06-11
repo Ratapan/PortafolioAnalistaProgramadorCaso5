@@ -26,7 +26,7 @@
     <br />
     <div class="row d-flex justify-content-center">
       <div class="col-xl-8 col-md-10 col-sm-12 d-flex justify-content-center">
-      <iframe width="800" height="500" src="https://www.youtube.com/embed/pDDCKGV8cuM?list=TLPQMDkwNjIwMjHI-miw1YwQiA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <iframe class="img-presentation" width="900" height="500" src="https://www.youtube.com/embed/pDDCKGV8cuM?list=TLPQMDkwNjIwMjHI-miw1YwQiA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" ></iframe>
       </div>
     </div>
     <br />
@@ -94,7 +94,7 @@ export default {
 .img-presentation {
   border: 2px solid rgba(0, 0, 0, 0.5);
   border-radius: 35px;
-  height: 550px;
+  height: 600px;
 }
 .img-serv {
   border: 0px solid rgba(0, 0, 0, 0.5);
