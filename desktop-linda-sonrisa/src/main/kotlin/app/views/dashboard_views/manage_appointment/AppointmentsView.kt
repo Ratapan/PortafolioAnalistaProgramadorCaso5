@@ -255,7 +255,39 @@ fun registerAppointment() {
                     val (selectedInt, setSelectedInt) = remember { mutableStateOf(1) }
                     registerAppointmentDialogForPatients(showRegisterAppointment, setShowRegisterAppointment, patients[selectedPatient].first, patients[selectedPatient].second, dentistas, selectedTimeSlot, setSelectedTimeSlot)
                     Spacer(modifier = Modifier.height(10.dp))
-                    dropdownSelect("Paciente", patients, selectedPatient, setSelectedPatient, Arrangement.Start) {
+                    dropdownSelect(
+                        "Paciente",
+                        patients,
+                        selectedPatient,
+                        setSelectedPatient,
+                        Arrangement.Start,
+                        reloadButton = {
+                            OutlinedButton(
+                                onClick = {
+                                    citas.value = transaction {
+                                        addLogger(StdOutSqlLogger)
+                                        (Citas innerJoin Pacientes innerJoin Users).select { Citas.id_paciente eq patients[selectedPatient].first.value }
+                                            .map {
+                                                it[Citas.id] to mapOf(
+                                                    "Cita" to Cita.findById(it[Citas.id]),
+                                                    "Hora" to Hora.findById(it[Citas.id_hora]),
+                                                    "Paciente" to (Paciente.findById(it[Citas.id_paciente]) to User.findById(
+                                                        Paciente.findById(it[Citas.id_paciente])!!.idUser
+                                                    )),
+                                                    "Empleado" to (Empleado.findById(Hora.findById(it[Citas.id_hora])!!.id_empleado) to User.findById(
+                                                        Empleado.findById(Hora.findById(it[Citas.id_hora])!!.id_empleado)!!.id_user
+                                                    ))
+                                                )
+                                            }
+                                    }
+                                },
+                                modifier = Modifier
+                                    .height(IntrinsicSize.Min)
+                            ) {
+                                Text("Buscar", color = Color.Black)
+                            }
+                        }
+                        ) {
                         citas.value = transaction {
                             addLogger(StdOutSqlLogger)
                             (Citas innerJoin Pacientes innerJoin Users).select { Citas.id_paciente eq patients[selectedPatient].first.value }
@@ -286,10 +318,22 @@ fun registerAppointment() {
                                 .clickable {
                                     citas.value = citas.value.sortedBy { ((it.second["Empleado"] as Pair<*, *>).second as User).nombre }
                                 })
-                            tableCell("Fecha de Solicitud", modifier = Modifier.weight(WEIGHT_DATE))
-                            tableCell("Hora de Inicio", modifier = Modifier.weight(WEIGHT_START_TIME))
-                            tableCell("Hora de Fin", modifier = Modifier.weight(WEIGHT_END_TIME))
-                            tableCell("Estado", modifier = Modifier.weight(WEIGHT_STATUS))
+                            tableCell("Fecha de Solicitud", modifier = Modifier.weight(WEIGHT_DATE)
+                                .clickable {
+                                    citas.value = citas.value.sortedBy { (it.second["Cita"] as Cita).fecha_solicitacion }
+                                })
+                            tableCell("Hora de Inicio", modifier = Modifier.weight(WEIGHT_START_TIME)
+                                .clickable {
+                                    citas.value = citas.value.sortedBy { (it.second["Hora"] as Hora).hora_inicio }
+                                })
+                            tableCell("Hora de Fin", modifier = Modifier.weight(WEIGHT_END_TIME)
+                                .clickable {
+                                    citas.value = citas.value.sortedBy { (it.second["Hora"] as Hora).hora_fin }
+                                })
+                            tableCell("Estado", modifier = Modifier.weight(WEIGHT_STATUS)
+                                .clickable {
+                                    citas.value = citas.value.sortedBy { (it.second["Cita"] as Cita).estado }
+                                })
                         }
                         Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                             val timerFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")

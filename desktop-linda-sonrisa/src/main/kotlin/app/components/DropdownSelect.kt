@@ -19,9 +19,11 @@ fun dropdownSelect(
     selectedValue: Int,
     setSelectedValue: (Int) -> Unit,
     arrangement: Any = Arrangement.SpaceBetween,
-    externalClickable: () -> Unit = {  }
+    reloadButton: @Composable () -> Unit? = {  },
+    externalClickable: () -> Unit = {  },
 ) {
     var expanded by remember { mutableStateOf(false) }
+    val lastSelected = remember { mutableStateOf(selectedValue) }
     Row (
         modifier = Modifier
             .fillMaxWidth(),
@@ -49,7 +51,10 @@ fun dropdownSelect(
                         onClick = {
                             setSelectedValue(index)
                             expanded = false
-                            externalClickable()
+                            if (lastSelected.value != selectedValue){
+                                lastSelected.value = selectedValue
+                                externalClickable()
+                            }
                         },
                         modifier = Modifier
                             .height(IntrinsicSize.Min)
@@ -59,7 +64,10 @@ fun dropdownSelect(
                 }
             }
         }
+        if (reloadButton != {  }) {
+            Spacer(modifier = Modifier.width(10.dp))
+            reloadButton()
+        }
     }
-
 }
 
