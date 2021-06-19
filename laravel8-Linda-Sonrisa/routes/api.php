@@ -56,3 +56,17 @@ Route::get('/producto',   'App\Http\Controllers\ProductosController@getProd');
 
 //boletas
 Route::get('/boletas', 'App\Http\Controllers\BoletasController@getBoletasCliente');
+
+//proveedores
+Route::get('/proveedores','App\Http\Controllers\ProveedorController@getAll');
+
+//ordenes
+Route::post('/ordenes','App\Http\Controllers\OrdenesController@register');
+Route::get('/ordenes','App\Http\Controllers\ProveedorController@getAllOrdenes');
+Route::post('/ordenes/aceptar','App\Http\Controllers\ProveedorController@aceptarOrden');
+Route::post('/ordenes/rechazar','App\Http\Controllers\ProveedorController@RechazarOrden');
+
+//recepcion
+Route::get('/productosRecibidos','App\Http\Controllers\RecepcionController@getProductosRecibidos');
+Route::get('/recepciones','App\Http\Controllers\ProductosController@getproductosAceptados');
+Route::post('/recepciones/aceptar','App\Http\Controllers\RecepcionController@aceptarOrden');

@@ -126,6 +126,32 @@
                   Realizar orden
                 </router-link>
             </li>
+            <li class="nav-item">
+              <router-link 
+                  class="nav-link dropdown-item dropdown-item-pyme"
+                  style="border-radius: 500px"
+                  :to="{ name: 'employeeRecepcion' }"
+                  type="button"
+                  data-toggle="collapse"
+                  data-target="#navbarNav"
+                  aria-expanded="false"
+                >
+                  Recepcion
+                </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link 
+                  class="nav-link dropdown-item dropdown-item-pyme"
+                  style="border-radius: 500px"
+                  :to="{ name: 'employeeRecibidos' }"
+                  type="button"
+                  data-toggle="collapse"
+                  data-target="#navbarNav"
+                  aria-expanded="false"
+                >
+                  Productos Recibidos
+                </router-link>
+            </li>
           </ul>
           <ul class="navbar-nav" v-if="$store.getters.value != null && $store.getters.value.roles_id_rol == 4">
             <li class="nav-item">

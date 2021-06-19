@@ -34,7 +34,7 @@
       </div>
       <div class="col-6">
         <select v-model="product" class="form-control form-control-sm">
-          <option v-for="produc in products" :key="produc.id_tipop" :value="produc">{{ produc.nombre_tipop }}</option>
+          <option v-for="produc in products" :key="produc.id_tipop" :value="produc.id_tipop">{{ produc.nombre_tipop }}</option>
         </select>
       </div>
       <br>
@@ -57,42 +57,26 @@
         <label>N de productos</label>
       </div>
       <div class="col-6">
-        <input class="form-control form-control-sm" type="text">
+        <input v-model="cantidad" class="form-control form-control-sm" type="text">
       </div>
       <br>
     </div>
     <br>
-
-    <div class="row flex-d justify-content-center">
-      <br>
-      <div class="col-4">
-        <label>Fecha de vencimiento</label>
-      </div>
-      <div class="col-6">
-        <date-picker v-model="dayHour" valueType="format"></date-picker>
-      </div>
-      <br>
-    </div>
-    <br>
-
     <div class="row flex-d justify-content-center">
       <div class="col-4">
-        <label>Fecha</label>
+        <label>Proveedor</label>
       </div>
       <div class="col-6">
-        <date-picker
-          v-model="iniHour"
-          value-type="format"
-          type="time"
-          placeholder="Selecciona hora de inicio"
-        ></date-picker>
+        <select v-model="prov" class="form-control form-control-sm">
+          <option v-for="prove in provs" :key="prove.id_proveedor" :value="prove.id_proveedor">{{ prove.nombre_ape }}</option>
+        </select>
       </div>
       <br>
     </div>
     
     <br>
     <div class="row flex-d justify-content-center">
-      <button type="button" class="btn btn-success" @click="sta(), storeHora()">Agregar hora</button>
+      <button type="button" class="btn btn-success" @click="storeOrden()">Realizar pedido</button>
     </div>
     <br />
     <br />
@@ -135,9 +119,11 @@ export default {
       iniHour:'',
       endHour:'',
       family :'',
-      product:{},
+      prov :'',
+      product:'',
 
       familys :{},
+      provs :{},
       products:{},
       allProducts:{},
     };
@@ -146,11 +132,13 @@ export default {
     family(){
       this.product = {};
       this.getProduct();
+      this.getProveedor();
     }
   },
   mounted() {
     this.getFamily();
     this.getProducts();
+    this.getProveedor();
   },
   methods: {
     sta(){
@@ -166,6 +154,15 @@ export default {
             then(response => {
               this.familys = response.data.data;
               //console.log(this.familys)
+      });
+    },
+    getProveedor(){
+            let page = 1
+            this.$axios.
+            get("http://127.0.0.1:8000/api/proveedores?page=" + page).
+            then(response => {
+              this.provs = response.data.data;
+              //console.log(this.provs)
       });
     },
     getProduct(){
@@ -185,6 +182,23 @@ export default {
               this.allProducts = response.data.data;
               //console.log(this.allProducts)
       });
+    },
+    storeOrden() {
+      this.$axios
+        .post("http://127.0.0.1:8000/api/ordenes", {
+          id_proveedor:    this.prov,
+          id_user:     this.$store.getters.value.id_user,
+          cantidad:     this.cantidad,
+          id_producto:  this.product,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$router.push("/");
+        })
+        .catch((err) => {
+          this.error = err;
+          console.log("hola", err);
+        });
     },
     statusColor(st,stc){
       //console.log(st,'>=',stc)

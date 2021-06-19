@@ -73,20 +73,31 @@
       </div>
     </div>
     <br>
-    <div class="row flex-d justify-content-center">
-      <br>
-      <div class="col-4">
-        <label>Fecha de Vencimiento:</label>
+    <div class="row">
+      <div class="col-1"></div>
+      <div class="col-3 text-left">
+        <label>Datos de la recepcion</label>
       </div>
-      <div class="col-6">
-        <date-picker v-model="dayHour" valueType="format"></date-picker>
+      <div class="col-7">
+        <label></label>
       </div>
-      <br>
     </div>
     <br>
+    <div class="row">
+      <div class="col-1"></div>
+      <div class="col-3 text-left">
+        <label>Comentario:</label>
+      </div>
+      <div class="col-7">
+        <input v-model="comentario" class="form-control form-control-sm" type="text">
+      </div>
+    </div>
+    <br>
+    
+    <br>
+    <br>
     <div class="row flex-d justify-content-center">
-      <button type="button" class="btn btn-success" @click="storeOrden(ordeness.id_orden)">Aceptar pedido</button>
-      <button type="button" class="btn btn-danger" @click="cancelarOrden(ordeness.id_orden)">Rechazar pedido</button>
+      <button type="button" class="btn btn-success" @click="storeRecepcion(ordeness.id_orden)">Recibir Pedido</button>
     </div>
     
     <br>
@@ -98,6 +109,8 @@
 export default {
   data() {
     return{
+      prov :'',
+      dayHour:'',
       ordenes :{},
       ordeness :[],
     };
@@ -109,18 +122,18 @@ export default {
     getOrdenes(){
             let page = 1
             this.$axios.
-            get("http://127.0.0.1:8000/api/ordenes?page=" + page + 
-            "&id_user=" + this.$store.getters.value.id_user).
+            get("http://127.0.0.1:8000/api/recepciones?page=" + page).
             then(response => {
               this.ordenes = response.data.data;
               //console.log(this.ordenes)
       });
     },
-    storeOrden(id) {
+    storeRecepcion(id) {
       this.$axios
-        .post("http://127.0.0.1:8000/api/ordenes/aceptar", {
+        .post("http://127.0.0.1:8000/api/recepciones/aceptar", {
+          id_user:     this.$store.getters.value.id_user,
           id_orden:    id,
-          fecha_v:     this.dayHour,
+          comentario:     this.comentario,
         })
         .then((response) => {
           console.log(response);

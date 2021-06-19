@@ -49,6 +49,8 @@ import appointmentRequestComponentBol from "./components/client/appointmentReque
 import CitaRequestComponent           from "./components/client/citaComponent.vue";
 import EmployeeComponent              from "./components/employee/employeeComponent.vue"
 import EmployeeOrdenComponent         from "./components/employee/employeeOrdenComponent.vue"
+import employeeRecepcionComponent     from "./components/employee/employeeRecepcionComponent.vue"
+import employeeRecibidosComponent     from "./components/employee/employeeRecibidosComponent.vue"
 import EmployeeAppointmentComponent   from "./components/employee/employeeAppointmentComponent.vue"
 
 
@@ -130,6 +132,22 @@ const routes = [
     name: "employeeOrder",
     path: "/empleado/orden",
     component: EmployeeOrdenComponent,
+    meta: {
+      auth: true
+    }
+  },
+  {
+    name: "employeeRecepcion",
+    path: "/empleado/recepcion",
+    component: employeeRecepcionComponent,
+    meta: {
+      auth: true
+    }
+  },
+  {
+    name: "employeeRecibidos",
+    path: "/empleado/recibidos",
+    component: employeeRecibidosComponent,
     meta: {
       auth: true
     }
