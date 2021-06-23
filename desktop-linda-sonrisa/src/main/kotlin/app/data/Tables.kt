@@ -75,7 +75,7 @@ object Horas : IntIdTable("Horas", "ID_HORA") {
 
 
 object Ordenes : IntIdTable("Ordenes", "ID_ORDEN") {
-    val cancelada: Column<Char> = char("CANCELADA_O")
+    val estado: Column<Char> = char("ESTADO")
     val fecha_venc: Column<LocalDate> = date("FECHA_VENC_O")
     val precio_total: Column<Int> = integer("PRECIO_TOTAL")
     val id_proveedor: Column<Int> = integer("PROVEEDORES_ID_PROVEEDOR").references(Proveedores.id)
@@ -100,6 +100,13 @@ object Productos : IntIdTable("Productos", "ID_TIPOP") {
     val stock_critico: Column<Int> = integer("STOCK_C_TIPOP")
     val id_familia_producto: Column<Int> = integer("FAMILIA_PRODUCTOS_ID_T_FAM").references(Familia_Productos.id)
     override val primaryKey = PrimaryKey(id, name = "Productos_PK_ID_TIPOP")
+}
+
+
+object ProvProductos : IntIdTable("Prov_Producto", "ID_PROVE_PROD") {
+    val id_proveedor: Column<Int> = integer("PROVEEDORES_ID_PROVEEDOR").references(Proveedores.id)
+    val id_producto: Column<Int> = integer("PRODUCTOS_ID_TIPOP").references(Productos.id)
+    override val primaryKey = PrimaryKey(id, name = "Prov_Producto_PK_ID_PROVE_PROD")
 }
 
 object Proveedores : IntIdTable("Proveedores", "ID_PROVEEDOR") {

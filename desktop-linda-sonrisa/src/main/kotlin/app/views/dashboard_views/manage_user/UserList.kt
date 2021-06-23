@@ -147,11 +147,11 @@ fun userList(
             verticalAlignment = Alignment.Bottom
         ) {
             OutlinedButton(onClick = { toRegister() }) {
-                Text("Register User")
+                Text("Registrar Usuario")
             }
-            OutlinedButton(onClick = { toRegister() }) {
-                Text("Something")
-            }
+//            OutlinedButton(onClick = { toRegister() }) {
+//                Text("Something")
+//            }
         }
         Spacer(modifier = Modifier.height(200.dp))
     }

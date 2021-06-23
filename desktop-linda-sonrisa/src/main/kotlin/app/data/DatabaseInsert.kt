@@ -259,3 +259,29 @@ fun appointmentEdit(
         }
     }
 }
+
+// Familia Productos
+
+
+fun familiaProductoInsert(
+    name: String,
+) {
+    transaction {
+        addLogger(StdOutSqlLogger)
+        Familia_Productos.insert {
+            it[id] = 0
+            it[nombre] = name
+        }
+    }
+}
+
+fun familiaProductoEdit(
+    id: Int,
+    name: String,
+) {
+    transaction {
+        addLogger(StdOutSqlLogger)
+        val familiaProducto = Familia_Producto.findById(id)
+        familiaProducto?.nombre = name
+    }
+}

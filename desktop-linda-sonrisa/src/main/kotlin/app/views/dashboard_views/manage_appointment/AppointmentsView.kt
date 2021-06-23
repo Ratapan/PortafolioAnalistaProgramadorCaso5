@@ -309,6 +309,15 @@ fun registerAppointment() {
                     intSelector(selectedInt, setSelectedInt, "Pagina", 1, (citas.value.size/AMOUNT_PER_PAGE)+1, modifier = Modifier.size(200.dp, 60.dp))
                     Spacer(modifier = Modifier.height(10.dp))
                     if (!citas.value.isEmpty()) {
+                        val editAppointment = remember { mutableStateOf(false) }
+                        val selectedCita = remember { mutableStateOf(citas.value.first().second["Cita"] as Cita) }
+                        val selectedEmpleado = remember { mutableStateOf(((citas.value.first().second["Empleado"] as Pair<*, *>).second as User).nombre) }
+                        val selectedHora = remember { mutableStateOf(citas.value.first().second["Hora"] as Hora) }
+                        editAppointmentDialogForPatient(editAppointment,
+                            selectedEmpleado.value,
+                            selectedCita.value,
+                            selectedHora.value,
+                            patients[selectedPatient], citas)
                         Row (modifier = Modifier.fillMaxWidth()){
                             tableCell("ID", modifier = Modifier.weight(WEIGHT_ID)
                                 .clickable {
@@ -349,7 +358,14 @@ fun registerAppointment() {
                                     AMOUNT_PER_PAGE*selectedInt+1
                                 }
                             ).forEach { item ->
-                                Row (modifier = Modifier.fillMaxWidth()
+                                Row (modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        selectedCita.value = (item.second["Cita"] as Cita)
+                                        selectedEmpleado.value = ((item.second["Empleado"] as Pair<*, *>).second as User).nombre
+                                        selectedHora.value = (item.second["Hora"] as Hora)
+                                        editAppointment.value = true
+                                    }
                                 ){
                                     tableCell("${item.first}", modifier = Modifier.weight(WEIGHT_ID))
                                     tableCell(((item.second["Empleado"] as kotlin.Pair<*, *>).second as User).nombre, modifier = Modifier.weight(WEIGHT_DENTIST))
@@ -418,7 +434,7 @@ fun registerAppointmentDialogForDentist(
                     Spacer(modifier = Modifier.height(10.dp))
 
                     DisableSelection {
-                        datePickerWithLocalDate(title = "Hora de Inicio", LocalDate.ofInstant(timeSlot.startTime, ZoneId.systemDefault()), { }, disabled = true)
+                        datePickerWithLocalDate(title = "Fecha", LocalDate.ofInstant(timeSlot.startTime, ZoneId.systemDefault()), { }, disabled = true)
 
                         Spacer(modifier = Modifier.height(10.dp))
 
@@ -517,7 +533,7 @@ fun editAppointmentDialogForDentist(
                     Spacer(modifier = Modifier.height(10.dp))
 
                     DisableSelection {
-                        datePickerWithLocalDate(title = "Hora de Inicio", LocalDate.ofInstant(timeSlot.startTime, ZoneId.systemDefault()), { }, disabled = true)
+                        datePickerWithLocalDate(title = "Fecha", LocalDate.ofInstant(timeSlot.startTime, ZoneId.systemDefault()), { }, disabled = true)
 
                         Spacer(modifier = Modifier.height(10.dp))
 
@@ -783,14 +799,6 @@ fun registerAppointmentDialogForPatients(
                                 appointmentInsert(estadoCita = appointmentStatus[selectedStatus].first, idPaciente = idPatient.value, idHora = selectedTimeSlot.id)
                                 setShowDialog(false)
                             }
-
-                        /**
-                         *
-                         * Todo
-                         * Add appointmentInsert but working with patients
-                         * Edit appointments from the list of appointments w/ clickable
-                         *
-                        **/
                         },
                             modifier = when (selectedTimeSlot.equals(baseTimeSlot)) {
                                 true -> Modifier
@@ -948,6 +956,113 @@ fun selectTimeSlot(
                 title = "Edit user",
                 size = IntSize(900, 1200)
             ),
+        )
+    }
+}
+
+@Composable
+fun editAppointmentDialogForPatient(
+    showDialog: MutableState<Boolean>,
+    dentist: String = " ",
+    appointment: Cita,
+    hour: Hora,
+    patient: Pair<EntityID<Int>, String>,
+    data: MutableState<List<Pair<EntityID<Int>, Map<String, Any?>>>>
+) {
+
+    if (showDialog.value) {
+        AlertDialog(
+            onDismissRequest = {
+                showDialog.value = false
+            },
+            title = {
+            },
+            confirmButton = {
+            },
+            dismissButton = {
+            },
+            text = {
+                Column(
+                    modifier = Modifier,
+                    horizontalAlignment = Alignment.Start,
+                    verticalArrangement = Arrangement.SpaceAround
+
+                ) {
+                    val (selectedStatus, setSelectedStatus) =  remember { mutableStateOf(
+                        appointmentStatus.indexOfFirst {
+                            it.first == appointment.estado
+                        }) }
+
+                    Text("Editando cita del dentista ${patient.second}", fontSize = 24.sp)
+
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    Text("Cita ID: ${appointment.id.value}", fontSize = 18.sp)
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    DisableSelection {
+                        datePickerWithLocalDate(title = "Fecha", LocalDate.ofInstant(hour.hora_inicio, ZoneId.systemDefault()), { }, disabled = true)
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        timePicker(title = "Hora de Inicio", hour.hora_inicio, { }, minHour = 9, maxHour = 17, disabled = true)
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        timePicker(title = "Hora de Fin", hour.hora_fin, {  }, minHour = 9, maxHour = 18, disabled = true)
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        Text("Dentista: $dentist", fontSize = 20.sp)
+                    }
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    dropdownSelect("Estado", appointmentStatus, selectedStatus, setSelectedStatus)
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(0.dp),
+                        horizontalArrangement = Arrangement.SpaceAround
+                    ) {
+                        Button(onClick = {
+                            showDialog.value = false
+                            appointmentEdit(estadoCita = appointmentStatus[selectedStatus].first, idCita = appointment.id.value, idHora = hour.id.value)
+                            data.value = transaction {
+                                addLogger(StdOutSqlLogger)
+                                (Citas innerJoin Pacientes innerJoin Users).select { Citas.id_paciente eq patient.first.value }
+                                    .map {
+                                        it[Citas.id] to mapOf(
+                                            "Cita" to Cita.findById(it[Citas.id]),
+                                            "Hora" to Hora.findById(it[Citas.id_hora]),
+                                            "Paciente" to (Paciente.findById(it[Citas.id_paciente]) to User.findById(
+                                                Paciente.findById(it[Citas.id_paciente])!!.idUser
+                                            )),
+                                            "Empleado" to (Empleado.findById(Hora.findById(it[Citas.id_hora])!!.id_empleado) to User.findById(
+                                                Empleado.findById(Hora.findById(it[Citas.id_hora])!!.id_empleado)!!.id_user
+                                            ))
+                                        )
+                                    }
+                            }
+                        }) {
+                            Text(text = "Confirmar")
+                        }
+                        Button(onClick = {
+                            showDialog.value = false
+                        }) {
+                            Text(text = "Cancelar")
+                        }
+                    }
+                }
+            },
+            properties = DialogProperties(
+                title = "Editando Cita del paciente ${patient.second}",
+                size = IntSize(500, 700)
+            )
         )
     }
 }

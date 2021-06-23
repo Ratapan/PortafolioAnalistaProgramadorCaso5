@@ -89,7 +89,7 @@ class Hora(id: EntityID<Int>) : IntEntity(id) {
 
 class Orden(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<Orden>(Ordenes)
-    var cancelada by Ordenes.cancelada
+    var cancelada by Ordenes.estado
     var fecha_venc by Ordenes.fecha_venc
     var precio_total by Ordenes.precio_total
 
@@ -123,6 +123,17 @@ class Producto(id: EntityID<Int>) : IntEntity(id) {
 
     var idFamiliaProducto by Productos.id_familia_producto
     var familiaProducto by Familia_Producto referencedOn Productos.id_familia_producto
+}
+
+
+class ProvProducto(id: EntityID<Int>) : IntEntity(id) {
+    companion object : IntEntityClass<ProvProducto>(ProvProductos)
+
+    var idProveedor by ProvProductos.id_proveedor
+    var proveedor by Proveedor referencedOn ProvProductos.id_proveedor
+
+    var idProducto by ProvProductos.id_producto
+    var producto by Producto referencedOn ProvProductos.id_producto
 }
 
 class Proveedor(id: EntityID<Int>) : IntEntity(id) {

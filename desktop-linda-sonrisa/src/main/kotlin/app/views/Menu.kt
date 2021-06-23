@@ -16,6 +16,8 @@ import app.navigation.ContentView
 import app.views.dashboard_views.dashboard_main.dashboard
 import app.views.dashboard_views.manage_appointment.registerAppointment
 import app.views.dashboard_views.manage_hours.hoursView
+import app.views.dashboard_views.manage_orders.viewOrders
+import app.views.dashboard_views.manage_products.viewProducts
 import app.views.dashboard_views.manage_user.userView
 
 @Composable
@@ -35,6 +37,8 @@ fun menu(onBack: () -> Unit) {
                 MenuButton("Administrar Citas", { contentState = ContentView.ContentViewAppointment })
                 MenuButton("Administrar Horarios", { contentState = ContentView.ContentViewHours })
                 MenuButton("Administrar Usuarios", { contentState = ContentView.ContentViewUser })
+                MenuButton("Administrar Ordenes", { contentState = ContentView.ContentViewOrders })
+                MenuButton("Administrar Productos", { contentState = ContentView.ContentViewProducts })
             }
             Column(modifier = Modifier
                 .padding(5.dp)
@@ -54,7 +58,7 @@ fun menu(onBack: () -> Unit) {
             .fillMaxWidth()
             .padding(4.dp)
         ) {
-            when (val content = contentState) {
+            when (contentState) {
                 is ContentView.ContentViewDashboard ->
                     dashboard()
 
@@ -66,6 +70,12 @@ fun menu(onBack: () -> Unit) {
 
                 is ContentView.ContentViewHours ->
                     hoursView()
+
+                is ContentView.ContentViewOrders ->
+                    viewOrders()
+
+                is ContentView.ContentViewProducts ->
+                    viewProducts()
             }
         }
     }
