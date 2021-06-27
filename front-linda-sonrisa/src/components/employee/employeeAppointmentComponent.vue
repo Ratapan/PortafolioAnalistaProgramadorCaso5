@@ -91,8 +91,8 @@
     
     </div>
     <br>
-    <button v-if="verCita.estado == 'R' || verCita.estado == 'A' && servicio != ''" type="button" class="btn btn-danger" @click="terminarHoraCita(verCita.id_cita)">Terminar</button>
-    <button v-if="verCita.estado == 'R'" type="button" class="btn btn-secondary"  @click="atrasadaHoraCita(verCita.id_cita)">Atrasar</button>  
+    <button  v-if="verCita.estado == 'R' || verCita.estado == 'A' && servicio != ''" type="button" class="btn btn-danger" @click="terminarHoraCita(verCita.id_cita, $bvModal.hide('modal-2'))">Terminar</button>
+    <button  v-if="verCita.estado == 'R'" type="button" class="btn btn-secondary"  @click="atrasadaHoraCita(verCita.id_cita, $bvModal.hide('modal-2'))">Atrasar</button>  
     <label class="text-danger" v-if="verCita.estado == 'R' || verCita.estado == 'A' && servicio == ''">Para terminar la cita es necesario elejir el servicio</label>
     <br>
   </b-modal>

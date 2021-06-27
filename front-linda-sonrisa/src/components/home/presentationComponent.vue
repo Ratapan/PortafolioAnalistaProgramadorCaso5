@@ -17,6 +17,7 @@
       <div class="col-xl-8 col-md-10 col-sm-12 d-flex justify-content-center">
         <img
           class="img-presentation"
+          height="600"
           src="../../assets/stock_dentista.jpg"
           alt=""
         />
@@ -26,7 +27,8 @@
     <br />
     <div class="row d-flex justify-content-center">
       <div class="col-xl-8 col-md-10 col-sm-12 d-flex justify-content-center">
-      <iframe class="img-presentation" width="900" height="500" src="https://www.youtube.com/embed/pDDCKGV8cuM?list=TLPQMDkwNjIwMjHI-miw1YwQiA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" ></iframe>
+      <!--<iframe class="img-presentation" width="900" height="500" src="https://www.youtube.com/embed/pDDCKGV8cuM?list=TLPQMDkwNjIwMjHI-miw1YwQiA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" ></iframe>-->
+      <iframe class="img-presentation" width="900" height="600" src="https://www.youtube.com/embed/Fdhnurf6PuI?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
     </div>
     <br />
@@ -92,9 +94,8 @@ export default {
 </script>
 <style scoped>
 .img-presentation {
-  border: 2px solid rgba(0, 0, 0, 0.5);
+  border: 3px solid rgba(0, 0, 0, 0.5);
   border-radius: 35px;
-  height: 600px;
 }
 .img-serv {
   border: 0px solid rgba(0, 0, 0, 0.5);

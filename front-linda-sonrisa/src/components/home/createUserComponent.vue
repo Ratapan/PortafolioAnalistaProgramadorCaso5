@@ -32,6 +32,7 @@
             <div class="col-5">
               <input
                 v-model="user.rut"
+                placeholder="12787434-3"
                 class="form-control form-control-sm"
                 type="text"
               /><br />
@@ -47,6 +48,7 @@
             <div class="col-5">
               <input
                 v-model="user.direction"
+                placeholder="AV.siempre viva 123"
                 class="form-control form-control-sm"
                 type="text"
               /><br />
@@ -74,6 +76,7 @@
             <div class="col-5">
               <input
                 v-model="user.phone"
+                placeholder="+56954624984"
                 class="form-control form-control-sm"
                 type="text"
               /><br />
@@ -89,7 +92,7 @@
             <div class="col-5">
 
               <select   v-model="user.salud" class="form-control form-control-sm">
-                <option selected>Seleccione</option>
+                <option value="0" disabled>Seleccione</option>
                 <option value="1">Fonasa</option>
                 <option value="2">Isapre</option>
               </select>
@@ -121,6 +124,7 @@
             </div>
             <div class="col-5">
               <input
+                placeholder="juanpedro@gmail.com"
                 v-model="user.email"
                 class="form-control form-control-sm"
                 type="mail"
@@ -137,6 +141,7 @@
             <div class="col-5">
               <input
                 v-model="user.password"
+                placeholder="8 dígitos"
                 class="form-control form-control-sm"
                 @input="passwordConfirm()"
                 type="password"
@@ -171,7 +176,7 @@
         <div class="card-footer text-right">
           <button
             class="btn btn-sm btn-danger col-4"
-            v-if="user.password != user.passwordConfirm"
+            v-if="user.password != user.passwordConfirm && user.salud != 0"
             disabled
           >
             Guardar usuario
@@ -211,7 +216,7 @@ export default {
         direction: "",
         birthDate: "",
         phone: "",
-        salud: "",
+        salud: 0,
         document: "",
         email: "",   
         password: "",
