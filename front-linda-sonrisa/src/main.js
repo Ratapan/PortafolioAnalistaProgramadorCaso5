@@ -39,6 +39,9 @@ Vue.component("presentation-component", PresentationComponent );
 //Footer
 import FooterComponent from "./views/Footer.vue";
 Vue.component("footer-component", FooterComponent );
+//Help
+import HelpComponent from "./views/help.vue";
+Vue.component("help-component", HelpComponent );
 
 import LoginComponent                 from "./components/home/loginComponent.vue";
 import CreateUserComponent            from "./components/home/createUserComponent.vue";
@@ -52,10 +55,7 @@ import EmployeeOrdenComponent         from "./components/employee/employeeOrdenC
 import employeeRecepcionComponent     from "./components/employee/employeeRecepcionComponent.vue"
 import employeeRecibidosComponent     from "./components/employee/employeeRecibidosComponent.vue"
 import EmployeeAppointmentComponent   from "./components/employee/employeeAppointmentComponent.vue"
-
-
-
-import ViewOrderComponent         from "./components/vendors/viewOrderComponent.vue"
+import ViewOrderComponent             from "./components/vendors/viewOrderComponent.vue"
 
 
 Vue.component("employee-component",     EmployeeComponent );

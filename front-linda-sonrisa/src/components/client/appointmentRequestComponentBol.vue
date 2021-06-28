@@ -167,10 +167,10 @@ export default {
     downloadPdf() {
       window.html2canvas = html2canvas;
       var doc = new jsPDF("p", "pt", "a4");
-
+      let nameDoc = `${this.formDate(this.boletaImp.fin_hora)}_${this.boletaImp.nombre_servicio}.pdf`
       doc.html(document.querySelector("#table"), {
         callback: function(pdf) {
-          pdf.save("");
+          pdf.save(nameDoc);
         },
       });
       //pdf.text('hello world',10,10);
