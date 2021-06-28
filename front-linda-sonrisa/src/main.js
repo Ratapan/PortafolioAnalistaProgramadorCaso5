@@ -56,6 +56,7 @@ import EmployeeAppointmentComponent   from "./components/employee/employeeAppoin
 
 
 import ViewOrderComponent         from "./components/vendors/viewOrderComponent.vue"
+import ViewOrdenesComponent       from "./components/vendors/viewOrdenesComponent.vue"
 
 
 Vue.component("employee-component",     EmployeeComponent );
@@ -164,6 +165,14 @@ const routes = [
     name: "viewOrders",
     path: "/ver/ordenes",
     component: ViewOrderComponent,
+    meta: {
+      auth: true
+    }
+  },
+  {
+    name: "ViewOrdenes",
+    path: "/ordenes",
+    component: ViewOrdenesComponent,
     meta: {
       auth: true
     }

@@ -167,6 +167,19 @@
                   Revisar ordenes
                 </router-link>
             </li>
+            <li class="nav-item">
+              <router-link
+                  class="nav-link dropdown-item dropdown-item-pyme"
+                  style="border-radius: 500px"
+                  :to="{ name: 'ViewOrdenes' }"
+                  type="button"
+                  data-toggle="collapse"
+                  data-target="#navbarNav"
+                  aria-expanded="false"
+                >
+                  Ordenes
+                </router-link>
+            </li>
           </ul>
           <ul class="navbar-nav ml-auto">
             <li class="nav-item"  v-if="$store.getters.value == null">
