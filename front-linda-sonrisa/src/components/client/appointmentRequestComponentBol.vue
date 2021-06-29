@@ -7,7 +7,7 @@
     <br />
     <br />
     <div class="row flex-d justify-content-around">
-      <table class="table">
+      <table class="table" id="tableLi">
         <thead>
           <tr>
             <th scope="col"><h4>Fecha</h4></th>
@@ -35,7 +35,7 @@
         </tbody>
       </table>
     </div>
-    <button class="btn btn-success" @click="downloadPdf()">
+    <button class="btn btn-success" style="margin-right:10px;" @click="downloadPdfLi()">
       Imprimir lista completa
     </button>
 
@@ -101,6 +101,19 @@
     
     <br>
   </b-modal>
+  <button class="btn btn-warning" v-b-modal.modal-help>
+        Ayuda
+      </button>
+      <div>
+        <b-modal size="lg" id="modal-help" class="modal" title="Ayuda" hide-footer>
+          <help-component :info="info"></help-component>
+          <br />
+          <button class="btn btn-secondary" @click="$bvModal.hide('modal-help')">
+            Cerrar
+          </button>
+          <br />
+        </b-modal>
+      </div>
     
   </div>
 </template>
@@ -114,6 +127,9 @@ export default {
       search: "",
       boletas: [],
       boletaImp: {},
+      info: [
+        {title: "Boletas", parr: "Si seleccionamos “Detalle” se nos mostrará la vista preliminar de la boleta que podremos descargar, con el boton imprimir."},
+      ],
     };
   },
   mounted() {
@@ -169,6 +185,18 @@ export default {
       var doc = new jsPDF("p", "pt", "a4");
       let nameDoc = `${this.formDate(this.boletaImp.fin_hora)}_${this.boletaImp.nombre_servicio}.pdf`
       doc.html(document.querySelector("#table"), {
+        callback: function(pdf) {
+          pdf.save(nameDoc);
+        },
+      });
+      //pdf.text('hello world',10,10);
+      //pdf.save('info.pdf');
+    },
+    downloadPdfLi() {
+      window.html2canvas = html2canvas;
+      var doc = new jsPDF("p", "pt", "a4");
+      let nameDoc = `Listado.pdf`
+      doc.html(document.querySelector("#tableLi"), {
         callback: function(pdf) {
           pdf.save(nameDoc);
         },

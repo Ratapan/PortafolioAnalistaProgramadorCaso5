@@ -25,6 +25,19 @@
         </tbody>
       </table>
     </div>
+    <button class="btn btn-warning" v-b-modal.modal-help>
+        Ayuda
+      </button>
+      <div>
+        <b-modal size="lg" id="modal-help" class="modal" title="Ayuda" hide-footer>
+          <help-component :info="info"></help-component>
+          <br />
+          <button class="btn btn-secondary" @click="$bvModal.hide('modal-help')">
+            Cerrar
+          </button>
+          <br />
+        </b-modal>
+      </div>
   </div>
 </template>
 
@@ -34,6 +47,10 @@ data() {
   return {
     search: '',
     citas:{},
+    info: [
+      {title: "Citas Activas", parr: "Si seleccionamos “Citas Activas” se nos mostrarán las citas que tendremos con la fecha y hora, el nombre del dentista y además un botón con el cual podemos cancelar la cita."},
+
+    ],
   }
 },
 mounted() {

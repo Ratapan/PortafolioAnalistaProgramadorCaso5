@@ -93,7 +93,7 @@
     <br>
     <button  v-if="verCita.estado == 'R' || verCita.estado == 'A' && servicio != ''" type="button" class="btn btn-danger" @click="terminarHoraCita(verCita.id_cita, $bvModal.hide('modal-2'))">Terminar</button>
     <button  v-if="verCita.estado == 'R'" type="button" class="btn btn-secondary"  @click="atrasadaHoraCita(verCita.id_cita, $bvModal.hide('modal-2'))">Atrasar</button>  
-    <label class="text-danger" v-if="verCita.estado == 'R' || verCita.estado == 'A' && servicio == ''">Para terminar la cita es necesario elejir el servicio</label>
+    <label class="text-danger" v-if="verCita.estado == 'R' && servicio == ''">Para terminar la cita es necesario elejir el servicio</label>
     <br>
   </b-modal>
 
@@ -139,7 +139,7 @@ export default {
     },
     statusColor(st){
       if(st == "R"){
-        return "table-light"
+        return "table-primary"
       }
       if(st == "C"){
         return "table-danger"
@@ -193,7 +193,7 @@ export default {
     },
     cancelarHoraCita(ho,ci) {
       this.$axios
-        .put("http://127.0.0.1:8000/api/cita/cancel", {
+        .post("http://127.0.0.1:8000/api/cita/cancel", {
           id_hora:     ho,
           id_cita:     ci,
         })

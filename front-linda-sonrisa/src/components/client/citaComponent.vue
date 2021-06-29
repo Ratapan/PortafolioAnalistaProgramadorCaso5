@@ -29,6 +29,19 @@
       </div>
     </div>
     <br><br>
+    <button class="btn btn-warning" v-b-modal.modal-helpp>
+        Ayuda
+      </button>
+      <div>
+        <b-modal size="lg" id="modal-helpp" class="modal" title="Ayuda" hide-footer>
+          <help-component :info="info"></help-component>
+          <br />
+          <button class="btn btn-secondary" @click="$bvModal.hide('modal-helpp')">
+            Cerrar
+          </button>
+          <br />
+        </b-modal>
+      </div>
   </div>
 </template>
 
@@ -49,6 +62,9 @@ export default {
       endHour: "",
       horas: [],
       dateO: "",
+      info: [
+        {title: "Seleccionando horas", parr: "Al seleccionar la hora ya tendremos lista nuestra cita con el dentista."},
+      ],
     };
   },
   mounted() {},

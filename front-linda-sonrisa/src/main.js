@@ -55,7 +55,9 @@ import EmployeeOrdenComponent         from "./components/employee/employeeOrdenC
 import employeeRecepcionComponent     from "./components/employee/employeeRecepcionComponent.vue"
 import employeeRecibidosComponent     from "./components/employee/employeeRecibidosComponent.vue"
 import EmployeeAppointmentComponent   from "./components/employee/employeeAppointmentComponent.vue"
+
 import ViewOrderComponent             from "./components/vendors/viewOrderComponent.vue"
+import ViewOrdenesComponent           from "./components/vendors/viewOrdenesComponent.vue"
 
 
 Vue.component("employee-component",     EmployeeComponent );
@@ -164,6 +166,14 @@ const routes = [
     name: "viewOrders",
     path: "/ver/ordenes",
     component: ViewOrderComponent,
+    meta: {
+      auth: true
+    }
+  },
+  {
+    name: "ViewOrdenes",
+    path: "/ordenes",
+    component: ViewOrdenesComponent,
     meta: {
       auth: true
     }

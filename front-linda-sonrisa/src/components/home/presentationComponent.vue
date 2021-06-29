@@ -50,19 +50,6 @@
     </div>
     <br />
     <br />
-    <button class="btn btn-primary" v-b-modal.modal-1>
-      b-modal
-    </button>
-  <b-modal size="xl" id="modal-1" class="modal" title="Detalle" hide-footer>
-    <br>
-    <help-component
-
-    ></help-component>
-    <br>
-    <button class="btn btn-secondary" @click="$bvModal.hide('modal-1')">Cerrar</button>
-    <br>
-  </b-modal>
-
   </div>
 </template>
 
@@ -74,7 +61,7 @@ gsap.registerPlugin(CSSPlugin);
 export default {
   data() {
     return {
-      
+
       services: {},
     };
   },

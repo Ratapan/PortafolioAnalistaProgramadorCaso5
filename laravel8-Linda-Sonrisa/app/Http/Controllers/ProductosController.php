@@ -29,7 +29,7 @@ class ProductosController extends Controller
                     ->join('detalle_ordenes', 'detalle_ordenes.ordenes_id_orden' , '=' , 'ordenes.id_orden')
                     ->join('productos', 'productos.id_tipop' , '=' , 'detalle_ordenes.productos_id_tipop')
                     ->join('familia_productos', 'familia_productos.id_t_fam' , '=' , 'productos.familia_productos_id_t_fam')
-                    ->where('ordenes.estado' , 'A')
+                    ->whereIn('ordenes.estado', ['A', 'R', 'S'])
                     ->paginate(30);
         return response()->json($Ordenes,200);
     }

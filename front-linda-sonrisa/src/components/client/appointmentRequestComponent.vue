@@ -1,5 +1,6 @@
 <template>
-  <div class="container"><br>
+  <div class="container">
+    <br />
     <section>
       <div class="row d-flex justify-content-around">
         <h1>Pedir citas</h1>
@@ -26,7 +27,7 @@
           <button class="btn btn-primary fontbu">
             {{ upperCase(se.nombre_servicio) }}
           </button>
-          <br/>
+          <br />
           <p class="text-center">{{ se.precio }}</p>
         </div>
       </div>
@@ -48,31 +49,38 @@
             <div class="card-body">
               <h5 class="card-title">Nombre: {{ em.nombre_ape }}</h5>
               <p class="card-text">
-                {{em.tipo_cuenta}}
+                {{ em.tipo_cuenta }}
               </p>
-              <button @click="empleado = em" v-b-modal.modal-1 class="btn btn-primary"
-                >Ver horas</button>
+              <button
+                @click="empleado = em"
+                v-b-modal.modal-1
+                class="btn btn-primary"
+              >
+                Ver horas
+              </button>
             </div>
           </div>
         </div>
       </div>
+
+      <b-modal size="lg" id="modal-1" title="Horas" hide-footer>
+        <cita-request-component :empleado="empleado" />
+      </b-modal>
+
+      <button class="btn btn-warning" v-b-modal.modal-help>
+        Ayuda
+      </button>
+      <div>
+        <b-modal size="lg" id="modal-help" class="modal" title="Ayuda" hide-footer>
+          <help-component :info="info"></help-component>
+          <br />
+          <button class="btn btn-secondary" @click="$bvModal.hide('modal-help')">
+            Cerrar
+          </button>
+          <br />
+        </b-modal>
+      </div>
     </section>
-
-
-
-
-
-
-  <b-modal size="xl" id="modal-1" title="Horas" hide-footer>
-      <cita-request-component 
-        :empleado="empleado" 
-      />
-  </b-modal>
-
-
-
-  
-
   </div>
 </template>
 
@@ -84,6 +92,23 @@ export default {
       employees: {},
       empleado: {},
       services: {},
+      info: [
+        {
+          title: "Pedir Cita",
+          parr:
+            "Si seleccionamos “Pedir Cita” se nos mostrarán los dentistas disponibles y podremos pedir una hora con este dentista.",
+        },
+        {
+          title: "Ver horas",
+          parr:
+            "Al seleccionar “Ver horas”, podremos seleccionar un día para buscar horas disponibles.",
+        },
+        {
+          title: "Seleccionando horas",
+          parr:
+            "Al seleccionar la hora ya tendremos lista nuestra cita con el dentista.",
+        },
+      ],
     };
   },
   mounted() {

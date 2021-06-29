@@ -63,6 +63,7 @@ Route::get('/proveedores','App\Http\Controllers\ProveedorController@getAll');
 //ordenes
 Route::post('/ordenes','App\Http\Controllers\OrdenesController@register');
 Route::get('/ordenes','App\Http\Controllers\ProveedorController@getAllOrdenes');
+Route::get('/ordenes/AR','App\Http\Controllers\ProveedorController@getOrdenesAR');
 Route::post('/ordenes/aceptar','App\Http\Controllers\ProveedorController@aceptarOrden');
 Route::post('/ordenes/rechazar','App\Http\Controllers\ProveedorController@RechazarOrden');
 

@@ -12,6 +12,7 @@
           <tr>
             <th scope="col"><h3>Producto</h3></th>
             <th scope="col"><h3>Cantidad</h3></th>
+            <th scope="col"><h3>Estado</h3></th>
             <th scope="col"><h3>Acciones</h3></th>
           </tr>
         </thead>
@@ -19,6 +20,7 @@
           <tr v-for="orden in ordenes" :key="orden.id_orden" :class="statusColor(orden.estado)">
             <td>{{orden.nombre_tipop}}</td>
             <td>{{orden.cant_productos}}</td>
+            <td>{{status(orden.estado)}}</td>
             <td>  
               <div class="row flex-d justify-content-around">
                 <button type="button" class="btn btn-primary" @click="ordeness = orden" v-b-modal.modal>Ver Mas información</button>
@@ -73,34 +75,6 @@
       </div>
     </div>
     <br>
-    <div class="row" v-if="ordeness.estado == 'A'">
-      <div class="col-1"></div>
-      <div class="col-3 text-left">
-        <label>Datos de la recepcion</label>
-      </div>
-      <div class="col-7">
-        <label></label>
-      </div>
-    </div>
-    <br v-if="ordeness.estado == 'A'">
-    <div class="row">
-      <div class="col-1"></div>
-      <div class="col-3 text-left">
-        <label v-if="ordeness.estado == 'A'">Comentario:</label>
-      </div>
-      <div class="col-7">
-        <input v-if="ordeness.estado == 'A'" v-model="comentario" class="form-control form-control-sm" type="text">
-      </div>
-    </div>
-    <br v-if="ordeness.estado == 'A'">
-    
-    <br v-if="ordeness.estado == 'A'">
-    <br v-if="ordeness.estado == 'A'">
-    <div class="row flex-d justify-content-center">
-      <button v-if="ordeness.estado == 'A'" type="button" class="btn btn-success" @click="storeRecepcion(ordeness.id_orden)">Recibir Pedido</button>
-    </div>
-    
-    <br>
   </b-modal>
   </div>
 </template>
@@ -109,8 +83,6 @@
 export default {
   data() {
     return{
-      prov :'',
-      dayHour:'',
       ordenes :{},
       ordeness :[],
     };
@@ -119,32 +91,43 @@ export default {
     this.getOrdenes();
   },
   methods: {
+    status(st){
+      if(st == "R"){
+        return "Rechazada"
+      }
+      if(st == "A"){
+        return "Aceptada"
+      }
+      if(st == "E"){
+        return "Entregada"
+      }
+    },
     statusColor(st){
       if(st == "R"){
         return "table-danger"
       }
-      if(st == "A"){
+      if(st == "E"){
         return "table-success"
       }
-      if(st == "S"){
-        return "table-dark"
+      if(st == "A"){
+        return "table-primary"
       }
     },
     getOrdenes(){
             let page = 1
             this.$axios.
-            get("http://127.0.0.1:8000/api/recepciones?page=" + page).
+            get("http://127.0.0.1:8000/api/ordenes/AR?page=" + page + 
+            "&id_user=" + this.$store.getters.value.id_user).
             then(response => {
               this.ordenes = response.data.data;
               //console.log(this.ordenes)
       });
     },
-    storeRecepcion(id) {
+    storeOrden(id) {
       this.$axios
-        .post("http://127.0.0.1:8000/api/recepciones/aceptar", {
-          id_user:     this.$store.getters.value.id_user,
+        .post("http://127.0.0.1:8000/api/ordenes/aceptar", {
           id_orden:    id,
-          comentario:     this.comentario,
+          fecha_v:     this.dayHour,
         })
         .then((response) => {
           console.log(response);
