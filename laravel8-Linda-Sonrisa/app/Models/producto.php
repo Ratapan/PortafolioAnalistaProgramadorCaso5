@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class producto extends Model
 {
     use HasFactory;
+    public $timestamps = false;
+    protected $primaryKey = 'id_tipop';
 }

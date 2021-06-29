@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\ordene;
+use App\Models\producto;
 use App\Models\recepcione;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -20,6 +21,16 @@ class RecepcionController extends Controller
             ->where('detalle_ordenes.ORDENES_ID_ORDEN', $request->id_orden)
             ->value('productos.FAMILIA_PRODUCTOS_ID_T_FAM');
         $fecha = DB::table('ordenes')->select('FECHA_VENC_O')->where('ID_ORDEN', $request->id_orden)->value('FECHA_VENC_O');
+        $id_producto = DB::table('detalle_ordenes')->select('productos_id_tipop')
+            ->where('ORDENES_ID_ORDEN', $request->id_orden)
+            ->value('productos_id_tipop');
+        $stock = DB::table('detalle_ordenes')->select('productos.stock_tipop')
+            ->join('productos', 'productos.id_tipop' , '=' , 'detalle_ordenes.productos_id_tipop')
+            ->where('detalle_ordenes.ORDENES_ID_ORDEN', $request->id_orden)
+            ->value('productos.stock_tipop');
+        $cantidad = DB::table('detalle_ordenes')->select('cant_productos')
+            ->where('ORDENES_ID_ORDEN', $request->id_orden)
+            ->value('cant_productos');
         $fechaa = Carbon::parse($fecha);
         $dfecha = $fechaa->day;
         $mfecha = $fechaa->month;
@@ -35,7 +46,12 @@ class RecepcionController extends Controller
         $ordenEdit = ordene::find($request->id_orden);
         $ordenEdit->estado = 'E';
         $ordenEdit->save();
-        return response()->json([$newRecepcion,$ordenEdit], 200);
+
+        $productoEdit = producto::find($id_producto);
+        $productoEdit->stock_tipop = $stock+$cantidad;
+        $productoEdit->save();
+
+        return response()->json([$newRecepcion,$ordenEdit,$productoEdit], 200);
     }
 
     public function getProductosRecibidos(Request $request)
