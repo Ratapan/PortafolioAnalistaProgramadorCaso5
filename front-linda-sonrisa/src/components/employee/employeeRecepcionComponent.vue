@@ -11,7 +11,8 @@
         <thead>
           <tr>
             <th scope="col"><h3>Producto</h3></th>
-            <th scope="col"><h3>Cantidad</h3></th>
+            <th scope="col"><h3>Producto</h3></th>
+            <th scope="col"><h3>Estado</h3></th>
             <th scope="col"><h3>Acciones</h3></th>
           </tr>
         </thead>
@@ -19,6 +20,7 @@
           <tr v-for="orden in ordenes" :key="orden.id_orden" :class="statusColor(orden.estado)">
             <td>{{orden.nombre_tipop}}</td>
             <td>{{orden.cant_productos}}</td>
+            <td>{{status(orden.estado)}}</td>
             <td>  
               <div class="row flex-d justify-content-around">
                 <button type="button" class="btn btn-primary" @click="ordeness = orden" v-b-modal.modal>Ver Mas información</button>
@@ -119,6 +121,17 @@ export default {
     this.getOrdenes();
   },
   methods: {
+    status(st){
+      if(st == "R"){
+        return "Rechazada"
+      }
+      if(st == "A"){
+        return "Aceptada"
+      }
+      if(st == "S"){
+        return "Solicitada"
+      }
+    },
     statusColor(st){
       if(st == "R"){
         return "table-danger"
