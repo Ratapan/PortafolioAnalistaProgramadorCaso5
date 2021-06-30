@@ -33,12 +33,12 @@ fun menu(onBack: () -> Unit) {
             Column {
                 Text ("Linda Sonrisa",
                     modifier = Modifier.padding(5.dp))
-                MenuButton("Dashboard", { contentState = ContentView.ContentViewDashboard })
-                MenuButton("Administrar Citas", { contentState = ContentView.ContentViewAppointment })
-                MenuButton("Administrar Horarios", { contentState = ContentView.ContentViewHours })
-                MenuButton("Administrar Usuarios", { contentState = ContentView.ContentViewUser })
-                MenuButton("Administrar Ordenes", { contentState = ContentView.ContentViewOrders })
-                MenuButton("Administrar Productos", { contentState = ContentView.ContentViewProducts })
+                menuButton("Dashboard") { contentState = ContentView.ContentViewDashboard }
+                menuButton("Administrar Citas") { contentState = ContentView.ContentViewAppointment }
+                menuButton("Administrar Horarios") { contentState = ContentView.ContentViewHours }
+                menuButton("Administrar Usuarios") { contentState = ContentView.ContentViewUser }
+                menuButton("Administrar Ordenes") { contentState = ContentView.ContentViewOrders }
+                menuButton("Administrar Productos") { contentState = ContentView.ContentViewProducts }
             }
             Column(modifier = Modifier
                 .padding(5.dp)
@@ -82,7 +82,7 @@ fun menu(onBack: () -> Unit) {
 }
 
 @Composable
-fun MenuButton(text: String, goTo: () -> Unit) {
+fun menuButton(text: String, goTo: () -> Unit) {
     OutlinedButton(
         onClick = { goTo() },
         shape = RectangleShape,

@@ -25,19 +25,19 @@ fun viewOrders() {
         Text("Ordenes", fontSize = 24.sp)
         Spacer(modifier = Modifier.height(10.dp))
 
-        val ChooseBy = ChooseByEnum.values().map {
+        val chooseBy = ChooseByEnum.values().map {
             it to it.toString()
         }
 
         val (selectedChooseBy, setSelectedChooseBy) = remember { mutableStateOf(0) }
 
-        dropdownSelect("Ver ordenes por", ChooseBy, selectedChooseBy, setSelectedChooseBy, Arrangement.Start)
+        dropdownSelect("Ver ordenes por", chooseBy, selectedChooseBy, setSelectedChooseBy, Arrangement.Start)
 
         Spacer(modifier = Modifier.height(10.dp))
 
 
 
-        when (ChooseBy[selectedChooseBy].first) {
+        when (chooseBy[selectedChooseBy].first) {
             ChooseByEnum.Ordenes -> {
 
             }

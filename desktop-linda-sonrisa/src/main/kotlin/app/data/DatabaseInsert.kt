@@ -1,9 +1,7 @@
 package app.data
 
 import at.favre.lib.crypto.bcrypt.BCrypt
-import org.jetbrains.exposed.sql.StdOutSqlLogger
-import org.jetbrains.exposed.sql.addLogger
-import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.statements.api.ExposedBlob
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
@@ -112,9 +110,9 @@ fun insertProveedor(
         addLogger(StdOutSqlLogger)
         Proveedores.insert {
             it[id] = 0
-            val phoneNumber = phoneNumber
+            val phoneNumberData = phoneNumber
                 .replace("[+]".toRegex(), "")
-            it[num_telefono_empresa] = phoneNumber
+            it[num_telefono_empresa] = phoneNumberData
             it[id_user] = userId
         }
     }
@@ -139,9 +137,9 @@ fun insertAdmin(
         addLogger(StdOutSqlLogger)
         Administradores.insert {
             it[id] = 0
-            val phoneNumber = phoneNumber
+            val phoneNumberData = phoneNumber
                 .replace("\\s".toRegex(), "")
-            it[num_telefono] = phoneNumber
+            it[num_telefono] = phoneNumberData
             it[id_user] = userId
         }
     }
@@ -283,5 +281,87 @@ fun familiaProductoEdit(
         addLogger(StdOutSqlLogger)
         val familiaProducto = Familia_Producto.findById(id)
         familiaProducto?.nombre = name
+    }
+}
+
+// Producto
+
+fun productoInsert(
+    name: String,
+    description: String,
+    buyingPrice: Int,  // buying price
+    sellingPrice: Int,  // selling price
+    actualStock: Int,
+    criticalStock: Int,
+    categoryId: Int,
+    list: List<Int>,
+) {
+    val productId = transaction {
+        Productos.insert {
+            it[id] = 0
+            it[nombre] = name
+            it[descripcion] = description
+            it[precio_c] = buyingPrice
+            it[precio_v] = sellingPrice
+            it[stock] = actualStock
+            it[stock_critico] = criticalStock
+            it[id_familia_producto] = categoryId
+        } get Productos.id
+    }
+    list.forEach { idProvider ->
+        transaction {
+            ProvProductos.insert {
+                it[id] = 0
+                it[id_producto] = productId.value
+                it[id_proveedor] = idProvider
+            }
+        }
+    }
+}
+
+fun productoUpdate(
+    idProducto: Int,
+    name: String,
+    description: String,
+    buyingPrice: Int,  // buying price
+    sellingPrice: Int,  // selling price
+    actualStock: Int,
+    criticalStock: Int,
+    categoryId: Int,
+    list: List<Int>,
+) {
+    val providers = transaction {
+        ProvProductos.select {
+            ProvProductos.id_producto eq idProducto
+        }.map {
+            it[ProvProductos.id_proveedor]
+        }.toList()
+    }
+    val toDelete = providers-list
+    val toAdd = list-providers
+    transaction {
+        val product = Producto.findById(idProducto)
+        if (product != null) {
+            product.nombre = name
+            product.descripcion = description
+            product.precioC = buyingPrice
+            product.precioV = sellingPrice
+            product.stock = actualStock
+            product.stockCritico = criticalStock
+            product.idFamiliaProducto = categoryId
+        }
+        toDelete.forEach {
+            ProvProductos.deleteWhere {
+                ProvProductos.id_proveedor eq it and
+                        (ProvProductos.id_producto eq idProducto)
+            }
+        }
+        toAdd.forEach { idProvider ->
+            ProvProductos.insert {
+                it[id] = 0
+                it[id_producto] = idProducto
+                it[id_proveedor] = idProvider
+            }
+        }
     }
 }

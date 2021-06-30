@@ -53,21 +53,21 @@ fun lineChart(data : List<CitasPorSemana>) {
 //          We draw the intervals for X
             for (i in 1..4) {
                 println(i)
-                val drawing = (maxValue?.times(i))?.div(4)
+                val drawing = (maxValue.times(i)).div(4)
                 it.nativeCanvas.drawString(
-                    "${drawing}",
+                    "$drawing",
                     5f,
                     135f-(26f*i),
                     Font(face, 12f),
                     Paint().setColor(0xFF000000.toInt())
                 )
             }
-            val PointList: MutableList<Point> = mutableListOf()
+            val pointList: MutableList<Point> = mutableListOf()
 //          We iterate thru the data
             for ((index, semana) in data.withIndex()) {
 //                We draw the weeks
                 it.nativeCanvas.drawString(
-                    "${semana.semana}",
+                    semana.semana,
                     25f+(28f*index),
                     145f,
                     Font(face, 12f),
@@ -91,24 +91,24 @@ fun lineChart(data : List<CitasPorSemana>) {
                     Paint().setColor(0xFF000000.toInt())
                         .setStroke(true)
                 )
-                PointList.add(
+                pointList.add(
                     Point(
                         25f+(28f*index),
                         elevation.toFloat()
                     )
                 )
             }
-            for (point in PointList){
+            for (point in pointList){
                 println("${point.x}, ${point.y}")
             }
-            println(PointList.lastIndex)
+            println(pointList.lastIndex)
             val difference = 5.5f
-            for (i in 1..PointList.lastIndex) {
+            for (i in 1..pointList.lastIndex) {
                 it.nativeCanvas.drawLine(
-                    PointList[i-1].x + difference,
-                    PointList[i-1].y,
-                    PointList[i].x + difference,
-                    PointList[i].y,
+                    pointList[i-1].x + difference,
+                    pointList[i-1].y,
+                    pointList[i].x + difference,
+                    pointList[i].y,
                     Paint().setColor(0xFF000000.toInt())
                 )
             }

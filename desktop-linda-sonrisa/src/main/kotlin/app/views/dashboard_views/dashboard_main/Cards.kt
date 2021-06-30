@@ -16,7 +16,7 @@ import app.components.lineChart
 
 
 @Composable
-fun StockStatusCard() {
+fun stockStatusCard() {
     Card(elevation = 4.dp) {
         Box(modifier = Modifier
             .size(200.dp, 250.dp)
@@ -43,8 +43,8 @@ fun StockStatusCard() {
 
 
 @Composable
-fun ReservationStatusCard() {
-    var data = listOf(
+fun reservationStatusCard() {
+    val data = listOf(
         CitasPorSemana("1/1", 8),
         CitasPorSemana("8/1", 13),
         CitasPorSemana("15/1", 64),
@@ -65,7 +65,7 @@ fun ReservationStatusCard() {
 }
 
 @Composable
-fun RegisteredPatientsCard() {
+fun registeredPatientsCard() {
     Card(elevation = 4.dp) {
         Box(modifier = Modifier
             .size(200.dp, 250.dp)

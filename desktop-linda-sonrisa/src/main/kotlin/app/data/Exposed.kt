@@ -6,6 +6,11 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
 
+/*
+ *
+ * WARNING: This file purpose it's just to test the database connection. Pwease ignore it. ;-;
+ *
+ */
 
 //fun app.main() {
 //    Database.connect("jdbc:oracle:thin:@localhost:1521:xe", driver = "oracle.jdbc.driver.OracleDriver",

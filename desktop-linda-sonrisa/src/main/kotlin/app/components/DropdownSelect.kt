@@ -108,7 +108,7 @@ fun dropdownSelectById(
                 onDismissRequest = { expanded = false },
                 modifier = Modifier
             ) {
-                list.forEachIndexed { index, s ->
+                list.forEachIndexed { _, s ->
                     DropdownMenuItem(
                         onClick = {
                             setSelectedValue(s.first.value)

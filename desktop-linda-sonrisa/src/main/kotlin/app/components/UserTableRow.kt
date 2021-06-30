@@ -51,7 +51,7 @@ fun userTableRow (
 }
 
 @Composable
-fun tableCell(string : String, modifier: Modifier) {
+fun tableCell(string : String, modifier: Modifier = Modifier) {
     Column(modifier = modifier
         .border(BorderStroke(1.dp, Color.Black))
     ){

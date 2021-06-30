@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.time.*
 
-public enum class SectionOfDay {
+enum class SectionOfDay {
     AM,
     PM
 }
@@ -79,7 +79,7 @@ fun secondPicker(selectedSecond: String, setSelectedSecond: (String) -> Unit, di
                     } else {
                         var hourValue = minTime
                         if (it.length <= 3) {
-                            hourValue = it.filter { it.isDigit() }.toInt()
+                            hourValue = it.filter { char -> char.isDigit() }.toInt()
                         }
                         secondText += hourValue.toString().last()
                         when {
@@ -148,7 +148,7 @@ fun minutePicker(selectedMinute: String, setSelectedMinute: (String) -> Unit, di
                     } else {
                         var hourValue = minTime
                         if (it.length <= 3) {
-                            hourValue = it.filter { it.isDigit() }.toInt()
+                            hourValue = it.filter { char -> char.isDigit() }.toInt()
                         }
                         minuteText += hourValue.toString().last()
                         when {
@@ -207,8 +207,6 @@ fun hourPicker(
     if (hourText.length > 2) {
         hourText = hourText.takeLast(2)
     }
-    val minTime = minHour
-    val maxTime = maxHour
 
     Row ( verticalAlignment = Alignment.CenterVertically
     ) {
@@ -223,20 +221,20 @@ fun hourPicker(
                     if (it.isEmpty()) {
                         setSelectedHour(minHour.toString())
                     } else {
-                        var hourValue = minTime
+                        var hourValue = minHour
                         if (it.length <= 3) {
                             hourValue = it.filter { it.isDigit() }.toInt()
                         }
                         hourText += hourValue.toString().last()
                         when {
-                            hourValue < minTime -> {
-                                setSelectedHour(minTime.toString())
+                            hourValue < minHour -> {
+                                setSelectedHour(minHour.toString())
                             }
-                            hourValue >= maxTime -> {
-                                when(hourText.takeLast(2).first()) {
+                            hourValue >= maxHour -> {
+                                when (hourText.takeLast(2).first()) {
                                     '0' -> {
                                         if (hourText.takeLast(1) == "0") {
-                                            setSelectedHour(minTime.toString())
+                                            setSelectedHour(minHour.toString())
                                         } else {
                                             setSelectedHour(hourText.takeLast(1))
 
@@ -246,14 +244,14 @@ fun hourPicker(
                                         setSelectedHour(hourText.takeLast(2))
                                     }
                                     '2' -> {
-                                        if (hourText.takeLast(1).toInt() > maxTime.toString().takeLast(1).toInt()) {
-                                            setSelectedHour(maxTime.toString())
+                                        if (hourText.takeLast(1).toInt() > maxHour.toString().takeLast(1).toInt()) {
+                                            setSelectedHour(maxHour.toString())
                                         } else {
                                             setSelectedHour(hourText.takeLast(2))
                                         }
                                     }
                                     else -> {
-                                        setSelectedHour(maxTime.toString())
+                                        setSelectedHour(maxHour.toString())
                                     }
                                 }
                             }

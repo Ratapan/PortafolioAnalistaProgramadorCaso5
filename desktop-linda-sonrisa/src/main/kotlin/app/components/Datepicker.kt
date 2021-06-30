@@ -17,10 +17,6 @@ import java.time.LocalDate
 import java.time.YearMonth
 
 
-
-
-private val days = listOf(1..31)
-
 private val up = Icons.Default.KeyboardArrowUp
 private val down = Icons.Default.KeyboardArrowDown
 
@@ -38,7 +34,7 @@ fun datePicker(title: String,
     ) {
         Text("${title}:", fontSize = 20.sp)
         Spacer(modifier = Modifier.width(10.dp))
-        dayPicker(selectDay, setSelectedDay, selectMonth, selectYear, modifier = Modifier, disabled)
+        dayPicker(selectDay, setSelectedDay, selectMonth, selectYear, disabled)
         Spacer(modifier = Modifier.width(10.dp))
         monthPicker(selectMonth, setSelectedMonth, disabled)
         Spacer(modifier = Modifier.width(10.dp))
@@ -63,7 +59,7 @@ fun datePickerWithLocalDate(title: String,
     ) {
         Text("${title}:", fontSize = 20.sp)
         Spacer(modifier = Modifier.width(10.dp))
-        dayPicker(selectedDay, setSelectedDay, selectedMonth, selectedYear, modifier = Modifier, disabled)
+        dayPicker(selectedDay, setSelectedDay, selectedMonth, selectedYear, disabled)
         Spacer(modifier = Modifier.width(10.dp))
         monthPicker(selectedMonth, setSelectedMonth, disabled)
         Spacer(modifier = Modifier.width(10.dp))
@@ -77,7 +73,6 @@ fun dayPicker(
     setSelectedDay: (String) -> Unit,
     selectMonth: String,
     selectYear: String,
-    modifier: Modifier.Companion,
     disabled: Boolean
 ) {
     val yearMonthObject = YearMonth.of(selectYear.toInt(), selectMonth.toInt())
@@ -99,7 +94,7 @@ fun dayPicker(
                     } else {
                         var dayValue = 1
                         if (it.length <= 3) {
-                            dayValue = it.filter { it.isDigit() }.toInt()
+                            dayValue = it.filter { char -> char.isDigit() }.toInt()
                         }
                         dayText += dayValue.toString().last()
                         when {
@@ -199,7 +194,7 @@ fun monthPicker(
                     } else {
                         var monthValue = 1
                         if (it.length <= 3) {
-                            monthValue = it.filter { it.isDigit() }.toInt()
+                            monthValue = it.filter { char -> char.isDigit() }.toInt()
                         }
                         when {
                             monthValue <= 0 -> {
@@ -284,7 +279,7 @@ fun yearPicker(
                     } else {
                         var numValue = 1990
                         if (it.length <= 5) {
-                            numValue = it.filter { it.isDigit() }.toInt()
+                            numValue = it.filter { char -> char.isDigit() }.toInt()
                         }
                         when {
                             numValue < 1900 -> {

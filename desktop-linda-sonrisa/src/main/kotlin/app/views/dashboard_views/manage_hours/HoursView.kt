@@ -25,10 +25,10 @@ import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.*
 
-public val WeeklyDays = DayOfWeek.values()
+val WeeklyDays = DayOfWeek.values()
 
 
-public val estadoHora = listOf(
+val estadoHora = listOf(
     "Disponible",
     "Tomada"
 )
@@ -285,8 +285,6 @@ fun registerHourDialog(
 ) {
 
     if (active) {
-
-        val id by remember { mutableStateOf(timeSlot.id) }
         val (date, setDate) = remember { mutableStateOf(LocalDate.ofInstant(timeSlot.startTime, ZoneId.of("+0"))) }
         val (startTime, setStartTime) = remember { mutableStateOf(timeSlot.startTime) }
         val (endTime, setEndTime) = remember { mutableStateOf(timeSlot.endTime) }

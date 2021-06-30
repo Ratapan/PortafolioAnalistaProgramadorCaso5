@@ -34,12 +34,9 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 
-public enum class ChooseByEnum {
+enum class ChooseByEnum {
     Dentista,
     Paciente
-}
-
-public enum class OrderByEnum {
 }
 
 val appointmentStatus = listOf(
@@ -60,7 +57,7 @@ private const val WEIGHT_STATUS = 1f
 
 @Composable
 fun registerAppointment() {
-    val ChooseBy = listOf(
+    val chooseBy = listOf(
         ChooseByEnum.Dentista to ChooseByEnum.Dentista.toString(),
         ChooseByEnum.Paciente to ChooseByEnum.Paciente.toString(),
     )
@@ -73,7 +70,7 @@ fun registerAppointment() {
         ) {
             Text(text = "Administrador de Citas", fontSize = 20.sp)
         }
-        dropdownSelect("Ver citas por", ChooseBy, selectedChooseBy, setSelectedChooseBy, Arrangement.Start)
+        dropdownSelect("Ver citas por", chooseBy, selectedChooseBy, setSelectedChooseBy, Arrangement.Start)
         val idRolDentista = transaction { Tipo_Empleados.select { Tipo_Empleados.nombre eq "Dentista" }.single()[Tipo_Empleados.id] }.value
         val dentistas = transaction {
             Empleados.innerJoin(Tipo_Empleados).innerJoin(Users)
@@ -89,7 +86,7 @@ fun registerAppointment() {
                 it[Pacientes.id] to it[Users.nombre]
             }
         }
-        when (ChooseBy[selectedChooseBy].first) {
+        when (chooseBy[selectedChooseBy].first) {
             ChooseByEnum.Dentista -> {
                 val (showRegisterAppointment, setShowRegisterAppointment) = remember { mutableStateOf(false) }
                 val (showEditAppointment, setShowEditAppointment) = remember { mutableStateOf(false) }
@@ -238,7 +235,7 @@ fun registerAppointment() {
                     ))
                 val (selectedTimeSlot, setSelectedTimeSlot) = remember { mutableStateOf( TimeSlot(startTime = noon, endTime = noon) ) }
 
-                if (!patients.isEmpty()) {
+                if (patients.isNotEmpty()) {
                     val (selectedPatient, setSelectedPatient) = remember { mutableStateOf(0) }
                     val citas = remember { mutableStateOf( transaction {
                         addLogger(StdOutSqlLogger)
@@ -308,7 +305,7 @@ fun registerAppointment() {
                     Spacer(modifier = Modifier.height(10.dp))
                     intSelector(selectedInt, setSelectedInt, "Pagina", 1, (citas.value.size/AMOUNT_PER_PAGE)+1, modifier = Modifier.size(200.dp, 60.dp))
                     Spacer(modifier = Modifier.height(10.dp))
-                    if (!citas.value.isEmpty()) {
+                    if (citas.value.isNotEmpty()) {
                         val editAppointment = remember { mutableStateOf(false) }
                         val selectedCita = remember { mutableStateOf(citas.value.first().second["Cita"] as Cita) }
                         val selectedEmpleado = remember { mutableStateOf(((citas.value.first().second["Empleado"] as Pair<*, *>).second as User).nombre) }
@@ -368,7 +365,7 @@ fun registerAppointment() {
                                     }
                                 ){
                                     tableCell("${item.first}", modifier = Modifier.weight(WEIGHT_ID))
-                                    tableCell(((item.second["Empleado"] as kotlin.Pair<*, *>).second as User).nombre, modifier = Modifier.weight(WEIGHT_DENTIST))
+                                    tableCell(((item.second["Empleado"] as Pair<*, *>).second as User).nombre, modifier = Modifier.weight(WEIGHT_DENTIST))
                                     tableCell((item.second["Cita"] as Cita).fecha_solicitacion.format(dateFormatter), modifier = Modifier.weight(WEIGHT_DATE))
                                     tableCell(timerFormatter.format((item.second["Hora"] as Hora).hora_inicio), modifier = Modifier.weight(WEIGHT_START_TIME))
                                     tableCell(timerFormatter.format((item.second["Hora"] as Hora).hora_fin), modifier = Modifier.weight(WEIGHT_END_TIME))
@@ -670,9 +667,9 @@ fun registerAppointmentDialogForPatients(
 
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    println(!selectedTimeSlot.equals(baseTimeSlot))
+                    println(selectedTimeSlot != baseTimeSlot)
 
-                    formSpacer(modifier = Modifier.height(10.dp), selectedTimeSlot.equals(baseTimeSlot), "Porfavor seleccionar una hora valida, ")
+                    formSpacer(modifier = Modifier.height(10.dp), selectedTimeSlot == baseTimeSlot, "Porfavor seleccionar una hora valida, ")
 
                     if (showPopUpCalendar.value) {
 
@@ -793,14 +790,14 @@ fun registerAppointmentDialogForPatients(
                         horizontalArrangement = Arrangement.SpaceAround
                     ) {
                         Button(onClick = {
-                            if (selectedTimeSlot.equals(baseTimeSlot)) {
+                            if (selectedTimeSlot == baseTimeSlot) {
                                 setShowDialog(false)
                             } else {
                                 appointmentInsert(estadoCita = appointmentStatus[selectedStatus].first, idPaciente = idPatient.value, idHora = selectedTimeSlot.id)
                                 setShowDialog(false)
                             }
                         },
-                            modifier = when (selectedTimeSlot.equals(baseTimeSlot)) {
+                            modifier = when (selectedTimeSlot == baseTimeSlot) {
                                 true -> Modifier
                                     .background(Color.Gray)
                                 else -> Modifier.background(Color.White)
@@ -817,7 +814,7 @@ fun registerAppointmentDialogForPatients(
                 }
             },
             properties = DialogProperties(
-                title = "Registrar Cita para el paciente ${namePatient}",
+                title = "Registrar Cita para el paciente $namePatient",
                 size = IntSize(500, 700)
             )
         )

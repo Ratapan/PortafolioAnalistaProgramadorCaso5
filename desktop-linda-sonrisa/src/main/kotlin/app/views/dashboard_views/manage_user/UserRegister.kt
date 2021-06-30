@@ -38,11 +38,6 @@ import javax.swing.filechooser.FileNameExtensionFilter
 private val blankProfilePicture = {}.javaClass.classLoader.getResource("images/blank-profile-picture.png")!!
 
 
-private val eliminate = listOf(
-    "False",
-    "True"
-)
-
 private val roles = transaction {
     Rol.all().toList().map{ it.id.value to it.nombre }
 }
@@ -305,28 +300,33 @@ fun userRegister() {
 
             }
             Spacer(modifier = Modifier.width(20.dp))
-            if (roles[selectedRol].second == "Administrador") {
-                registerAdministradorView(phoneNumber, setPhoneNumber)
-            } else if (roles[selectedRol].second == "Empleado") {
-                registerEmpleadoView(phoneNumber, setPhoneNumber,
-                    saludEmpleado, setSaludEmpleado,
-                    salario, setSalario,
-                    inicioContrato, setInicioContrato,
-                    finContrato, setFinContrato,
-                    AFP, setAFP,
-                    nombreBanco, setNombreBanco,
-                    numeroCuenta, setNumeroCuenta,
-                    imagen, setImagen,
-                    tipoEmpleado, setTipoEmpleado
-                )
-            } else if (roles[selectedRol].second == "Proveedor") {
-                registerProveedorView(phoneNumber, setPhoneNumber)
-            } else {
-                registerPacienteView(
-                    phoneNumber, setPhoneNumber,
-                    saludEmpleado, setSaludEmpleado,
-                    file, setFile
-                )
+            when (roles[selectedRol].second) {
+                "Administrador" -> {
+                    registerAdministradorView(phoneNumber, setPhoneNumber)
+                }
+                "Empleado" -> {
+                    registerEmpleadoView(phoneNumber, setPhoneNumber,
+                        saludEmpleado, setSaludEmpleado,
+                        salario, setSalario,
+                        inicioContrato, setInicioContrato,
+                        finContrato, setFinContrato,
+                        AFP, setAFP,
+                        nombreBanco, setNombreBanco,
+                        numeroCuenta, setNumeroCuenta,
+                        imagen, setImagen,
+                        tipoEmpleado, setTipoEmpleado
+                    )
+                }
+                "Proveedor" -> {
+                    registerProveedorView(phoneNumber, setPhoneNumber)
+                }
+                else -> {
+                    registerPacienteView(
+                        phoneNumber, setPhoneNumber,
+                        saludEmpleado, setSaludEmpleado,
+                        file, setFile
+                    )
+                }
             }
 //            Column (
 //                modifier = Modifier
@@ -447,37 +447,42 @@ fun confirmWindowDialog(
             },
             confirmButton = {
                 OutlinedButton(onClick = {
-                    if (roles[selectedRol].second == "Administrador") {
-                        insertAdmin(
-                            email, password, rut, nombre, direccion,
-                            LocalDate.of(selectedYear.toInt(), selectedMonth.toInt(), selectedDay.toInt()),
-                            eliminado[selectedEliminado].first, roles[selectedRol].first, phoneNumber
-                        )
-                    } else if (roles[selectedRol].second == "Empleado") {
-                        insertEmpleado(
-                            email, password, rut, nombre, direccion,
-                            LocalDate.of(selectedYear.toInt(), selectedMonth.toInt(), selectedDay.toInt()),
-                            eliminado[selectedEliminado].first, roles[selectedRol].first,
-                            phoneNumber,
-                            salud_e[saludEmpleado].first, salario,
-                            inicioContrato, finContrato,
-                            AFP, nombreBanco, numeroCuenta,
-                            tiposEmpleados[tipoEmpleado].first, imagen
-                        )
-                    } else if (roles[selectedRol].second == "Proveedor") {
-                        insertProveedor(
-                            email, password, rut, nombre, direccion,
-                            LocalDate.of(selectedYear.toInt(), selectedMonth.toInt(), selectedDay.toInt()),
-                            eliminado[selectedEliminado].first, roles[selectedRol].first, phoneNumber
-                        )
-                    } else if (roles[selectedRol].second == "Paciente") {
-                        insertPaciente(
-                            email, password, rut, nombre, direccion,
-                            LocalDate.of(selectedYear.toInt(), selectedMonth.toInt(), selectedDay.toInt()),
-                            eliminado[selectedEliminado].first, roles[selectedRol].first,
-                            phoneNumber,
-                            salud_e[saludEmpleado].first, file
-                        )
+                    when (roles[selectedRol].second) {
+                        "Administrador" -> {
+                            insertAdmin(
+                                email, password, rut, nombre, direccion,
+                                LocalDate.of(selectedYear.toInt(), selectedMonth.toInt(), selectedDay.toInt()),
+                                eliminado[selectedEliminado].first, roles[selectedRol].first, phoneNumber
+                            )
+                        }
+                        "Empleado" -> {
+                            insertEmpleado(
+                                email, password, rut, nombre, direccion,
+                                LocalDate.of(selectedYear.toInt(), selectedMonth.toInt(), selectedDay.toInt()),
+                                eliminado[selectedEliminado].first, roles[selectedRol].first,
+                                phoneNumber,
+                                salud_e[saludEmpleado].first, salario,
+                                inicioContrato, finContrato,
+                                AFP, nombreBanco, numeroCuenta,
+                                tiposEmpleados[tipoEmpleado].first, imagen
+                            )
+                        }
+                        "Proveedor" -> {
+                            insertProveedor(
+                                email, password, rut, nombre, direccion,
+                                LocalDate.of(selectedYear.toInt(), selectedMonth.toInt(), selectedDay.toInt()),
+                                eliminado[selectedEliminado].first, roles[selectedRol].first, phoneNumber
+                            )
+                        }
+                        "Paciente" -> {
+                            insertPaciente(
+                                email, password, rut, nombre, direccion,
+                                LocalDate.of(selectedYear.toInt(), selectedMonth.toInt(), selectedDay.toInt()),
+                                eliminado[selectedEliminado].first, roles[selectedRol].first,
+                                phoneNumber,
+                                salud_e[saludEmpleado].first, file
+                            )
+                        }
                     }
                     setConfirmWindow(false)
                 }
@@ -567,7 +572,7 @@ fun registerPacienteView(
             onValueChange = {
                 setPhoneNumber(it)
                 if (phoneNumber.isNotEmpty() && phoneNumber.isNotBlank()) {
-                    setCorrectPhoneNumber(Validator.phoneNumberValidator(phoneNumber).not())
+                    setCorrectPhoneNumber(phoneNumberValidator(phoneNumber).not())
                 } else {
                     setCorrectPhoneNumber(false)
                 }
@@ -721,7 +726,7 @@ fun registerEmpleadoView(
 
             formSpacer(modifier = Modifier.height(10.dp))
 
-            OutlinedTextField(value = "$${salario.toString()}",
+            OutlinedTextField(value = "$$salario",
                 onValueChange = {
                     if (it.isEmpty()) {
                         setSalario(0)
@@ -729,7 +734,7 @@ fun registerEmpleadoView(
                         if (it.length > 1 ){
                             val value = it
                                 .replace("$", "")
-                                .filter { it.isDigit() }
+                                .filter { char -> char.isDigit() }
                                 .toLong()
                             if (salario == 0.toLong()) {
                                 setSalario(value/10)
@@ -781,9 +786,9 @@ fun registerEmpleadoView(
                     if (it.isEmpty()) {
                         setNumeroCuenta(0)
                     } else {
-                        if (it.length > 0 ){
+                        if (it.isNotEmpty()){
                             val value = it
-                                .filter { it.isDigit() }
+                                .filter { char -> char.isDigit() }
                                 .toLong()
                             if (numeroCuenta == 0.toLong()) {
                                 setNumeroCuenta(value/10)

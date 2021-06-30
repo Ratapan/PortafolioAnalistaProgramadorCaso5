@@ -44,11 +44,11 @@ fun singleColumnLayout(){
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(10.dp))
-        StockStatusCard()
+        stockStatusCard()
         Spacer(modifier = Modifier.height(10.dp))
-        ReservationStatusCard()
+        reservationStatusCard()
         Spacer(modifier = Modifier.height(10.dp))
-        RegisteredPatientsCard()
+        registeredPatientsCard()
         Spacer(modifier = Modifier.height(10.dp))
     }
 }
@@ -63,14 +63,14 @@ fun doubleColumnLayout(){
     ) {
         Column {
             Spacer(modifier = Modifier.height(10.dp))
-            StockStatusCard()
+            stockStatusCard()
             Spacer(modifier = Modifier.height(10.dp))
-            ReservationStatusCard()
+            reservationStatusCard()
             Spacer(modifier = Modifier.height(10.dp))
         }
         Column {
             Spacer(modifier = Modifier.height(10.dp))
-            RegisteredPatientsCard()
+            registeredPatientsCard()
             Spacer(modifier = Modifier.height(10.dp))
         }
     }
@@ -86,11 +86,11 @@ fun okeyLetsMakeIt2Rows(){
         verticalAlignment = Alignment.Top
     ){
         Spacer(modifier = Modifier.width(10.dp))
-        StockStatusCard()
+        stockStatusCard()
         Spacer(modifier = Modifier.width(10.dp))
-        ReservationStatusCard()
+        reservationStatusCard()
         Spacer(modifier = Modifier.width(10.dp))
-        RegisteredPatientsCard()
+        registeredPatientsCard()
         Spacer(modifier = Modifier.width(10.dp))
     }
 }

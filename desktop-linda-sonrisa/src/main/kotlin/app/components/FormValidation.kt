@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun formSpacer(modifier : Modifier = Modifier, validation: Boolean = false, text: String = "") {
     Box  {
-        Row(modifier = Modifier){
+        Row(modifier = modifier){
             DisableSelection {
                 Text(" ")
             }

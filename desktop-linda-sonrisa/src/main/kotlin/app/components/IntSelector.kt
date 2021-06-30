@@ -19,7 +19,7 @@ private val up = Icons.Default.KeyboardArrowUp
 private val down = Icons.Default.KeyboardArrowDown
 
 @Composable
-fun intSelector(selectedInt: Int, setSelelectedInt: (Int) -> Unit,title: String = "Int", minInt: Int = 1, maxInt: Int = Int.MAX_VALUE, modifier : Modifier) {
+fun intSelector(selectedInt: Int, setSelectedInt: (Int) -> Unit, title: String = "Int", minInt: Int = 1, maxInt: Int = Int.MAX_VALUE, modifier : Modifier) {
 
     var dayText by remember { mutableStateOf(selectedInt.toString()) }
     if (dayText.length > selectedInt.toString().length) {
@@ -34,37 +34,37 @@ fun intSelector(selectedInt: Int, setSelelectedInt: (Int) -> Unit,title: String 
                 singleLine = true,
                 onValueChange = {
                     if (it.isEmpty()) {
-                        setSelelectedInt(1)
+                        setSelectedInt(1)
                     } else {
                         var dayValue = 1
                         if (it.length <= 3) {
-                            dayValue = it.filter { it.isDigit() }.toInt()
+                            dayValue = it.filter { char -> char.isDigit() }.toInt()
                         }
                         dayText += dayValue.toString().last()
                         when {
                             dayValue < minInt -> {
-                                setSelelectedInt(minInt)
+                                setSelectedInt(minInt)
                             }
                             dayValue >= maxInt -> {
                                 when(dayText.takeLast(2).first()) {
                                     '0' -> {
                                         if (dayText.takeLast(1) == "0") {
-                                            setSelelectedInt(minInt)
+                                            setSelectedInt(minInt)
                                         } else {
                                             if (dayText.takeLast(1).toInt() > maxInt) {
-                                                setSelelectedInt(maxInt)
+                                                setSelectedInt(maxInt)
                                             } else {
-                                                setSelelectedInt(dayText.takeLast(1).toInt())
+                                                setSelectedInt(dayText.takeLast(1).toInt())
                                             }
                                         }
                                     }
                                     else -> {
-                                        setSelelectedInt(maxInt)
+                                        setSelectedInt(maxInt)
                                     }
                                 }
                             }
                             else -> {
-                                setSelelectedInt(dayValue)
+                                setSelectedInt(dayValue)
                             }
                         }
                     }
@@ -76,16 +76,16 @@ fun intSelector(selectedInt: Int, setSelelectedInt: (Int) -> Unit,title: String 
                 Image(up,
                     "Add 1",
                     modifier = Modifier.clickable {
-                        val newDay = (selectedInt.toInt()+1)
+                        val newDay = (selectedInt+1)
                         when {
                             newDay < 1 -> {
-                                setSelelectedInt(1)
+                                setSelectedInt(1)
                             }
                             newDay >= maxInt -> {
-                                setSelelectedInt(maxInt)
+                                setSelectedInt(maxInt)
                             }
                             else -> {
-                                setSelelectedInt(newDay)
+                                setSelectedInt(newDay)
                             }
                         }
                     }
@@ -93,16 +93,16 @@ fun intSelector(selectedInt: Int, setSelelectedInt: (Int) -> Unit,title: String 
                 Image(down,
                     "Sub 1",
                     modifier = Modifier.clickable {
-                        val newDay = (selectedInt.toInt()-1)
+                        val newDay = (selectedInt -1)
                         when {
                             newDay < 1 -> {
-                                setSelelectedInt(1)
+                                setSelectedInt(1)
                             }
                             newDay >= maxInt -> {
-                                setSelelectedInt(maxInt)
+                                setSelectedInt(maxInt)
                             }
                             else -> {
-                                setSelelectedInt(newDay)
+                                setSelectedInt(newDay)
                             }
                         }
                     }

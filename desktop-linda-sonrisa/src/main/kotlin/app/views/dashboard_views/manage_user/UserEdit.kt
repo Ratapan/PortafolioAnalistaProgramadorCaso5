@@ -76,11 +76,11 @@ fun userEdit(active: Boolean, setShowDialog: (Boolean) -> Unit, user: User) {
                     },
                         modifier = Modifier.fillMaxWidth()
                     ){
-                        val rol_value = when (eliminado) {
+                        val rolValue = when (eliminado) {
                             '1' -> "False"
                             else -> "True"
                         }
-                        Text("Eliminado: ${rol_value}")
+                        Text("Eliminado: $rolValue")
                     }
 
                     DropdownMenu(
