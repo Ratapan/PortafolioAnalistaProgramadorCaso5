@@ -400,44 +400,51 @@ fun confirmWindowDialog(
             },
             confirmButton = {
                 OutlinedButton(onClick = {
-                    when (roles[selectedRol].second) {
-                        "Administrador" -> {
-                            insertAdmin(
-                                email, password, rut, nombre, direccion,
-                                LocalDate.of(selectedYear.toInt(), selectedMonth.toInt(), selectedDay.toInt()),
-                                eliminado[selectedEliminado].first, roles[selectedRol].first, phoneNumber
-                            )
-                        }
-                        "Empleado" -> {
-                            insertEmpleado(
-                                email, password, rut, nombre, direccion,
-                                LocalDate.of(selectedYear.toInt(), selectedMonth.toInt(), selectedDay.toInt()),
-                                eliminado[selectedEliminado].first, roles[selectedRol].first,
-                                phoneNumber,
-                                salud_e[saludEmpleado].first, salario,
-                                inicioContrato, finContrato,
-                                AFP, nombreBanco, numeroCuenta,
-                                tiposEmpleados[tipoEmpleado].first, imagen
-                            )
-                        }
-                        "Proveedor" -> {
-                            insertProveedor(
-                                email, password, rut, nombre, direccion,
-                                LocalDate.of(selectedYear.toInt(), selectedMonth.toInt(), selectedDay.toInt()),
-                                eliminado[selectedEliminado].first, roles[selectedRol].first, phoneNumber
-                            )
-                        }
-                        "Paciente" -> {
-                            insertPaciente(
-                                email, password, rut, nombre, direccion,
-                                LocalDate.of(selectedYear.toInt(), selectedMonth.toInt(), selectedDay.toInt()),
-                                eliminado[selectedEliminado].first, roles[selectedRol].first,
-                                phoneNumber,
-                                salud_e[saludEmpleado].first, file
-                            )
-                        }
+                    var validate = true
+                    listOf(email, password, rut, nombre, direccion, phoneNumber).forEach {
+                        if (it.isNullOrEmpty())
+                            validate = false
                     }
-                    setConfirmWindow(false)
+                    if (validate) {
+                        when (roles[selectedRol].second) {
+                            "Administrador" -> {
+                                insertAdmin(
+                                    email, password, rut, nombre, direccion,
+                                    LocalDate.of(selectedYear.toInt(), selectedMonth.toInt(), selectedDay.toInt()),
+                                    eliminado[selectedEliminado].first, roles[selectedRol].first, phoneNumber
+                                )
+                            }
+                            "Empleado" -> {
+                                insertEmpleado(
+                                    email, password, rut, nombre, direccion,
+                                    LocalDate.of(selectedYear.toInt(), selectedMonth.toInt(), selectedDay.toInt()),
+                                    eliminado[selectedEliminado].first, roles[selectedRol].first,
+                                    phoneNumber,
+                                    salud_e[saludEmpleado].first, salario,
+                                    inicioContrato, finContrato,
+                                    AFP, nombreBanco, numeroCuenta,
+                                    tiposEmpleados[tipoEmpleado].first, imagen
+                                )
+                            }
+                            "Proveedor" -> {
+                                insertProveedor(
+                                    email, password, rut, nombre, direccion,
+                                    LocalDate.of(selectedYear.toInt(), selectedMonth.toInt(), selectedDay.toInt()),
+                                    eliminado[selectedEliminado].first, roles[selectedRol].first, phoneNumber
+                                )
+                            }
+                            "Paciente" -> {
+                                insertPaciente(
+                                    email, password, rut, nombre, direccion,
+                                    LocalDate.of(selectedYear.toInt(), selectedMonth.toInt(), selectedDay.toInt()),
+                                    eliminado[selectedEliminado].first, roles[selectedRol].first,
+                                    phoneNumber,
+                                    salud_e[saludEmpleado].first, file
+                                )
+                            }
+                        }
+                        setConfirmWindow(false)
+                    }
                 }
                 ) {
                     Text("Confirmar", color = Color.Black)
