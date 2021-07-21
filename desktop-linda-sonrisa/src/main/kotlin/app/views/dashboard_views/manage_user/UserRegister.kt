@@ -10,23 +10,25 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.window.v1.DialogProperties
 import app.components.datePicker
 import app.components.datePickerWithLocalDate
 import app.components.dropdownSelect
 import app.components.formSpacer
 import app.data.*
-import app.data.validator.email
-import app.data.validator.phoneNumberValidator
-import app.data.validator.validaRut
+import app.data.Validator.email
+import app.data.Validator.phoneNumberValidator
+import app.data.Validator.validaRut
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
 import java.io.FileInputStream
@@ -37,17 +39,12 @@ import javax.swing.filechooser.FileNameExtensionFilter
 private val blankProfilePicture = {}.javaClass.classLoader.getResource("images/blank-profile-picture.png")!!
 
 
-private val eliminate = listOf(
-    "False",
-    "True"
-)
-
 private val roles = transaction {
     Rol.all().toList().map{ it.id.value to it.nombre }
 }
 
-private val sucursales = transaction {
-    Sucursal.all().toList().map{ it.id.value to it.nombre }
+private val tiposEmpleados = transaction {
+    Tipo_Empleado.all().toList().map{ it.id.value to it.nombre }
 }
 
 private val eliminado = listOf(
@@ -60,6 +57,7 @@ private val salud_e = listOf(
     'F' to "Fonasa"
 )
 
+@OptIn(ExperimentalComposeUiApi::class)
 private val TAB_KEY = Key.AltLeft.keyCode
 
 @Composable
@@ -100,9 +98,8 @@ fun userRegister() {
     val (finContrato, setFinContrato) = remember { mutableStateOf(LocalDate.of(1970, 1, 1)) }
     val (AFP, setAFP) = remember { mutableStateOf("") }
     val (nombreBanco, setNombreBanco) = remember { mutableStateOf("") }
-    val (numeroBanco, setNumeroBanco) = remember { mutableStateOf(0.toLong()) }
-    val (tipoCuenta, setTipoCuenta) = remember { mutableStateOf("") }
-    val (sucursal, setSucursal) = remember { mutableStateOf(0) }
+    val (numeroCuenta, setNumeroCuenta) = remember { mutableStateOf(0.toLong()) }
+    val (tipoEmpleado, setTipoEmpleado) = remember { mutableStateOf(0) }
     val (imagen, setImagen) = remember { mutableStateOf(File(blankProfilePicture.toURI()).readBytes()) }
 
     //Paciente
@@ -110,17 +107,28 @@ fun userRegister() {
 
     // Confirm
     val (confirmWindow, setConfirmWindow) = remember { mutableStateOf(false) }
+    println(
+        LocalDate.of(selectedYear.toInt(), selectedMonth.toInt(), selectedDay.toInt())
+    )
 
     confirmWindowDialog(confirmWindow, setConfirmWindow,
         email, password, rut, nombre, direccion, selectedYear, selectedMonth, selectedDay, selectedEliminado, selectedRol,
         phoneNumber,
-        saludEmpleado, salario, inicioContrato, finContrato, AFP, nombreBanco, numeroBanco, tipoCuenta, sucursal, imagen,
+        saludEmpleado, salario, inicioContrato, finContrato, AFP, nombreBanco, numeroCuenta, imagen, tipoEmpleado,
         file
     )
 
     Column (
         verticalArrangement = Arrangement.SpaceBetween
     ) {
+
+        Row (
+            modifier = Modifier
+                .padding(25.dp)
+                .fillMaxWidth()
+        ) {
+            Text("Registrar Nuevo Usuario", fontSize = 30.sp)
+        }
         Row (
             modifier = Modifier
                 .padding(25.dp)
@@ -133,9 +141,6 @@ fun userRegister() {
                 horizontalAlignment = Alignment.Start,
 //            verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Text("Register new user", fontSize = 30.sp)
-
-                formSpacer(modifier = Modifier.height(70.dp))
 
 //                focusableOutlinedTextField(email, )
 
@@ -175,6 +180,7 @@ fun userRegister() {
                             setCorrectPassword(false)
                         }
                     },
+                    visualTransformation = PasswordVisualTransformation(),
                     label = { Text("Password") },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -202,6 +208,7 @@ fun userRegister() {
                             setCorrectPassword(false)
                         }
                     },
+                    visualTransformation = PasswordVisualTransformation(),
                     label = { Text("Confirm Password") },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -301,85 +308,34 @@ fun userRegister() {
 
             }
             Spacer(modifier = Modifier.width(20.dp))
-            if (roles[selectedRol].second == "Administrador") {
-                registerAdministradorView(phoneNumber, setPhoneNumber)
-            } else if (roles[selectedRol].second == "Empleado") {
-                registerEmpleadoView(phoneNumber, setPhoneNumber,
-                    saludEmpleado, setSaludEmpleado,
-                    salario, setSalario,
-                    inicioContrato, setInicioContrato,
-                    finContrato, setFinContrato,
-                    AFP, setAFP,
-                    nombreBanco, setNombreBanco,
-                    numeroBanco, setNumeroBanco,
-                    tipoCuenta, setTipoCuenta,
-                    sucursal, setSucursal,
-                    imagen, setImagen
-                )
-            } else if (roles[selectedRol].second == "Proveedor") {
-                registerProveedorView(phoneNumber, setPhoneNumber)
-            } else {
-                registerPacienteView(
-                    phoneNumber, setPhoneNumber,
-                    saludEmpleado, setSaludEmpleado,
-                    file, setFile
-                )
+            when (roles[selectedRol].second) {
+                "Administrador" -> {
+                    registerAdministradorView(phoneNumber, setPhoneNumber)
+                }
+                "Empleado" -> {
+                    registerEmpleadoView(phoneNumber, setPhoneNumber,
+                        saludEmpleado, setSaludEmpleado,
+                        salario, setSalario,
+                        inicioContrato, setInicioContrato,
+                        finContrato, setFinContrato,
+                        AFP, setAFP,
+                        nombreBanco, setNombreBanco,
+                        numeroCuenta, setNumeroCuenta,
+                        imagen, setImagen,
+                        tipoEmpleado, setTipoEmpleado
+                    )
+                }
+                "Proveedor" -> {
+                    registerProveedorView(phoneNumber, setPhoneNumber)
+                }
+                else -> {
+                    registerPacienteView(
+                        phoneNumber, setPhoneNumber,
+                        saludEmpleado, setSaludEmpleado,
+                        file, setFile
+                    )
+                }
             }
-//            Column (
-//                modifier = Modifier
-//                    .padding(5.dp),
-//                horizontalAlignment = Alignment.Start
-//            ) {
-//                Text(
-//                    "Hi"
-//                )
-//                Button(onClick = {
-//                    setFileChooserStatus(true)
-////                val s = "c:"
-////                val p = Paths.get(s)
-////                Desktop.getDesktop().openHelpViewer()
-////                val file = File("c:")
-////                val uri = URI("c:/")
-////                val desktop = Desktop.getDesktop()
-////                desktop.browse(uri)
-//                }) {
-//                    Text("Open")
-//                }
-//                val fc = JFileChooser()
-//                fc.fileFilter = FileNameExtensionFilter("Images", "jpg", "png", "gif", "bmp")
-//                if (fileChooserStatus) {
-//                    var returnVal = fc.showSaveDialog(LocalAppWindow.current.window)
-//                    setFileChooserStatus(false)
-//                    if (returnVal === JFileChooser.APPROVE_OPTION) {
-//                        val file = fc.selectedFile
-//                        //This is where a real application would open the file.
-//
-//                        println("Opening: " + file.absolutePath + "." + "\n")
-//                        val blobValue = FileInputStream(file).readBytes()
-//                        val imageBitMap = byteArrayToBitMap(blobValue)
-//                        Image(
-//                            bitmap = imageBitMap,
-//                            contentDescription = "Temporary Image",
-//                            modifier= Modifier.fillMaxSize()
-//                        )
-//                    transaction {
-//                        Empleado.findById(1)?.imagen = ExposedBlob(f.readBytes())
-//                        commit()
-//                    }
-//                    } else {
-//                        println("Open command cancelled by user.\n")
-//                    }
-//                }
-//            val imagen = transaction { Empleado.findById(1)?.imagen?.bytes }
-//            val x = ByteArrayInputStream(imagen)
-//            val bm = asImageAsset(ImageIO.read(x))
-//            Image(
-//                bitmap = bm,
-//                contentDescription = "Hi",
-//                modifier= Modifier.fillMaxSize())
-
-
-//            }
         }
         Row (
             modifier = Modifier
@@ -430,10 +386,9 @@ fun confirmWindowDialog(
     finContrato: LocalDate,
     AFP: String,
     nombreBanco: String,
-    numeroBanco: Long,
-    tipoCuenta: String,
-    sucursal: Int,
+    numeroCuenta: Long,
     imagen: ByteArray,
+    tipoEmpleado: Int,
     file: ByteArray
 ) {
     if (confirmWindow) {
@@ -445,39 +400,51 @@ fun confirmWindowDialog(
             },
             confirmButton = {
                 OutlinedButton(onClick = {
-                    if (roles[selectedRol].second == "Administrador") {
-                        insertAdmin(
-                            email, password, rut, nombre, direccion,
-                            LocalDate.of(selectedYear.toInt(), selectedMonth.toInt(), selectedDay.toInt()),
-                            eliminado[selectedEliminado].first, roles[selectedRol].first, phoneNumber
-                        )
-                    } else if (roles[selectedRol].second == "Empleado") {
-                        insertEmpleado(
-                            email, password, rut, nombre, direccion,
-                            LocalDate.of(selectedYear.toInt(), selectedMonth.toInt(), selectedDay.toInt()),
-                            eliminado[selectedEliminado].first, roles[selectedRol].first,
-                            phoneNumber,
-                            salud_e[saludEmpleado].first, salario,
-                            inicioContrato, finContrato,
-                            AFP, nombreBanco, numeroBanco,
-                            tipoCuenta, sucursales[sucursal].first, imagen
-                        )
-                    } else if (roles[selectedRol].second == "Proveedor") {
-                        insertProveedor(
-                            email, password, rut, nombre, direccion,
-                            LocalDate.of(selectedYear.toInt(), selectedMonth.toInt(), selectedDay.toInt()),
-                            eliminado[selectedEliminado].first, roles[selectedRol].first, phoneNumber
-                        )
-                    } else if (roles[selectedRol].second == "Paciente") {
-                        insertPaciente(
-                            email, password, rut, nombre, direccion,
-                            LocalDate.of(selectedYear.toInt(), selectedMonth.toInt(), selectedDay.toInt()),
-                            eliminado[selectedEliminado].first, roles[selectedRol].first,
-                            phoneNumber,
-                            salud_e[saludEmpleado].first, file
-                        )
+                    var validate = true
+                    listOf(email, password, rut, nombre, direccion, phoneNumber).forEach {
+                        if (it.isNullOrEmpty())
+                            validate = false
                     }
-                    setConfirmWindow(false)
+                    if (validate) {
+                        when (roles[selectedRol].second) {
+                            "Administrador" -> {
+                                insertAdmin(
+                                    email, password, rut, nombre, direccion,
+                                    LocalDate.of(selectedYear.toInt(), selectedMonth.toInt(), selectedDay.toInt()),
+                                    eliminado[selectedEliminado].first, roles[selectedRol].first, phoneNumber
+                                )
+                            }
+                            "Empleado" -> {
+                                insertEmpleado(
+                                    email, password, rut, nombre, direccion,
+                                    LocalDate.of(selectedYear.toInt(), selectedMonth.toInt(), selectedDay.toInt()),
+                                    eliminado[selectedEliminado].first, roles[selectedRol].first,
+                                    phoneNumber,
+                                    salud_e[saludEmpleado].first, salario,
+                                    inicioContrato, finContrato,
+                                    AFP, nombreBanco, numeroCuenta,
+                                    tiposEmpleados[tipoEmpleado].first, imagen
+                                )
+                            }
+                            "Proveedor" -> {
+                                insertProveedor(
+                                    email, password, rut, nombre, direccion,
+                                    LocalDate.of(selectedYear.toInt(), selectedMonth.toInt(), selectedDay.toInt()),
+                                    eliminado[selectedEliminado].first, roles[selectedRol].first, phoneNumber
+                                )
+                            }
+                            "Paciente" -> {
+                                insertPaciente(
+                                    email, password, rut, nombre, direccion,
+                                    LocalDate.of(selectedYear.toInt(), selectedMonth.toInt(), selectedDay.toInt()),
+                                    eliminado[selectedEliminado].first, roles[selectedRol].first,
+                                    phoneNumber,
+                                    salud_e[saludEmpleado].first, file
+                                )
+                            }
+                        }
+                        setConfirmWindow(false)
+                    }
                 }
                 ) {
                     Text("Confirmar", color = Color.Black)
@@ -557,15 +524,12 @@ fun registerPacienteView(
             .width(500.dp),
         horizontalAlignment = Alignment.Start,
     ) {
-
-        Spacer(modifier = Modifier.height(59.dp))
-
         OutlinedTextField(
             value = phoneNumber,
             onValueChange = {
                 setPhoneNumber(it)
                 if (phoneNumber.isNotEmpty() && phoneNumber.isNotBlank()) {
-                    setCorrectPhoneNumber(validator.phoneNumberValidator(phoneNumber).not())
+                    setCorrectPhoneNumber(phoneNumberValidator(phoneNumber).not())
                 } else {
                     setCorrectPhoneNumber(false)
                 }
@@ -577,7 +541,7 @@ fun registerPacienteView(
 
         formSpacer(modifier = Modifier.height(10.dp), correctPhoneNumber, "Invalid phone number.")
 
-        dropdownSelect("Salud Empleado", salud_e, saludEmpleado, setSaludEmpleado)
+        dropdownSelect("Salud Paciente", salud_e, saludEmpleado, setSaludEmpleado)
 
         formSpacer(modifier = Modifier.height(10.dp))
 
@@ -590,13 +554,16 @@ fun registerPacienteView(
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
-            Row {
+            Spacer(modifier = Modifier.height(10.dp))
+            Row (
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ){
                 OutlinedButton(onClick = {
                     setFileChooserStatus(true)
                 }) {
                     Text("Seleccionar", color = Color.Black)
                 }
-
                 OutlinedButton(onClick = {
                     setFileByteArray(File(blankProfilePicture.toURI()).readBytes())
                     file = File(blankProfilePicture.toURI())
@@ -620,9 +587,6 @@ fun registerAdministradorView(phoneNumber: String, setPhoneNumber: (String) -> U
             .width(600.dp),
         horizontalAlignment = Alignment.Start,
     ) {
-
-        Spacer(modifier = Modifier.height(59.dp))
-
         OutlinedTextField(value = phoneNumber,
             onValueChange = {
                 setPhoneNumber(it)
@@ -658,14 +622,12 @@ fun registerEmpleadoView(
     setAFP: (String) -> Unit,
     nombreBanco: String,
     setNombreBanco: (String) -> Unit,
-    numeroBanco: Long,
-    setNumeroBanco: (Long) -> Unit,
-    tipoCuenta: String,
-    setTipoCuenta: (String) -> Unit,
-    sucursal: Int,
-    setSucursal: (Int) -> Unit,
+    numeroCuenta: Long,
+    setNumeroCuenta: (Long) -> Unit,
     imagen: ByteArray,
-    setImagen: (ByteArray) -> Unit
+    setImagen: (ByteArray) -> Unit,
+    tipoEmpleado: Int,
+    setTipoEmpleado: (Int) -> Unit,
 ) {
 
     val (correctPhoneNumber, setCorrectPhoneNumber) = remember { mutableStateOf(false) }
@@ -690,7 +652,6 @@ fun registerEmpleadoView(
 
     Row (
         modifier = Modifier
-            .padding(5.dp)
             .width(1000.dp)
     ){
         Column (
@@ -699,9 +660,6 @@ fun registerEmpleadoView(
                 .weight(1f),
             horizontalAlignment = Alignment.Start,
         ) {
-
-            Spacer(modifier = Modifier.height(59.dp))
-
             OutlinedTextField(value = phoneNumber,
                 onValueChange = {
                     setPhoneNumber(it)
@@ -721,7 +679,7 @@ fun registerEmpleadoView(
 
             formSpacer(modifier = Modifier.height(10.dp))
 
-            OutlinedTextField(value = "$${salario.toString()}",
+            OutlinedTextField(value = "$$salario",
                 onValueChange = {
                     if (it.isEmpty()) {
                         setSalario(0)
@@ -729,7 +687,7 @@ fun registerEmpleadoView(
                         if (it.length > 1 ){
                             val value = it
                                 .replace("$", "")
-                                .filter { it.isDigit() }
+                                .filter { char -> char.isDigit() }
                                 .toLong()
                             if (salario == 0.toLong()) {
                                 setSalario(value/10)
@@ -753,6 +711,7 @@ fun registerEmpleadoView(
 
             datePickerWithLocalDate("Fin Contrato", finContrato, setFinContrato)
 
+
             formSpacer(modifier = Modifier.height(10.dp))
 
             OutlinedTextField(value = AFP,
@@ -775,42 +734,32 @@ fun registerEmpleadoView(
 
             formSpacer(modifier = Modifier.height(10.dp))
 
-            OutlinedTextField(value = numeroBanco.toString(),
+            OutlinedTextField(value = numeroCuenta.toString(),
                 onValueChange = {
                     if (it.isEmpty()) {
-                        setNumeroBanco(0)
+                        setNumeroCuenta(0)
                     } else {
-                        if (it.length > 0 ){
+                        if (it.isNotEmpty()){
                             val value = it
-                                .filter { it.isDigit() }
+                                .filter { char -> char.isDigit() }
                                 .toLong()
-                            if (numeroBanco == 0.toLong()) {
-                                setNumeroBanco(value/10)
+                            if (numeroCuenta == 0.toLong()) {
+                                setNumeroCuenta(value/10)
                             } else {
-                                setNumeroBanco(value)
+                                setNumeroCuenta(value)
                             }
                         } else {
-                            setNumeroBanco(0)
+                            setNumeroCuenta(0)
                         }
                     }
                 },
-                label = { Text("Numero Banco") },
+                label = { Text("Numero Cuenta") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true)
 
             formSpacer(modifier = Modifier.height(10.dp))
 
-            OutlinedTextField(value = tipoCuenta,
-                onValueChange = {
-                    setTipoCuenta(it)
-                },
-                label = { Text("Tipo Cuenta") },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true)
-
-            formSpacer(modifier = Modifier.height(10.dp), correctPhoneNumber, "Invalid phone number.")
-
-            dropdownSelect("Sucursal", sucursales, sucursal, setSucursal)
+            dropdownSelect("Tipo Empleado", tiposEmpleados, tipoEmpleado, setTipoEmpleado)
         }
         Spacer(modifier=Modifier.width(20.dp))
         Column (
@@ -864,8 +813,6 @@ fun registerProveedorView(phoneNumber: String, setPhoneNumber: (String) -> Unit)
             .width(600.dp),
         horizontalAlignment = Alignment.Start,
     ) {
-
-        Spacer(modifier = Modifier.height(59.dp))
 
         OutlinedTextField(value = phoneNumber,
             onValueChange = {

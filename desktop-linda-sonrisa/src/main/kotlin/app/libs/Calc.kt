@@ -19,6 +19,6 @@ fun closestNumber(n: Int?, m: Int): Int {
 }
 
 fun maxPercentageOf(n: Int, m: Int): Int {
-    var percentage = (n.toDouble() / m) * 100
+    val percentage = (n.toDouble() / m) * 100
     return percentage.toInt()
 }

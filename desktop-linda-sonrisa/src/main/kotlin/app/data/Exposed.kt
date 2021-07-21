@@ -1,9 +1,18 @@
 package app.data
 
 import org.jetbrains.exposed.sql.Database
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.util.*
 
+/*
+ *
+ * WARNING: This file purpose it's just to test the database connection. Pwease ignore it. ;-;
+ *
+ */
 
-//fun main() {
+//fun app.main() {
 //    Database.connect("jdbc:oracle:thin:@localhost:1521:xe", driver = "oracle.jdbc.driver.OracleDriver",
 //        user = "bd", password = "bd")
 //
@@ -48,6 +57,23 @@ fun main() {
 
     Database.connect("jdbc:oracle:thin:@localhost:1521:xe", driver = "oracle.jdbc.driver.OracleDriver",
         user = "bd", password = "bd")
+
+    println(LocalDateTime.now())
+    println(Date().toInstant().atZone(ZoneId.of("GMT")))
+    println(Date().toInstant().atZone(ZoneId.systemDefault()))
+    println(ZoneId.systemDefault())
+    println(LocalDate.now().atTime(10, 0).atZone(ZoneId.of("GMT")).toInstant())
+
+//    transaction {
+//        Horas.insert {
+//        addLogger(StdOutSqlLogger)
+//            it[id] = 0
+//            it[hora_inicio] = LocalDate.now().atTime(10, 0).atZone(ZoneId.of("GMT")).toInstant()
+//            it[hora_fin] = LocalDate.now().atTime(10, 30).atZone(ZoneId.of("GMT")).toInstant()
+//            it[estado] = 'D'
+//            it[id_empleado] = 7
+//        }
+//    }
 
 //    val fc = JFileChooser()
 //    val returnVal = fc.showSaveDialog(LocalAppWindow.current.window)

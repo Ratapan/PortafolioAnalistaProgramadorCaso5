@@ -44,11 +44,11 @@ fun singleColumnLayout(){
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(10.dp))
-        StockStatusCard()
+        showStockStatusCard()
         Spacer(modifier = Modifier.height(10.dp))
-        ReservationStatusCard()
+        reservationStatusCard()
         Spacer(modifier = Modifier.height(10.dp))
-        RegisteredPatientsCard()
+        registeredPatientsCard()
         Spacer(modifier = Modifier.height(10.dp))
     }
 }
@@ -59,19 +59,20 @@ fun doubleColumnLayout(){
         .fillMaxWidth()
         .padding(5.dp)
         .verticalScroll(rememberScrollState()),
-        horizontalArrangement = Arrangement.SpaceAround
     ) {
+        Spacer(modifier = Modifier.width(40.dp))
         Column {
-            Spacer(modifier = Modifier.height(10.dp))
-            StockStatusCard()
-            Spacer(modifier = Modifier.height(10.dp))
-            ReservationStatusCard()
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(40.dp))
+            showStockStatusCard()
+            Spacer(modifier = Modifier.height(40.dp))
+            reservationStatusCard()
+            Spacer(modifier = Modifier.height(40.dp))
         }
+        Spacer(modifier = Modifier.width(40.dp))
         Column {
-            Spacer(modifier = Modifier.height(10.dp))
-            RegisteredPatientsCard()
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(40.dp))
+            registeredPatientsCard()
+            Spacer(modifier = Modifier.height(40.dp))
         }
     }
 }
@@ -86,11 +87,11 @@ fun okeyLetsMakeIt2Rows(){
         verticalAlignment = Alignment.Top
     ){
         Spacer(modifier = Modifier.width(10.dp))
-        StockStatusCard()
+        showStockStatusCard()
         Spacer(modifier = Modifier.width(10.dp))
-        ReservationStatusCard()
+        reservationStatusCard()
         Spacer(modifier = Modifier.width(10.dp))
-        RegisteredPatientsCard()
+        registeredPatientsCard()
         Spacer(modifier = Modifier.width(10.dp))
     }
 }

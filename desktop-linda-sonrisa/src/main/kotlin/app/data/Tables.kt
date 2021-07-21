@@ -8,54 +8,53 @@ import org.jetbrains.exposed.sql.statements.api.ExposedBlob
 import java.time.Instant
 import java.time.LocalDate
 
-object Administradores : IntIdTable("Administradores", "id_adm") {
-    val num_telefono: Column<Long> = long("num_telefono_a")
-    val id_user: Column<Int> = integer("users_id_user").references(Users.id)
+object Administradores : IntIdTable("Administradores", "ID_ADM") {
+    val num_telefono: Column<String> = varchar("NUM_TELEFONO_A", 20)
+    val id_user: Column<Int> = integer("USERS_ID_USER").references(Users.id)
     override val primaryKey = PrimaryKey(id, name = "administrador_PK_id_adm")
 }
 
-object Boletas : IntIdTable("Boletas", "id_boleta") {
-    val id_servicio: Column<Int> = integer("servicios_id_servicio").references(Servicios.id)
+object Boletas : IntIdTable("Boletas", "ID_BOLETA") {
+    val id_servicio: Column<Int> = integer("SERVICIOS_ID_SERVICIO").references(Servicios.id)
     override val primaryKey = PrimaryKey(id, name = "Boletas_PK_id_boleta")
 }
 
 
-object Citas : IntIdTable("Citas", "id_cita") {
-    val estado: Column<Char> = char("estado")
-    val fecha_solicitacion: Column<LocalDate> = date("fecha_solicitacion")
-    val id_paciente: Column<Int> = integer("pacientes_id_paciente").references(Pacientes.id)
-    val id_hora: Column<Int> = integer("horas_id_hora").references(Horas.id)
+object Citas : IntIdTable("Citas", "ID_CITA") {
+    val estado: Column<Char> = char("ESTADO")
+    val fecha_solicitacion: Column<LocalDate> = date("FECHA_SOLICITACION")
+    val id_paciente: Column<Int> = integer("PACIENTES_ID_PACIENTE").references(Pacientes.id)
+    val id_hora: Column<Int> = integer("HORAS_ID_HORA").references(Horas.id)
     override val primaryKey = PrimaryKey(id, name = "Citas_PK_id_cita")
 }
 
 
-object Detalle_Ordenes : IntIdTable("Detalle_Ordenes", "id_producto_orden") {
-    val cant_productos: Column<Int> = integer("cant_productos")
-    val precio_productos: Column<Int> = integer("precio_productos")
-    val id_productos: Column<Int> = integer("productos_id_producto").references(Productos.id)
-    val id_orden: Column<Int> = integer("ordenes_id_orden").references(Ordenes.id)
+object Detalle_Ordenes : IntIdTable("Detalle_Ordenes", "ID_PRODUCTO_ORDEN") {
+    val cant_productos: Column<Int> = integer("CANT_PRODUCTOS")
+    val precio_productos: Column<Int> = integer("PRECIO_PRODUCTOS")
+    val id_productos: Column<Int> = integer("PRODUCTOS_ID_TIPOP").references(Productos.id)
+    val id_orden: Column<Int> = integer("ORDENES_ID_ORDEN").references(Ordenes.id)
     override val primaryKey = PrimaryKey(id, name = "Detalle_Ordenes_PK_id_producto_orden")
 }
 
-object Emp_Tserv : IntIdTable("Emp_Tserv", "id_emp_tserv") {
-    val id_empleado: Column<Int> = integer("empleados_id_empleado").references(Empleados.id)
-    val id_tipo_servicio: Column<Int> = integer("tipo_servicios_id_t_serv").references(Tipo_Servicios.id)
+object Emp_Tserv : IntIdTable("Emp_Tserv", "ID_EMP_TSER") {
+    val id_empleado: Column<Int> = integer("EMPLEADOS_ID_EMPLEADO").references(Empleados.id)
+    val id_tipo_servicio: Column<Int> = integer("TIPO_SERVICIOS_ID_T_SERV").references(Tipo_Servicios.id)
     override val primaryKey = PrimaryKey(id, name = "Emp_Tserv_PK_id_emp_tserv")
 }
 
 object Empleados : IntIdTable("Empleados", "ID_EMPLEADO") {
-    val num_telefono: Column<Long> = long("NUM_TELEFONO_E1")
+    val num_telefono: Column<String> = varchar("NUM_TELEFONO_E", 20)
     val salud_empleado: Column<Char> = char("SALUD_E")
     val salario: Column<Long> = long("SALARIO")
     val inicio_contrato: Column<LocalDate> = date("INICIO_CONTRATO")
     val fin_contrato: Column<LocalDate> = date("FIN_CONTRATO")
     val afp: Column<String> = varchar("AFP", 30)
     val nombre_banco: Column<String> = varchar("NOMBRE_BANCO", 30)
-    val numero_banco: Column<Long> = long("NUMERO_BANCO")
-    val tipo_cuenta: Column<String> = varchar("TIPO_CUENTA", 30)
-    val id_sucursal: Column<Int> = integer("SUCURSALES_ID_SUCURSAL").references(Sucursales.id)
+    val numero_cuenta: Column<Long> = long("NUMERO_CUENTA")
     val imagen: Column<ExposedBlob> = blob("IMAGEN")
     val id_user: Column<Int> = integer("USERS_ID_USER").references(Users.id)
+    val id_tipo_emp: Column<Int> = integer("TIPO_EMPLEADOS_ID_TIPO_EMP").references(Tipo_Empleados.id)
     override val primaryKey = PrimaryKey(id, name = "Empleados_PK_id_empleado")
 }
 
@@ -69,13 +68,14 @@ object Familia_Productos : IntIdTable("Familia_Productos", "ID_T_FAM") {
 object Horas : IntIdTable("Horas", "ID_HORA") {
     val hora_inicio: Column<Instant> = timestamp("INICIO_HORA")
     val hora_fin: Column<Instant> = timestamp("FIN_HORA")
+    val estado: Column<Char> = char("ESTADO_HORA")
     val id_empleado: Column<Int> = integer("EMPLEADOS_ID_EMPLEADO").references(Empleados.id)
     override val primaryKey = PrimaryKey(id, name = "Horas_PK_ID_HORA")
 }
 
 
 object Ordenes : IntIdTable("Ordenes", "ID_ORDEN") {
-    val cancelada: Column<Char> = char("CANCELADA_O")
+    val estado: Column<Char> = char("ESTADO")
     val fecha_venc: Column<LocalDate> = date("FECHA_VENC_O")
     val precio_total: Column<Int> = integer("PRECIO_TOTAL")
     val id_proveedor: Column<Int> = integer("PROVEEDORES_ID_PROVEEDOR").references(Proveedores.id)
@@ -84,7 +84,7 @@ object Ordenes : IntIdTable("Ordenes", "ID_ORDEN") {
 }
 
 object Pacientes : IntIdTable("Pacientes", "ID_PACIENTE") {
-    val num_telefono: Column<Long> = long("NUM_TELEFONO_PA")
+    val num_telefono: Column<String> = varchar("NUM_TELEFONO_PA", 20)
     val salud_paciente: Column<Char> = char("SALUD_PA")
     val documento: Column<ExposedBlob> = blob("DOCUMENTO")
     val id_user: Column<Int> = integer("USERS_ID_USER").references(Users.id)
@@ -102,14 +102,22 @@ object Productos : IntIdTable("Productos", "ID_TIPOP") {
     override val primaryKey = PrimaryKey(id, name = "Productos_PK_ID_TIPOP")
 }
 
+
+object ProvProductos : IntIdTable("Prov_Producto", "ID_PROVE_PROD") {
+    val id_proveedor: Column<Int> = integer("PROVEEDORES_ID_PROVEEDOR").references(Proveedores.id)
+    val id_producto: Column<Int> = integer("PRODUCTOS_ID_TIPOP").references(Productos.id)
+    override val primaryKey = PrimaryKey(id, name = "Prov_Producto_PK_ID_PROVE_PROD")
+}
+
 object Proveedores : IntIdTable("Proveedores", "ID_PROVEEDOR") {
-    val num_telefono_empresa: Column<Long> = long("TELEFONO_EMPRESA_P")
+    val num_telefono_empresa: Column<String> = varchar("TELEFONO_EMPRESA_P", 20)
     val id_user: Column<Int> = integer("USERS_ID_USER").references(Users.id)
     override val primaryKey = PrimaryKey(id, name = "Proveedores_PK_ID_PROVEEDOR")
 }
 
 object Recepciones : IntIdTable("Recepciones", "ID_RECEPCION") {
     val codigo: Column<String> = varchar("CODIGO", 17)
+    val comentario: Column<String> = varchar("COMENTARIO", 200)
     val estado: Column<Char> = char("ESTADO")
     val id_orden: Column<Int> = integer("ORDENES_ID_ORDEN").references(Ordenes.id)
     val id_empleado: Column<Int> = integer("EMPLEADOS_ID_EMPLEADO").references(Empleados.id)
@@ -128,10 +136,9 @@ object Servicios : IntIdTable("Servicios", "ID_SERVICIO") {
     override val primaryKey = PrimaryKey(id, name = "Servicios_PK_ID_SERVICIO")
 }
 
-object Sucursales : IntIdTable("Sucursales", "ID_SUCURSAL") {
-    val nombre: Column<String> = varchar("NOMBRE_SUCURSAL", 30)
-    val direccion: Column<String> = varchar("DIRECCION", 30)
-    override val primaryKey = PrimaryKey(id, name = "Sucursales_PK_ID_SUCURSAL")
+object Tipo_Empleados : IntIdTable("Tipo_Empleados", "ID_TIPO_EMP") {
+    val nombre: Column<String> = varchar("NOMBRE_TIPO_EMP", 50)
+    override val primaryKey = PrimaryKey(id, name = "Tipo_Empleados_PK_ID_TIPO_EMP")
 }
 
 object Tipo_Servicios : IntIdTable("Tipo_Servicios", "ID_T_SERV") {

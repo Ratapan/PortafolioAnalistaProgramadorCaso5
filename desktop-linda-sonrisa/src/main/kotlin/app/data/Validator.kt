@@ -1,34 +1,36 @@
 package app.data
 
+import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
+import kotlin.math.floor
 
 /**
  * Validación de RUT Chileno
  * algoritmo Modulo 11
  */
-object validator {
+object Validator {
     /**
      * Valida rut de la forma XXXXXXXX-X
      */
     fun validaRut(rut: String): Boolean {
-        val pattern: Pattern = Pattern.compile("^[0-9]+-[0-9kK]{1}$")
+        val pattern: Pattern = Pattern.compile("^[0-9]{1,3}([.][0-9]{3})*-[0-9kK]{1}\$")
         val matcher: Matcher = pattern.matcher(rut)
-        if (matcher.matches() == false) return false
-        val stringRut = rut.split("-".toRegex()).toTypedArray()
-        return stringRut[1].toLowerCase() == dv(stringRut[0])
+        if (!matcher.matches()) return false
+        val stringRut = rut.replace(".", "").split("-".toRegex()).toTypedArray()
+        return stringRut[1].lowercase(Locale.getDefault()) == dv(stringRut[0])
     }
 
     /**
      * Valida el dígito verificador
      */
-    fun dv(rut: String): String {
+    private fun dv(rut: String): String {
         var M = 0.toLong()
         var S = 1.toLong()
         var T = rut.toLong()
         while (T != 0.toLong()) {
             S = (S + T % 10 * (9 - M++ % 6)) % 11
-            T = Math.floor(10.let { T /= it; T }.toDouble()).toLong()
+            T = floor(10.let { T /= it; T }.toDouble()).toLong()
         }
         return if (S > 0) (S - 1).toString() else "k"
     }

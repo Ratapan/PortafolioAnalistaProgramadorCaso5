@@ -3,8 +3,8 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.4.32"
-    id("org.jetbrains.compose") version "0.4.0-build188"
+    kotlin("jvm") version "1.5.10"
+    id("org.jetbrains.compose") version "0.5.0-build245"
 }
 
 group = "me.ichig"
@@ -24,7 +24,6 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-jdbc:0.31.1")
     implementation("org.jetbrains.exposed:exposed-java-time:0.31.1")
     implementation("com.ToxicBakery.library.bcrypt:bcrypt:+")
-    implementation("com.github.barteksc:pdfium-android:1.9.0")
 }
 
 tasks.withType<KotlinCompile>() {
@@ -37,9 +36,12 @@ compose.desktop {
     application {
         mainClass = "MainKt"
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            targetFormats(TargetFormat.Dmg, TargetFormat.Exe, TargetFormat.Deb)
             packageName = "LindaSonrisaApp"
             packageVersion = "1.0.0"
+
+
+            modules("java.sql")
         }
     }
 }

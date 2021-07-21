@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.window.v1.DialogProperties
 import app.data.User
 import org.jetbrains.exposed.sql.transactions.transaction
 
@@ -76,11 +76,11 @@ fun userEdit(active: Boolean, setShowDialog: (Boolean) -> Unit, user: User) {
                     },
                         modifier = Modifier.fillMaxWidth()
                     ){
-                        val rol_value = when (eliminado) {
+                        val rolValue = when (eliminado) {
                             '1' -> "False"
                             else -> "True"
                         }
-                        Text("Eliminado: ${rol_value}")
+                        Text("Eliminado: $rolValue")
                     }
 
                     DropdownMenu(

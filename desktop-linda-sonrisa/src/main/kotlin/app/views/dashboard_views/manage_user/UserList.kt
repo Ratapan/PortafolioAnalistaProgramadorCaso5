@@ -18,6 +18,8 @@ import app.data.User
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.jetbrains.exposed.sql.StdOutSqlLogger
+import org.jetbrains.exposed.sql.addLogger
 import org.jetbrains.exposed.sql.transactions.transaction
 
 private val COLUMN_NAME_VALUES = mapOf(
@@ -38,6 +40,7 @@ fun userList(
 ) {
 
     val (data, setData) = remember { mutableStateOf(transaction {
+        addLogger(StdOutSqlLogger)
         User.all().toList()
     }) }
     val (selectedUser, setSelectedUser) = remember { mutableStateOf(data[0])}
@@ -144,11 +147,11 @@ fun userList(
             verticalAlignment = Alignment.Bottom
         ) {
             OutlinedButton(onClick = { toRegister() }) {
-                Text("Register User")
+                Text("Registrar Usuario")
             }
-            OutlinedButton(onClick = { toRegister() }) {
-                Text("Something")
-            }
+//            OutlinedButton(onClick = { toRegister() }) {
+//                Text("Something")
+//            }
         }
         Spacer(modifier = Modifier.height(200.dp))
     }
