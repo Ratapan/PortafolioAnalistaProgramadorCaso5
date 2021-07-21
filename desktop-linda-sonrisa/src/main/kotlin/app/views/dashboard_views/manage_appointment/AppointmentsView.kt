@@ -3,6 +3,8 @@ package app.views.dashboard_views.manage_appointment
 import androidx.compose.desktop.LocalAppWindow
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.selection.DisableSelection
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
@@ -27,6 +29,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.exposed.dao.id.EntityID
+import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.*
@@ -54,6 +57,15 @@ private const val WEIGHT_START_TIME = 3f
 private const val WEIGHT_END_TIME = 3f
 private const val WEIGHT_DENTIST = 2f
 private const val WEIGHT_STATUS = 1f
+
+
+
+
+private const val WEIGHT_SERVICE_TYPE_ID = 1f
+private const val WEIGHT_SERVICE_TYPE_NAME = 4f
+private const val WEIGHT_SERVICE_TYPE_DESCRIPTION = 6f
+private const val WEIGHT_SERVICE_TYPE_PRICE = 2f
+
 
 @Composable
 fun registerAppointment() {
@@ -283,7 +295,8 @@ fun registerAppointment() {
                             ) {
                                 Text("Buscar", color = Color.Black)
                             }
-                        }
+                        },
+                        hasReloadButton = true
                         ) {
                         citas.value = transaction {
                             addLogger(StdOutSqlLogger)
@@ -309,12 +322,14 @@ fun registerAppointment() {
                         val editAppointment = remember { mutableStateOf(false) }
                         val selectedCita = remember { mutableStateOf(citas.value.first().second["Cita"] as Cita) }
                         val selectedEmpleado = remember { mutableStateOf(((citas.value.first().second["Empleado"] as Pair<*, *>).second as User).nombre) }
+                        val selectedEmpleadoID = remember { mutableStateOf(((citas.value.first().second["Empleado"] as Pair<*, *>).first as Empleado).id.value) }
                         val selectedHora = remember { mutableStateOf(citas.value.first().second["Hora"] as Hora) }
                         editAppointmentDialogForPatient(editAppointment,
                             selectedEmpleado.value,
                             selectedCita.value,
                             selectedHora.value,
-                            patients[selectedPatient], citas)
+                            patients[selectedPatient], citas,
+                            selectedEmpleadoID)
                         Row (modifier = Modifier.fillMaxWidth()){
                             tableCell("ID", modifier = Modifier.weight(WEIGHT_ID)
                                 .clickable {
@@ -400,7 +415,7 @@ fun registerAppointment() {
 fun registerAppointmentDialogForDentist(
     showDialog: Boolean,
     setShowDialog: (Boolean) -> Unit,
-    dentist: Pair<*, String> = 1 to " ",
+    dentist: Pair<EntityID<Int>, String> = EntityID<Int>(1, Empleados) to " ",
     timeSlot: TimeSlot,
     patients: List<Pair<EntityID<Int>, String>>
 ) {
@@ -452,6 +467,120 @@ fun registerAppointmentDialogForDentist(
 
                     Spacer(modifier = Modifier.height(10.dp))
 
+                    val serviceTypeInAppointment = remember { mutableStateOf( listOf<Int>() ) }
+
+                    serviceTypeInAppointment.value = transaction {
+                        Servicios
+                            .select { Servicios.id_cita eq timeSlot.id }
+                            .map {
+                                it[Servicios.id_tipo_servicio]
+                            } .toList()
+                    }
+
+                    val serviceTypeByDentistOrderBy = remember { mutableStateOf("id") }
+                    val serviceByDentists = mutableStateOf(
+                        getListOfServicesByDentist(dentist.first.value)
+                            .sortedBy { rowValue ->
+                                rowValue.second.find {
+                                    it.columnName == serviceTypeByDentistOrderBy.value
+                                }.toString() })
+
+
+                    if (serviceByDentists.value.isEmpty()) {
+                        Text("No existen tipos de servicios.")
+                    } else {
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            tableCell(
+                                "ID",
+                                modifier = Modifier
+                                    .weight(WEIGHT_SERVICE_TYPE_ID)
+                                    .clickable { serviceTypeByDentistOrderBy.value = "id" }
+                            )
+                            tableCell(
+                                "Nombre",
+                                modifier = Modifier
+                                    .weight(WEIGHT_SERVICE_TYPE_NAME)
+                                    .clickable { serviceTypeByDentistOrderBy.value = "name" }
+                            )
+                            tableCell(
+                                "Descripcion",
+                                modifier = Modifier
+                                    .weight(WEIGHT_SERVICE_TYPE_DESCRIPTION)
+                                    .clickable { serviceTypeByDentistOrderBy.value = "description" }
+                            )
+                            tableCell(
+                                "Precio",
+                                modifier = Modifier
+                                    .weight(WEIGHT_SERVICE_TYPE_PRICE)
+                                    .clickable { serviceTypeByDentistOrderBy.value = "price" }
+                            )
+                        }
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(
+                                    if (serviceByDentists.value.size > 3){
+                                        200.dp
+                                    } else {
+                                        (60*serviceByDentists.value.size).dp
+                                    }
+                                )
+                        ) {
+                            items(serviceByDentists.value) {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .background(
+                                            color =
+                                            if (it.first.value in serviceTypeInAppointment.value) {
+                                                Color.Gray
+                                            } else {
+                                                Color.Transparent
+                                            }
+                                        )
+                                        .clickable {
+                                            val value = it.first.value
+                                            if (value in serviceTypeInAppointment.value) {
+                                                serviceTypeInAppointment.value =
+                                                    serviceTypeInAppointment.value.filterNot { it == value }
+                                            } else {
+                                                serviceTypeInAppointment.value = serviceTypeInAppointment.value + value
+                                            }
+                                            println(serviceTypeInAppointment.value.toString())
+                                        }
+                                ) {
+                                    it.second.forEach {
+                                        tableCell(
+                                            when (it) {
+                                                is QueryResult.IntQueryResult ->
+                                                    it.columnValue.toString()
+                                                is QueryResult.StringQueryResult ->
+                                                    it.columnValue
+                                            },
+                                            modifier = Modifier.weight(
+                                                when (it.columnName) {
+                                                    "id" ->
+                                                        WEIGHT_SERVICE_TYPE_ID
+                                                    "name" ->
+                                                        WEIGHT_SERVICE_TYPE_NAME
+                                                    "description" ->
+                                                        WEIGHT_SERVICE_TYPE_DESCRIPTION
+                                                    "price" ->
+                                                        WEIGHT_SERVICE_TYPE_PRICE
+                                                    else ->
+                                                        1f
+                                                }
+                                            )
+                                                .height(60.dp)
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -460,7 +589,9 @@ fun registerAppointmentDialogForDentist(
                     ) {
                         Button(onClick = {
                             setShowDialog(false)
-                            appointmentInsert(estadoCita = appointmentStatus[selectedStatus].first, idPaciente = patients[selectedPatient].first.value, idHora = timeSlot.id)
+                            appointmentInsert(estadoCita = appointmentStatus[selectedStatus].first, idPaciente = patients[selectedPatient].first.value, idHora = timeSlot.id,
+                                listOfServices = serviceTypeInAppointment.value
+                            )
                         }) {
                             Text(text = "Confirmar")
                         }
@@ -474,7 +605,7 @@ fun registerAppointmentDialogForDentist(
             },
             properties = DialogProperties(
                 title = "Registrar Cita para el dentista ${dentist.second}",
-                size = IntSize(500, 700)
+                size = IntSize(500, 900)
             )
         )
     }
@@ -486,7 +617,7 @@ fun registerAppointmentDialogForDentist(
 fun editAppointmentDialogForDentist(
     showDialog: Boolean,
     setShowDialog: (Boolean) -> Unit,
-    dentist: Pair<*, String> = 1 to " ",
+    dentist: Pair<EntityID<Int>, String> = EntityID<Int>(1, Empleados) to " ",
     timeSlot: TimeSlot
 ) {
 
@@ -551,6 +682,120 @@ fun editAppointmentDialogForDentist(
 
                     Spacer(modifier = Modifier.height(10.dp))
 
+                    val serviceTypeInAppointment = remember { mutableStateOf( listOf<Int>() ) }
+
+                    serviceTypeInAppointment.value = transaction {
+                        Servicios
+                            .select { Servicios.id_cita eq timeSlot.id }
+                            .map {
+                                it[Servicios.id_tipo_servicio]
+                            } .toList()
+                    }
+
+                    val serviceTypeByDentistOrderBy = remember { mutableStateOf("id") }
+                    val serviceByDentists = mutableStateOf(
+                        getListOfServicesByDentist(dentist.first.value)
+                            .sortedBy { rowValue ->
+                                rowValue.second.find {
+                                    it.columnName == serviceTypeByDentistOrderBy.value
+                                }.toString() })
+
+
+                    if (serviceByDentists.value.isEmpty()) {
+                        Text("No existen tipos de servicios.")
+                    } else {
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            tableCell(
+                                "ID",
+                                modifier = Modifier
+                                    .weight(WEIGHT_SERVICE_TYPE_ID)
+                                    .clickable { serviceTypeByDentistOrderBy.value = "id" }
+                            )
+                            tableCell(
+                                "Nombre",
+                                modifier = Modifier
+                                    .weight(WEIGHT_SERVICE_TYPE_NAME)
+                                    .clickable { serviceTypeByDentistOrderBy.value = "name" }
+                            )
+                            tableCell(
+                                "Descripcion",
+                                modifier = Modifier
+                                    .weight(WEIGHT_SERVICE_TYPE_DESCRIPTION)
+                                    .clickable { serviceTypeByDentistOrderBy.value = "description" }
+                            )
+                            tableCell(
+                                "Precio",
+                                modifier = Modifier
+                                    .weight(WEIGHT_SERVICE_TYPE_PRICE)
+                                    .clickable { serviceTypeByDentistOrderBy.value = "price" }
+                            )
+                        }
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(
+                                    if (serviceByDentists.value.size > 3){
+                                        200.dp
+                                    } else {
+                                        (60*serviceByDentists.value.size).dp
+                                    }
+                                )
+                        ) {
+                            items(serviceByDentists.value) {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .background(
+                                            color =
+                                            if (it.first.value in serviceTypeInAppointment.value) {
+                                                Color.Gray
+                                            } else {
+                                                Color.Transparent
+                                            }
+                                        )
+                                        .clickable {
+                                            val value = it.first.value
+                                            if (value in serviceTypeInAppointment.value) {
+                                                serviceTypeInAppointment.value =
+                                                    serviceTypeInAppointment.value.filterNot { it == value }
+                                            } else {
+                                                serviceTypeInAppointment.value = serviceTypeInAppointment.value + value
+                                            }
+                                            println(serviceTypeInAppointment.value.toString())
+                                        }
+                                ) {
+                                    it.second.forEach {
+                                        tableCell(
+                                            when (it) {
+                                                is QueryResult.IntQueryResult ->
+                                                    it.columnValue.toString()
+                                                is QueryResult.StringQueryResult ->
+                                                    it.columnValue
+                                            },
+                                            modifier = Modifier.weight(
+                                                when (it.columnName) {
+                                                    "id" ->
+                                                        WEIGHT_SERVICE_TYPE_ID
+                                                    "name" ->
+                                                        WEIGHT_SERVICE_TYPE_NAME
+                                                    "description" ->
+                                                        WEIGHT_SERVICE_TYPE_DESCRIPTION
+                                                    "price" ->
+                                                        WEIGHT_SERVICE_TYPE_PRICE
+                                                    else ->
+                                                        1f
+                                                }
+                                            )
+                                                .height(60.dp)
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -560,6 +805,7 @@ fun editAppointmentDialogForDentist(
                         Button(onClick = {
                             setShowDialog(false)
                             appointmentEdit(estadoCita = appointmentStatus[selectedStatus].first, idCita = cita.first().id.value, idHora = timeSlot.id)
+                            appointmentUpdateServiceType(cita.first().id.value, serviceTypeInAppointment.value)
                         }) {
                             Text(text = "Confirmar")
                         }
@@ -573,7 +819,7 @@ fun editAppointmentDialogForDentist(
             },
             properties = DialogProperties(
                 title = "Editando Cita para el dentista ${dentist.second}",
-                size = IntSize(500, 700)
+                size = IntSize(500, 900)
             )
         )
     }
@@ -773,10 +1019,118 @@ fun registerAppointmentDialogForPatients(
                                 }
                             }
                             Spacer(modifier = Modifier.height(10.dp))
+
                             Button(onClick = {
                                 showPopUpCalendar.value = false
                             }) {
                                 Text(text = "Cancel")
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+
+                    val serviceTypeInAppointment = remember { mutableStateOf( listOf<Int>() ) }
+
+                    val serviceTypeByDentistOrderBy = remember { mutableStateOf("id") }
+                    val serviceByDentists = mutableStateOf(
+                        getListOfServicesByDentist(dentists[selectedDentist].first.value)
+                            .sortedBy { rowValue ->
+                                rowValue.second.find {
+                                    it.columnName == serviceTypeByDentistOrderBy.value
+                                }.toString() })
+
+
+                    if (serviceByDentists.value.isEmpty()) {
+                        Text("No existen tipos de servicios.")
+                    } else {
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            tableCell(
+                                "ID",
+                                modifier = Modifier
+                                    .weight(WEIGHT_SERVICE_TYPE_ID)
+                                    .clickable { serviceTypeByDentistOrderBy.value = "id" }
+                            )
+                            tableCell(
+                                "Nombre",
+                                modifier = Modifier
+                                    .weight(WEIGHT_SERVICE_TYPE_NAME)
+                                    .clickable { serviceTypeByDentistOrderBy.value = "name" }
+                            )
+                            tableCell(
+                                "Descripcion",
+                                modifier = Modifier
+                                    .weight(WEIGHT_SERVICE_TYPE_DESCRIPTION)
+                                    .clickable { serviceTypeByDentistOrderBy.value = "description" }
+                            )
+                            tableCell(
+                                "Precio",
+                                modifier = Modifier
+                                    .weight(WEIGHT_SERVICE_TYPE_PRICE)
+                                    .clickable { serviceTypeByDentistOrderBy.value = "price" }
+                            )
+                        }
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(
+                                    if (serviceByDentists.value.size > 3){
+                                        200.dp
+                                    } else {
+                                        (60*serviceByDentists.value.size).dp
+                                    }
+                                )
+                        ) {
+                            items(serviceByDentists.value) {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .background(
+                                            color =
+                                            if (it.first.value in serviceTypeInAppointment.value) {
+                                                Color.Gray
+                                            } else {
+                                                Color.Transparent
+                                            }
+                                        )
+                                        .clickable {
+                                            val value = it.first.value
+                                            if (value in serviceTypeInAppointment.value) {
+                                                serviceTypeInAppointment.value =
+                                                    serviceTypeInAppointment.value.filterNot { it == value }
+                                            } else {
+                                                serviceTypeInAppointment.value = serviceTypeInAppointment.value + value
+                                            }
+                                            println(serviceTypeInAppointment.value.toString())
+                                        }
+                                ) {
+                                    it.second.forEach {
+                                        tableCell(
+                                            when (it) {
+                                                is QueryResult.IntQueryResult ->
+                                                    it.columnValue.toString()
+                                                is QueryResult.StringQueryResult ->
+                                                    it.columnValue
+                                            },
+                                            modifier = Modifier.weight(
+                                                when (it.columnName) {
+                                                    "id" ->
+                                                        WEIGHT_SERVICE_TYPE_ID
+                                                    "name" ->
+                                                        WEIGHT_SERVICE_TYPE_NAME
+                                                    "description" ->
+                                                        WEIGHT_SERVICE_TYPE_DESCRIPTION
+                                                    "price" ->
+                                                        WEIGHT_SERVICE_TYPE_PRICE
+                                                    else ->
+                                                        1f
+                                                }
+                                            )
+                                                .height(60.dp)
+                                        )
+                                    }
+                                }
                             }
                         }
                     }
@@ -793,7 +1147,9 @@ fun registerAppointmentDialogForPatients(
                             if (selectedTimeSlot == baseTimeSlot) {
                                 setShowDialog(false)
                             } else {
-                                appointmentInsert(estadoCita = appointmentStatus[selectedStatus].first, idPaciente = idPatient.value, idHora = selectedTimeSlot.id)
+                                appointmentInsert(estadoCita = appointmentStatus[selectedStatus].first, idPaciente = idPatient.value, idHora = selectedTimeSlot.id,
+                                    listOfServices = serviceTypeInAppointment.value
+                                )
                                 setShowDialog(false)
                             }
                         },
@@ -815,7 +1171,7 @@ fun registerAppointmentDialogForPatients(
             },
             properties = DialogProperties(
                 title = "Registrar Cita para el paciente $namePatient",
-                size = IntSize(500, 700)
+                size = IntSize(500, 900)
             )
         )
     }
@@ -964,7 +1320,8 @@ fun editAppointmentDialogForPatient(
     appointment: Cita,
     hour: Hora,
     patient: Pair<EntityID<Int>, String>,
-    data: MutableState<List<Pair<EntityID<Int>, Map<String, Any?>>>>
+    data: MutableState<List<Pair<EntityID<Int>, Map<String, Any?>>>>,
+    selectedEmpleadoID: MutableState<Int>
 ) {
 
     if (showDialog.value) {
@@ -1016,6 +1373,120 @@ fun editAppointmentDialogForPatient(
 
                     Spacer(modifier = Modifier.height(10.dp))
 
+                    val serviceTypeInAppointment = remember { mutableStateOf( listOf<Int>() ) }
+
+                    serviceTypeInAppointment.value = transaction {
+                        Servicios
+                            .select { Servicios.id_cita eq appointment.id.value }
+                            .map {
+                                it[Servicios.id_tipo_servicio]
+                            } .toList()
+                    }
+
+                    val serviceTypeByDentistOrderBy = remember { mutableStateOf("id") }
+                    val serviceByDentists = mutableStateOf(
+                        getListOfServicesByDentist(selectedEmpleadoID.value)
+                            .sortedBy { rowValue ->
+                                rowValue.second.find {
+                                    it.columnName == serviceTypeByDentistOrderBy.value
+                                }.toString() })
+
+
+                    if (serviceByDentists.value.isEmpty()) {
+                        Text("No existen tipos de servicios.")
+                    } else {
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            tableCell(
+                                "ID",
+                                modifier = Modifier
+                                    .weight(WEIGHT_SERVICE_TYPE_ID)
+                                    .clickable { serviceTypeByDentistOrderBy.value = "id" }
+                            )
+                            tableCell(
+                                "Nombre",
+                                modifier = Modifier
+                                    .weight(WEIGHT_SERVICE_TYPE_NAME)
+                                    .clickable { serviceTypeByDentistOrderBy.value = "name" }
+                            )
+                            tableCell(
+                                "Descripcion",
+                                modifier = Modifier
+                                    .weight(WEIGHT_SERVICE_TYPE_DESCRIPTION)
+                                    .clickable { serviceTypeByDentistOrderBy.value = "description" }
+                            )
+                            tableCell(
+                                "Precio",
+                                modifier = Modifier
+                                    .weight(WEIGHT_SERVICE_TYPE_PRICE)
+                                    .clickable { serviceTypeByDentistOrderBy.value = "price" }
+                            )
+                        }
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(
+                                    if (serviceByDentists.value.size > 3){
+                                        200.dp
+                                    } else {
+                                        (60*serviceByDentists.value.size).dp
+                                    }
+                                )
+                        ) {
+                            items(serviceByDentists.value) {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .background(
+                                            color =
+                                            if (it.first.value in serviceTypeInAppointment.value) {
+                                                Color.Gray
+                                            } else {
+                                                Color.Transparent
+                                            }
+                                        )
+                                        .clickable {
+                                            val value = it.first.value
+                                            if (value in serviceTypeInAppointment.value) {
+                                                serviceTypeInAppointment.value =
+                                                    serviceTypeInAppointment.value.filterNot { it == value }
+                                            } else {
+                                                serviceTypeInAppointment.value = serviceTypeInAppointment.value + value
+                                            }
+                                            println(serviceTypeInAppointment.value.toString())
+                                        }
+                                ) {
+                                    it.second.forEach {
+                                        tableCell(
+                                            when (it) {
+                                                is QueryResult.IntQueryResult ->
+                                                    it.columnValue.toString()
+                                                is QueryResult.StringQueryResult ->
+                                                    it.columnValue
+                                            },
+                                            modifier = Modifier.weight(
+                                                when (it.columnName) {
+                                                    "id" ->
+                                                        WEIGHT_SERVICE_TYPE_ID
+                                                    "name" ->
+                                                        WEIGHT_SERVICE_TYPE_NAME
+                                                    "description" ->
+                                                        WEIGHT_SERVICE_TYPE_DESCRIPTION
+                                                    "price" ->
+                                                        WEIGHT_SERVICE_TYPE_PRICE
+                                                    else ->
+                                                        1f
+                                                }
+                                            )
+                                                .height(60.dp)
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
                     dropdownSelect("Estado", appointmentStatus, selectedStatus, setSelectedStatus)
 
                     Spacer(modifier = Modifier.height(10.dp))
@@ -1029,6 +1500,7 @@ fun editAppointmentDialogForPatient(
                         Button(onClick = {
                             showDialog.value = false
                             appointmentEdit(estadoCita = appointmentStatus[selectedStatus].first, idCita = appointment.id.value, idHora = hour.id.value)
+                            appointmentUpdateServiceType(appointment.id.value, serviceTypeInAppointment.value)
                             data.value = transaction {
                                 addLogger(StdOutSqlLogger)
                                 (Citas innerJoin Pacientes innerJoin Users).select { Citas.id_paciente eq patient.first.value }
@@ -1058,8 +1530,48 @@ fun editAppointmentDialogForPatient(
             },
             properties = DialogProperties(
                 title = "Editando Cita del paciente ${patient.second}",
-                size = IntSize(500, 700)
+                size = IntSize(600, 900)
             )
         )
+    }
+}
+
+fun getListOfServicesByDentist(id: Int = 0): List<Pair<EntityID<Int>, List<QueryResult>>> {
+    return transaction {
+        Tipo_Servicios.innerJoin(Emp_Tserv).select {
+            Emp_Tserv.id_empleado eq id
+        }.map { queryResult ->
+            parseListOfServices(queryResult)
+        }
+    }
+}
+
+fun parseListOfServices(queryResultRow: ResultRow): Pair<EntityID<Int>, List<QueryResult>> {
+    return queryResultRow[Tipo_Servicios.id] to listOf(
+        QueryResult.IntQueryResult("id", queryResultRow[Tipo_Servicios.id].value),
+        QueryResult.StringQueryResult("name", queryResultRow[Tipo_Servicios.nombre]),
+        QueryResult.StringQueryResult("description", queryResultRow[Tipo_Servicios.descripcion]),
+        QueryResult.IntQueryResult("price", queryResultRow[Tipo_Servicios.precio])
+    )
+}
+//  Sorry, made this function but it's actually not needed.
+//fun findIdAndNameFromItemInListOfServices(list: List<Pair<EntityID<Int>, List<QueryResult>>>) {
+//    val filteredList = list.map {
+//        (it.second.find { queryResult -> queryResult.columnName == "id" } as QueryResult.IntQueryResult).columnValue to
+//                (it.second.find { queryResult -> queryResult.columnName == "name" } as QueryResult.StringQueryResult).columnValue
+//    }
+//}
+
+fun getListOfAllServices() {
+
+}
+
+fun getListOfServicesFromTableWithId(Table:IntIdTable, Id: Int): List<Pair<EntityID<Int>, List<QueryResult>>> {
+    return transaction {
+        Tipo_Servicios.innerJoin(Table).select {
+            Servicios.id_cita eq Id
+        }.map { queryResult ->
+            parseListOfServices(queryResult)
+        }
     }
 }

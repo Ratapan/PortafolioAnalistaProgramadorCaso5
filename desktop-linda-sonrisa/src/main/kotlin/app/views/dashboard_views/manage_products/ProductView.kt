@@ -119,6 +119,8 @@ fun viewProducts() {
         val productSortedBy = remember { mutableStateOf("id") }
         var editProductValues by remember { mutableStateOf( false ) }
 
+        val selectProductCategory  = remember { mutableStateOf(0) }
+
         Column (
             modifier = Modifier
                 .fillMaxHeight()
@@ -179,6 +181,7 @@ fun viewProducts() {
                             )
                             .clickable {
                                 selectedRow.value = (it.second["id"].toString().toInt())
+                                selectProductCategory.value = selectedRow.value
                                 selectedData.value = it
                                 editName = it.second["name"].toString()
                                 productosData = mutableStateOf(
@@ -793,7 +796,6 @@ fun viewProducts() {
                     }
                     ProductAction.Edit -> {
                         val providersList = remember { mutableStateOf( listOf<Int>() ) }
-                        val selectProductCategory  = remember { mutableStateOf(0) }
                         val selectedProduct = productosData.value.find {
                             it.first.value == selectedProductRow.value
                         }

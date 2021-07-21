@@ -217,19 +217,24 @@ fun appointmentInsert(
     fechaSolicitud: LocalDate = LocalDate.now(),
     estadoCita: Char,
     idPaciente: Int,
-    idHora: Int
+    idHora: Int,
+    listOfServices:List<Int>
 ) {
     transaction {
         addLogger(StdOutSqlLogger)
-        Citas.insert {
+        val id = Citas.insert {
             it[id] = 0
             it[fecha_solicitacion] = fechaSolicitud
             it[estado] = estadoCita
             it[id_hora] = idHora
             it[id_paciente] = idPaciente
-        }
+        }  get Citas.id
         val hora = Hora.findById(idHora)
         hora?.estado = 'T'
+        appointmentUpdateServiceType(
+            id.value,
+            listOfServices
+        )
     }
 }
 
@@ -361,6 +366,109 @@ fun productoUpdate(
                 it[id] = 0
                 it[id_producto] = idProducto
                 it[id_proveedor] = idProvider
+            }
+        }
+    }
+}
+
+
+
+
+
+// Tipo de servicios
+
+
+fun serviceTypeInsert(
+    name: String,
+    description: String,
+    price: Int
+) {
+    transaction {
+        addLogger(StdOutSqlLogger)
+        Tipo_Servicios.insert {
+            it[id] = 0
+            it[nombre] = name
+            it[descripcion] = description
+            it[precio] = price
+        }
+    }
+}
+
+fun serviceTypeEdit(
+    id: Int,
+    name: String,
+    description: String,
+    price: Int
+) {
+    transaction {
+        addLogger(StdOutSqlLogger)
+        val tipoServicio = Tipo_Servicio.findById(id)
+        tipoServicio?.nombre = name
+        tipoServicio?.descripcion = description
+        tipoServicio?.precio = price
+    }
+}
+
+
+// Update service type to dentist
+
+
+fun employeeUpdateServiceType(
+    idEmployee: Int,
+    list: List<Int>,
+) {
+    val serviceTypes = transaction {
+        Emp_Tserv
+            .select { Emp_Tserv.id_empleado eq idEmployee }
+            .map {
+                it[Emp_Tserv.id_tipo_servicio]
+            } .toList()
+    }
+    val toDelete = serviceTypes-list
+    val toAdd = list-serviceTypes
+    transaction {
+        toDelete.forEach {
+            Emp_Tserv.deleteWhere {
+                Emp_Tserv.id_tipo_servicio eq it and
+                        (Emp_Tserv.id_empleado eq idEmployee)
+            }
+        }
+        toAdd.forEach { idServiceType ->
+            Emp_Tserv.insert {
+                it[id] = 0
+                it[id_empleado] = idEmployee
+                it[id_tipo_servicio] = idServiceType
+            }
+        }
+    }
+}
+
+//Update service type of appointment
+fun appointmentUpdateServiceType(
+    idAppoitnment: Int,
+    list: List<Int>,
+) {
+    val serviceTypes = transaction {
+        Servicios
+            .select { Servicios.id_cita eq idAppoitnment }
+            .map {
+                it[Servicios.id_cita]
+            } .toList()
+    }
+    val toDelete = serviceTypes-list
+    val toAdd = list-serviceTypes
+    transaction {
+        toDelete.forEach {
+            Servicios.deleteWhere {
+                Servicios.id_tipo_servicio eq it and
+                        (Servicios.id_cita eq idAppoitnment)
+            }
+        }
+        toAdd.forEach { idServiceType ->
+            Servicios.insert {
+                it[id] = 0
+                it[id_cita] = idAppoitnment
+                it[id_tipo_servicio] = idServiceType
             }
         }
     }

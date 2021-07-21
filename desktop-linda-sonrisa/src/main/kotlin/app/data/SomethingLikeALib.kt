@@ -23,6 +23,7 @@ fun bufferedImageToBitMap(image: BufferedImage): ImageBitmap {
 
 fun byteArrayToBitMap(image: ByteArray): ImageBitmap {
     return Image.makeFromEncoded(image).asImageBitmap()
+
 }
 
 fun bitMapToByteArray(image: Bitmap):ByteArray {

@@ -41,6 +41,7 @@ fun weekPickerWithLocalDate(title: String,
         }
         val dateOfStartWeek = selectLocalDate.with(DayOfWeek.MONDAY)
         val dateOfEndWeek = selectLocalDate.with(DayOfWeek.SUNDAY)
+        Spacer(modifier = Modifier.height(5.dp))
 
 
         Row (verticalAlignment = Alignment.CenterVertically

@@ -68,9 +68,16 @@ fun lineChart(data : List<CitasPorSemana>) {
 //                We draw the weeks
                 it.nativeCanvas.drawString(
                     semana.semana,
-                    25f+(28f*index),
+                    20f+(30f*index),
                     145f,
-                    Font(face, 12f),
+                    Font(face, 10f),
+                    Paint().setColor(0xFF000000.toInt())
+                )
+                it.nativeCanvas.drawLine(
+                    36f+(30f*index),
+                    128f,
+                    36f+(30f*index),
+                    132f,
                     Paint().setColor(0xFF000000.toInt())
                 )
 /*
@@ -82,10 +89,10 @@ fun lineChart(data : List<CitasPorSemana>) {
         Now we just need to draw dots with this
 */
                 val percentage = maxPercentageOf(semana.cantidad, maxValue)
-                val elevation =  -1.04*(percentage) + 135
+                val elevation =  -1.04*(percentage) + 130
                 val radius = 3f
                 it.nativeCanvas.drawCircle(
-                    30f+(28f*index),
+                    36f+(30f*index),
                     elevation.toFloat(),
                     radius,
                     Paint().setColor(0xFF000000.toInt())
@@ -93,7 +100,7 @@ fun lineChart(data : List<CitasPorSemana>) {
                 )
                 pointList.add(
                     Point(
-                        25f+(28f*index),
+                        36f+(30f*index),
                         elevation.toFloat()
                     )
                 )
@@ -102,7 +109,7 @@ fun lineChart(data : List<CitasPorSemana>) {
                 println("${point.x}, ${point.y}")
             }
             println(pointList.lastIndex)
-            val difference = 5.5f
+            val difference = 1.5f
             for (i in 1..pointList.lastIndex) {
                 it.nativeCanvas.drawLine(
                     pointList[i-1].x + difference,
@@ -115,17 +122,17 @@ fun lineChart(data : List<CitasPorSemana>) {
 
             for ((index, semana) in data.withIndex()) {
                 val percentage = maxPercentageOf(semana.cantidad, maxValue)
-                val elevation =  -1.04*(percentage) + 135
+                val elevation =  -1.04*(percentage) + 130
                 val radius = 3f
                 it.nativeCanvas.drawCircle(
-                    30f+(28f*index),
+                    36f+(30f*index),
                     elevation.toFloat(),
                     radius-0.2f,
                     Paint().setColor(0xFFFFFFFF.toInt())
                 )
                 it.nativeCanvas.drawString(
                     "${semana.cantidad}",
-                    25f+(28f*index)-2f,
+                    36f+(30f*index)-2f,
                     elevation.toFloat()-5f,
                     Font(face, 12f),
                     Paint().setColor(0xFF000000.toInt())

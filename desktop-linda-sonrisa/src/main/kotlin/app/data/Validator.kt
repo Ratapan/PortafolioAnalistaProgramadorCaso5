@@ -14,10 +14,10 @@ object Validator {
      * Valida rut de la forma XXXXXXXX-X
      */
     fun validaRut(rut: String): Boolean {
-        val pattern: Pattern = Pattern.compile("^[0-9]+-[0-9kK]{1}$")
+        val pattern: Pattern = Pattern.compile("^[0-9]{1,3}([.][0-9]{3})*-[0-9kK]{1}\$")
         val matcher: Matcher = pattern.matcher(rut)
         if (!matcher.matches()) return false
-        val stringRut = rut.split("-".toRegex()).toTypedArray()
+        val stringRut = rut.replace(".", "").split("-".toRegex()).toTypedArray()
         return stringRut[1].lowercase(Locale.getDefault()) == dv(stringRut[0])
     }
 

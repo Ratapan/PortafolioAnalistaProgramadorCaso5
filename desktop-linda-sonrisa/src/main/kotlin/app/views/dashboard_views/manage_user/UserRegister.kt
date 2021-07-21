@@ -17,6 +17,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.v1.DialogProperties
@@ -120,6 +121,14 @@ fun userRegister() {
     Column (
         verticalArrangement = Arrangement.SpaceBetween
     ) {
+
+        Row (
+            modifier = Modifier
+                .padding(25.dp)
+                .fillMaxWidth()
+        ) {
+            Text("Registrar Nuevo Usuario", fontSize = 30.sp)
+        }
         Row (
             modifier = Modifier
                 .padding(25.dp)
@@ -132,9 +141,6 @@ fun userRegister() {
                 horizontalAlignment = Alignment.Start,
 //            verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Text("Register new user", fontSize = 30.sp)
-
-                formSpacer(modifier = Modifier.height(70.dp))
 
 //                focusableOutlinedTextField(email, )
 
@@ -174,6 +180,7 @@ fun userRegister() {
                             setCorrectPassword(false)
                         }
                     },
+                    visualTransformation = PasswordVisualTransformation(),
                     label = { Text("Password") },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -201,6 +208,7 @@ fun userRegister() {
                             setCorrectPassword(false)
                         }
                     },
+                    visualTransformation = PasswordVisualTransformation(),
                     label = { Text("Confirm Password") },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -328,61 +336,6 @@ fun userRegister() {
                     )
                 }
             }
-//            Column (
-//                modifier = Modifier
-//                    .padding(5.dp),
-//                horizontalAlignment = Alignment.Start
-//            ) {
-//                Text(
-//                    "Hi"
-//                )
-//                Button(onClick = {
-//                    setFileChooserStatus(true)
-////                val s = "c:"
-////                val p = Paths.get(s)
-////                Desktop.getDesktop().openHelpViewer()
-////                val file = File("c:")
-////                val uri = URI("c:/")
-////                val desktop = Desktop.getDesktop()
-////                desktop.browse(uri)
-//                }) {
-//                    Text("Open")
-//                }
-//                val fc = JFileChooser()
-//                fc.fileFilter = FileNameExtensionFilter("Images", "jpg", "png", "gif", "bmp")
-//                if (fileChooserStatus) {
-//                    var returnVal = fc.showSaveDialog(LocalAppWindow.current.window)
-//                    setFileChooserStatus(false)
-//                    if (returnVal === JFileChooser.APPROVE_OPTION) {
-//                        val file = fc.selectedFile
-//                        //This is where a real application would open the file.
-//
-//                        println("Opening: " + file.absolutePath + "." + "\n")
-//                        val blobValue = FileInputStream(file).readBytes()
-//                        val imageBitMap = byteArrayToBitMap(blobValue)
-//                        Image(
-//                            bitmap = imageBitMap,
-//                            contentDescription = "Temporary Image",
-//                            modifier= Modifier.fillMaxSize()
-//                        )
-//                    transaction {
-//                        Empleado.findById(1)?.imagen = ExposedBlob(f.readBytes())
-//                        commit()
-//                    }
-//                    } else {
-//                        println("Open command cancelled by user.\n")
-//                    }
-//                }
-//            val imagen = transaction { Empleado.findById(1)?.imagen?.bytes }
-//            val x = ByteArrayInputStream(imagen)
-//            val bm = asImageAsset(ImageIO.read(x))
-//            Image(
-//                bitmap = bm,
-//                contentDescription = "Hi",
-//                modifier= Modifier.fillMaxSize())
-
-
-//            }
         }
         Row (
             modifier = Modifier
@@ -564,9 +517,6 @@ fun registerPacienteView(
             .width(500.dp),
         horizontalAlignment = Alignment.Start,
     ) {
-
-        Spacer(modifier = Modifier.height(59.dp))
-
         OutlinedTextField(
             value = phoneNumber,
             onValueChange = {
@@ -597,13 +547,16 @@ fun registerPacienteView(
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
-            Row {
+            Spacer(modifier = Modifier.height(10.dp))
+            Row (
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ){
                 OutlinedButton(onClick = {
                     setFileChooserStatus(true)
                 }) {
                     Text("Seleccionar", color = Color.Black)
                 }
-
                 OutlinedButton(onClick = {
                     setFileByteArray(File(blankProfilePicture.toURI()).readBytes())
                     file = File(blankProfilePicture.toURI())
@@ -627,9 +580,6 @@ fun registerAdministradorView(phoneNumber: String, setPhoneNumber: (String) -> U
             .width(600.dp),
         horizontalAlignment = Alignment.Start,
     ) {
-
-        Spacer(modifier = Modifier.height(59.dp))
-
         OutlinedTextField(value = phoneNumber,
             onValueChange = {
                 setPhoneNumber(it)
@@ -695,7 +645,6 @@ fun registerEmpleadoView(
 
     Row (
         modifier = Modifier
-            .padding(5.dp)
             .width(1000.dp)
     ){
         Column (
@@ -704,9 +653,6 @@ fun registerEmpleadoView(
                 .weight(1f),
             horizontalAlignment = Alignment.Start,
         ) {
-
-            Spacer(modifier = Modifier.height(59.dp))
-
             OutlinedTextField(value = phoneNumber,
                 onValueChange = {
                     setPhoneNumber(it)
@@ -860,8 +806,6 @@ fun registerProveedorView(phoneNumber: String, setPhoneNumber: (String) -> Unit)
             .width(600.dp),
         horizontalAlignment = Alignment.Start,
     ) {
-
-        Spacer(modifier = Modifier.height(59.dp))
 
         OutlinedTextField(value = phoneNumber,
             onValueChange = {

@@ -18,6 +18,7 @@ import app.views.dashboard_views.manage_appointment.registerAppointment
 import app.views.dashboard_views.manage_hours.hoursView
 import app.views.dashboard_views.manage_orders.viewOrders
 import app.views.dashboard_views.manage_products.viewProducts
+import app.views.dashboard_views.manage_services.viewServices
 import app.views.dashboard_views.manage_user.userView
 
 @Composable
@@ -37,8 +38,9 @@ fun menu(onBack: () -> Unit) {
                 menuButton("Administrar Citas") { contentState = ContentView.ContentViewAppointment }
                 menuButton("Administrar Horarios") { contentState = ContentView.ContentViewHours }
                 menuButton("Administrar Usuarios") { contentState = ContentView.ContentViewUser }
-                menuButton("Administrar Ordenes") { contentState = ContentView.ContentViewOrders }
+//                menuButton("Administrar Ordenes") { contentState = ContentView.ContentViewOrders }
                 menuButton("Administrar Productos") { contentState = ContentView.ContentViewProducts }
+                menuButton("Administrar Servicios") { contentState = ContentView.ContentViewServices }
             }
             Column(modifier = Modifier
                 .padding(5.dp)
@@ -76,6 +78,9 @@ fun menu(onBack: () -> Unit) {
 
                 is ContentView.ContentViewProducts ->
                     viewProducts()
+
+                is ContentView.ContentViewServices ->
+                    viewServices()
             }
         }
     }

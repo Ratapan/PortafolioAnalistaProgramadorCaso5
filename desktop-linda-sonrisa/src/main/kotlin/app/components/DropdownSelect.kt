@@ -20,7 +20,8 @@ fun dropdownSelect(
     selectedValue: Int,
     setSelectedValue: (Int) -> Unit,
     arrangement: Any = Arrangement.SpaceBetween,
-    reloadButton: @Composable () -> Unit? = {  },
+    reloadButton: @Composable () -> Unit = {},
+    hasReloadButton: Boolean = false,
     externalClickable: () -> Unit = {  },
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -65,7 +66,7 @@ fun dropdownSelect(
                 }
             }
         }
-        if (reloadButton != {  }) {
+        if (hasReloadButton) {
             Spacer(modifier = Modifier.width(10.dp))
             reloadButton()
         }

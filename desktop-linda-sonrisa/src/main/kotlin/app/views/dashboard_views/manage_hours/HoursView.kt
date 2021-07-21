@@ -24,6 +24,8 @@ import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.*
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 val WeeklyDays = DayOfWeek.values()
 
@@ -35,6 +37,9 @@ val estadoHora = listOf(
 
 @Composable
 fun hoursView() {
+    val dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        .withLocale(Locale.US)
+        .withZone(ZoneId.of("-4"))
     val idRolDentista = transaction { Tipo_Empleados.select { Tipo_Empleados.nombre eq "Dentista" }.single()[Tipo_Empleados.id] }.value
     val dentistas = transaction {
         Empleados.innerJoin(Tipo_Empleados).innerJoin(Users)
@@ -85,8 +90,11 @@ fun hoursView() {
         ) {
             Text(text = "Administrador de Horas", fontSize = 20.sp)
         }
+        Spacer(modifier = Modifier.height(10.dp))
         dropdownSelect("Dentista", dentistas, selectedDentist, setSelectedDentist, Arrangement.Start)
+        Spacer(modifier = Modifier.height(10.dp))
         weekPickerWithLocalDate("Fecha", selectedLocalDate, setSelectedLocalDate)
+        Spacer(modifier = Modifier.height(10.dp))
         Row {
             val startTime = LocalTime.of(9, 0)
             val endTime = LocalTime.of(9, 30)
@@ -96,7 +104,9 @@ fun hoursView() {
             Column {
                 tableCell(
                     "Time \\ Day",
-                    modifierTableCell
+                    modifier = Modifier
+                        .height(50.dp)
+                        .width(100.dp)
                 )
                 for (i in 0..17) {
                     tableCell(
@@ -117,7 +127,12 @@ fun hoursView() {
                 }
                 Column {
                     tableCell(
-                        weekDay.toString(), modifier = modifierTableCell
+                        "$weekDay\n${
+                            selectedLocalDate.with(weekDay)
+                                .format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                        }", modifier = Modifier
+                            .height(50.dp)
+                            .width(100.dp)
                     )
                     timeSlots.forEach {
                         tableCell(
@@ -157,6 +172,7 @@ fun hoursView() {
                 }
             }
         }
+        Spacer(modifier = Modifier.height(10.dp))
         OutlinedButton(onClick = {
             setShowRegisterTimeSlot(true)
         }) {
